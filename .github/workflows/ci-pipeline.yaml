@@ -1,0 +1,33 @@
+name: Continuous Integration Pipeline
+
+on:
+  push:
+    branches: [ "master", "homol", "development" ]
+  pull_request:
+    branches: [ "master", "homol", "development" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore src/OnGarageEmployeesAPI/OnGarageEmployeesAPI.slnx
+
+    - name: Build
+      run: dotnet build src/OnGarageEmployeesAPI/OnGarageEmployeesAPI.slnx --no-restore --configuration Release
+
+    - name: Test
+      run: dotnet test src/OnGarageEmployeesAPI/OnGarageEmployeesAPI.slnx --no-build --configuration Release --verbosity normal
+      # The following command will only run the `OnGarage.EmployeeAPI.Tests.csproj` project, without going through the solution:
+      # run: dotnet test src/OnGarageEmployeesAPI/OnGarage.EmployeeAPI.Tests/OnGarage.EmployeeAPI.Tests.csproj --no-build --configuration Release --verbosity normal
+
+    # - name: Build the Docker image
+      # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)#
