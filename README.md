@@ -344,7 +344,7 @@ Feature/User/CreateUser/
 
 ### How are `LedgerLiteUsers` endpoints prepared to communicate with the `Transaction` service?
 
-![Endpoints's Structure](./docs/diagrams/UsersAPI.jpg)
+![Endpoints's Structure](./docs/diagrams/[Ledger%20Lite]%20UsersAPI.jpg)
 
 ---
 
