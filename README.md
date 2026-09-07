@@ -1,4 +1,4 @@
-# 👨‍🔧 OnGarage.EmployeesAPI
+# 👨‍🔧 LedgerLiteUsersAPI.UsersAPI
 
 **.NET 10 • C# 14 • Vertical Slice Architecture • Clean Architecture • PostgreSQL • Redis • Docker • GitHub Actions CI/CD**
 
@@ -162,7 +162,7 @@ LedgerLiteUsersAPI/
 
 ### Complete Architecture (C4 - Container) Diagram
 
-![Complete Architecture (C4 - Container) Diagram](./docs/diagrams/[Ledger%20Lite]%20Complete%20Architecture%20(C4%20-%20Container).jpg)
+![Complete Architecture (C4 - Container) Diagram](./docs/diagrams/[Ledger%20Lite]%20Arquitetura%20Completa%20(C4%20-%20Container).jpg)
 
 ---
 
@@ -306,7 +306,7 @@ dotnet ef migrations remove --project .\LedgerLiteUsers.Infrastructure\ --startu
 
 ## 🧩 Vertical Slice Structure
 
-> [!INFO]
+> [!NOTE]
 >
 > This structure isolates business logic and promotes scalability.
 
