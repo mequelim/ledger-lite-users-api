@@ -1,0 +1,31 @@
+using LedgeLiteUsers.Domain.Errors.UserExceptions;
+using LedgeLiteUsers.Domain.Validators;
+
+namespace LedgeLiteUsers.Domain.Entities
+{
+    public class User : BaseEntity
+    {
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public DateOnly Birthdate { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public bool IsActive { get; set; }
+
+        // Relationships:
+        public BankAccount? BankAccount { get; set; }
+
+        public User(string name, string surname, DateOnly birthdate, string email, string phone, bool isActive)
+        {
+            if(!new UserDataValidator().IsValidEmail(email)) throw new InvalidUserEmailException(email);
+            if(!new UserDataValidator().IsValidPhone(phone)) throw new InvalidUserPhoneException(phone);
+
+            Name = name;
+            Surname = surname;
+            Birthdate = birthdate;
+            Email = email;
+            Phone = phone;
+            IsActive = isActive;
+        }
+    }
+}
