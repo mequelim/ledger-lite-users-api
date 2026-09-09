@@ -162,7 +162,7 @@ LedgerLiteUsersAPI/
 
 ### Complete Architecture (C4 - Container) Diagram
 
-![Complete Architecture (C4 - Container) Diagram](./docs/diagrams/[Ledger%20Lite]%20Complete%20Architecture%20(C4%20-%20Container).jpg)
+![Complete Architecture (C4 - Container) Diagram](./docs/diagrams/[Ledger%20Lite]%20Arquitetura%20Completa%20(C4%20-%20Container).jpg)
 
 ---
 
@@ -336,7 +336,7 @@ Feature/User/CreateUser/
 
 ## 🗺 Context Map (simplified)
 
-![Operation Diagram](./docs/diagrams/[Ledger%20Lite]%20Complete%20Architecture%20(C4%20-%20Container).jpg)
+![Operation Diagram](./docs/diagrams/[Ledger%20Lite]%20Arquitetura%20Completa%20(C4%20-%20Container).jpg)
 
 > [!NOTE]
 >
