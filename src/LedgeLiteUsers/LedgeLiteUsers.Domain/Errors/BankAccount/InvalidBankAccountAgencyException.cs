@@ -6,7 +6,7 @@ namespace LedgeLiteUsers.Domain.Errors.BankAccount
 
         // Constructors:
         // Constructor with agency:
-        public InvalidBankAccountAgencyException(string agency) : base($"The bank account's  agency '{agency}' is invalid!")
+        public InvalidBankAccountAgencyException(string agency) : base($"The bank account's agency '{agency}' is invalid!")
         {
             Agency = agency;
         }

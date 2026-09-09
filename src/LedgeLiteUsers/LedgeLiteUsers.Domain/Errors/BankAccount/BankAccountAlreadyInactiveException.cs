@@ -6,7 +6,7 @@ namespace LedgeLiteUsers.Domain.Errors.BankAccount
 
         // Constructor:
         // Constructor with bankAccountId:
-        public BankAccountAlreadyInactiveException(Guid bankAccountId) : base($"Bank account with id '{bankAccountId}' was not found!")
+        public BankAccountAlreadyInactiveException(Guid bankAccountId) : base($"Bank account with id '{bankAccountId}' is already inactive!")
         {
             BankAccountId = bankAccountId;
         }
