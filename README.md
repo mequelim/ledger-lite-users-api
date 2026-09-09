@@ -1,4 +1,4 @@
-# 👨‍🔧 OnGarage.EmployeesAPI
+# 👨‍🔧 LedgerLiteUsersAPI.UsersAPI
 
 **.NET 10 • C# 14 • Vertical Slice Architecture • Clean Architecture • PostgreSQL • Redis • Docker • GitHub Actions CI/CD**
 
