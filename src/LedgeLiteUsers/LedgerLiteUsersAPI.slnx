@@ -2,5 +2,5 @@
   <Folder Name="/Tests/">
     <Project Path="LedgeLiteUsers.Domain.Tests/LedgeLiteUsers.Domain.Tests.csproj" />
   </Folder>
-  <Project Path="LedgeLiteUsers.Domain/LedgeLiteUsers.Domain.csproj" />
+  <Project Path="LedgerLiteUsers.Domain\LedgerLiteUsers.Domain.csproj" />
 </Solution>

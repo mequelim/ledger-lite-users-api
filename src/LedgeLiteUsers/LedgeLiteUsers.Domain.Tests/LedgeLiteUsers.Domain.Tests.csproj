@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LedgeLiteUsers.Domain\LedgeLiteUsers.Domain.csproj" />
+      <ProjectReference Include="..\LedgerLiteUsers.Domain\LedgerLiteUsers.Domain.csproj" />
     </ItemGroup>
 
 </Project>
