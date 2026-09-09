@@ -3,7 +3,7 @@ using LedgeLiteUsers.Domain.Entities.Enums;
 
 namespace LedgeLiteUsers.Domain.Tests.Mocks
 {
-    public class BankAccountFactory
+    public static class BankAccountFactory
     {
         public static BankAccount CreateDefault(Guid? userId = null)
         {
