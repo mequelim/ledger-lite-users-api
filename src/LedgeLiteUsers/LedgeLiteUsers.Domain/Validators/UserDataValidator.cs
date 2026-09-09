@@ -12,5 +12,15 @@ namespace LedgeLiteUsers.Domain.Validators
         public bool IsValidEmail(string email) => (!string.IsNullOrWhiteSpace(email) && (EmailRegex.IsMatch(email)));
 
         public bool IsValidPhone(string phone) => (!string.IsNullOrWhiteSpace(phone) && (PhoneRegex.IsMatch(phone)));
+
+        public bool IsValidBirthdate(DateOnly birthdate)
+        {
+            DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+            int userAge = today.Year - birthdate.Year;
+
+            if(birthdate < today.AddYears(-userAge)) userAge--;
+
+            return (userAge is >= 18 and <= 100);
+        }
     }
 }

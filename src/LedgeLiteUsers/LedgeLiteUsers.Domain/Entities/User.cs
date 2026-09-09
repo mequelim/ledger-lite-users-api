@@ -17,6 +17,7 @@ namespace LedgeLiteUsers.Domain.Entities
 
         public User(string name, string surname, DateOnly birthdate, string email, string phone, bool isActive)
         {
+            if(!new UserDataValidator().IsValidBirthdate(birthdate)) throw new InvalidUserAgeException(birthdate);
             if(!new UserDataValidator().IsValidEmail(email)) throw new InvalidUserEmailException(email);
             if(!new UserDataValidator().IsValidPhone(phone)) throw new InvalidUserPhoneException(phone);
 

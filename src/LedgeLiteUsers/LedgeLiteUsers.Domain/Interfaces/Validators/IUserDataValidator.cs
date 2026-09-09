@@ -4,5 +4,6 @@ namespace LedgeLiteUsers.Domain.Interfaces.Validators
     {
         bool IsValidEmail(string email);
         bool IsValidPhone(string phone);
+        bool IsValidBirthdate(DateOnly birthdate);
     }
 }
