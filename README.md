@@ -160,10 +160,6 @@ LedgerLiteUsersAPI/
 └─────────────────────────────────────────────┘
 ```
 
-### Complete Architecture (C4 - Container) Diagram
-
-![Complete Architecture (C4 - Container) Diagram](./docs/diagrams/ledger-lite-complete-architecture-c4-container.jpg)
-
 ---
 
 ## 📂 Project Structure
@@ -331,20 +327,6 @@ Feature/User/CreateUser/
   CreateUserValidator.cs
   CreateUserResponse.cs
 ```
-
----
-
-## 🗺 Context Map (simplified)
-
-![Operation Diagram](./docs/diagrams/ledger-lite-complete-architecture-c4-container.jpg)
-
-> [!NOTE]
->
-> Each context communicates only through well-defined application boundaries.
-
-### How are `LedgerLiteUsers` endpoints prepared to communicate with the `Transaction` service?
-
-![Endpoints's Structure](./docs/diagrams/ledger-lite-deployment-diagram.jpg)
 
 ---
 
