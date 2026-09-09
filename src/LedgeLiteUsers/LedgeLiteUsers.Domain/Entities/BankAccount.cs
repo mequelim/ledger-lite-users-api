@@ -13,7 +13,7 @@ namespace LedgeLiteUsers.Domain.Entities
 
         // Foreign Keys (FKs):
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         public BankAccount(
             string bankName,
