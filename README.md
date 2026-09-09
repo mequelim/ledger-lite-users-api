@@ -162,7 +162,7 @@ LedgerLiteUsersAPI/
 
 ### Complete Architecture (C4 - Container) Diagram
 
-![Complete Architecture (C4 - Container) Diagram](./docs/diagrams/[Ledger%20Lite]%20Arquitetura%20Completa%20(C4%20-%20Container).jpg)
+![Complete Architecture (C4 - Container) Diagram](./docs/diagrams/ledger-lite-complete-architecture-c4-container.jpg)
 
 ---
 
@@ -336,7 +336,7 @@ Feature/User/CreateUser/
 
 ## 🗺 Context Map (simplified)
 
-![Operation Diagram](./docs/diagrams/[Ledger%20Lite]%20Arquitetura%20Completa%20(C4%20-%20Container).jpg)
+![Operation Diagram](./docs/diagrams/ledger-lite-complete-architecture-c4-container.jpg)
 
 > [!NOTE]
 >
@@ -344,7 +344,7 @@ Feature/User/CreateUser/
 
 ### How are `LedgerLiteUsers` endpoints prepared to communicate with the `Transaction` service?
 
-![Endpoints's Structure](./docs/diagrams/[Ledger%20Lite]%20UsersAPI.jpg)
+![Endpoints's Structure](./docs/diagrams/ledger-lite-deployment-diagram.jpg)
 
 ---
 
