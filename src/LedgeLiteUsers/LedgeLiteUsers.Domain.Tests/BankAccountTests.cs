@@ -1,5 +1,6 @@
 using LedgeLiteUsers.Domain.Entities;
 using LedgeLiteUsers.Domain.Entities.Enums;
+using LedgeLiteUsers.Domain.Errors.BankAccount;
 using LedgeLiteUsers.Domain.Tests.Mocks;
 
 namespace LedgeLiteUsers.Domain.Tests
@@ -54,10 +55,10 @@ namespace LedgeLiteUsers.Domain.Tests
         [InlineData("1234567890123")]
         [InlineData("12345-")]
         [InlineData("12345-AB")]
-        public void Create_WhenAccountNumberIsInvalid_ShouldThrowArgumentException(string invalidAccountNumber)
+        public void Create_WhenAccountNumberIsInvalid_ShouldThrowInvalidBankAccountAccountNumberException(string invalidAccountNumber)
         {
             // Arrange & Act:
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => new BankAccount(
+            InvalidBankAccountAccountNumberException exception = Assert.Throws<InvalidBankAccountAccountNumberException>(() => new BankAccount(
                 "Itaú",
                 "Titular",
                 invalidAccountNumber,
@@ -67,7 +68,7 @@ namespace LedgeLiteUsers.Domain.Tests
             ));
 
             // Assert:
-            Assert.Equal("accountNumber", exception.ParamName);
+            Assert.Equal(invalidAccountNumber, exception.AccountNumber);
         }
 
         [Theory]
@@ -77,10 +78,10 @@ namespace LedgeLiteUsers.Domain.Tests
         [InlineData("1234567890123")]
         [InlineData("12345-")]
         [InlineData("12345-AB")]
-        public void Create_WhenAgencyIsInvalid_ShouldThrowArgumentException(string invalidAgency)
+        public void Create_WhenAgencyIsInvalid_ShouldThrowInvalidBankAccountAgencyException(string invalidAgency)
         {
             // Arrange & Act:
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => new BankAccount(
+            InvalidBankAccountAgencyException exception = Assert.Throws<InvalidBankAccountAgencyException>(() => new BankAccount(
                 "Bradesco",
                 "Titular",
                 "12345-6",
@@ -90,7 +91,7 @@ namespace LedgeLiteUsers.Domain.Tests
             ));
 
             // Assert:
-            Assert.Equal("agency", exception.ParamName);
+            Assert.Equal(invalidAgency, exception.Agency);
         }
     }
 }
