@@ -25,15 +25,8 @@ namespace LedgeLiteUsers.Domain.Entities
             Guid userId
         )
         {
-            if(!new BankAccountDataValidator().IsValidAccountNumber(accountNumber))
-            {
-                throw new InvalidBankAccountAccountNumberException(accountNumber);
-            }
-
-            if(!new BankAccountDataValidator().IsValidAgency(agency))
-            {
-                throw new InvalidBankAccountAgencyException(agency);
-            }
+            if(!new BankAccountDataValidator().IsValidAccountNumber(accountNumber)) throw new InvalidBankAccountAccountNumberException(accountNumber);
+            if(!new BankAccountDataValidator().IsValidAgency(agency)) throw new InvalidBankAccountAgencyException(agency);
 
             BankName = bankName;
             Holder = holder;
