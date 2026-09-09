@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="LedgerLiteUsers.Domain.Tests\LedgerLiteUsers.Domain.Tests.csproj" />
+  </Folder>
+  <Project Path="LedgerLiteUsers.Domain\LedgerLiteUsers.Domain.csproj" />
+</Solution>

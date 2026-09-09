@@ -26,7 +26,7 @@ There are **three primary branches**:
 ## 🚀 `master` (Production)
 
 + Represents the **production-ready code**;
-+ Only updated through **approved merges from `homol`**;
++ Only updated through **approved merges from `homol`;
 + Protected against direct pushes.
 
 > [!INFO]
