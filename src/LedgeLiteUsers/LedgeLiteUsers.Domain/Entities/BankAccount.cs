@@ -1,4 +1,5 @@
 using LedgeLiteUsers.Domain.Entities.Enums;
+using LedgeLiteUsers.Domain.Errors.BankAccount;
 using LedgeLiteUsers.Domain.Validators;
 
 namespace LedgeLiteUsers.Domain.Entities
@@ -24,8 +25,15 @@ namespace LedgeLiteUsers.Domain.Entities
             Guid userId
         )
         {
-            if(!new BankAccountDataValidator().IsValidAccountNumber(accountNumber)) throw new ArgumentException("Invalid account number!", nameof(accountNumber));
-            if(!new BankAccountDataValidator().IsValidAgency(agency)) throw new ArgumentException("Invalid account agency!", nameof(agency));
+            if(!new BankAccountDataValidator().IsValidAccountNumber(accountNumber))
+            {
+                throw new InvalidBankAccountAccountNumberException(accountNumber);
+            }
+
+            if(!new BankAccountDataValidator().IsValidAgency(agency))
+            {
+                throw new InvalidBankAccountAgencyException(agency);
+            }
 
             BankName = bankName;
             Holder = holder;
