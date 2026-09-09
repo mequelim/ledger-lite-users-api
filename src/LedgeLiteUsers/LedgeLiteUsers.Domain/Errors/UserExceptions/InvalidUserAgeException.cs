@@ -6,8 +6,7 @@ namespace LedgeLiteUsers.Domain.Errors.UserExceptions
 
         // Constructors:
         // Constructor with birthdate:
-        public InvalidUserAgeException(DateOnly birthdate)
-            : base($"The birthdate '{birthdate}' is invalid... you must be at least 18 years old!")
+        public InvalidUserAgeException(DateOnly birthdate) : base($"The birthdate '{birthdate}' is invalid... you must be at least 18 years old!")
         {
             Birthdate = birthdate;
         }
