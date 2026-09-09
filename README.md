@@ -201,7 +201,7 @@ wsl bash scripts/generate-env.sh
 
 #### Windows 11 (PowerShell) [without WSL]
 
-> [!INFO]
+> [!IMPORTANT]
 >
 > You need to use **Git Bash**!
 
@@ -306,7 +306,7 @@ dotnet ef migrations remove --project .\LedgerLiteUsers.Infrastructure\ --startu
 
 ## 🧩 Vertical Slice Structure
 
-> [!INFO]
+> [!IMPORTANT]
 >
 > This structure isolates business logic and promotes scalability.
 
