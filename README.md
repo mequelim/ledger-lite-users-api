@@ -36,19 +36,19 @@ This microsservice is intentionally modular, scalable and prepared for future ev
 
     + Each feature owns its commands, handlers, validators, and mappings.
 
-  + **Coherence Modelling**
+  + **Coherence Modelling**;
 
     + Entities, Value Objects, Aggregates, and business rules are implemented cleanly and independently.
 
-  + **REST API with Controllers (no Minimal APIs)**
+  + **REST API with Controllers (no Minimal APIs)**;
 
     + Chosen for clearer separation, testability, and maintainability.
 
-  + **PostgreSQL + EF Core**
+  + **PostgreSQL + EF Core**;
 
     + snake_case naming convention, clean database modeling, and migrations included.
 
-  + **Dockerized Development Environment**
+  + **Dockerized Development Environment**.
 
     + Seamless startup with Docker Compose.
 
