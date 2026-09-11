@@ -108,11 +108,8 @@ nohup.out
 # ============================
 
 # Docker build and configuration files
-# Dockerfile.dev
-# Dockerfile.test
-# .dockerignore
-# docker-compose.*
-# docker-compose.override.yml
+Dockerfile.dev
+Dockerfile.test
 /docker/
 /volumes/
 /.containers/
@@ -132,8 +129,6 @@ nohup.out
 *.pod
 *.kube
 .kubeconfig
-# *.yaml~
-# *.yml~
 /helm/
 /charts/
 /manifests/
