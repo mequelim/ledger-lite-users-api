@@ -1,19 +1,29 @@
 # 👨‍🔧 LedgerLiteUsersAPI.UsersAPI
 
-**.NET 10 • C# 14 • Vertical Slice Architecture • Clean Architecture • PostgreSQL • Redis • Docker • GitHub Actions CI/CD**
+**.NET 10 • C# 14 • Coherence Modelling • Vertical Slice Architecture • Clean Architecture • PostgreSQL • Redis • Docker • GitHub Actions CI/CD**
 
 ---
 
-## Overview
+## 💎 Overview
 
-`LedgerLiteUsersAPI` is a **backend service** designed to **manage users of, automotive mechanics**, following principles of **Coherence Modelling**, the **Vertical Slice Architecture** and the **Clean Architecture**.
+`LedgerLiteUsersAPI` is the **User Management microservice** of the LedgerLite ecosystem, responsible for managing users, authentication-related user data, roles, profiles, and ownership within the platform for automotive mechanics and workshops.
 
-This microsservice is intentionally modular, scalable and prepared for future evolution into independent bounded contexts or microservices.
+The service is built with **Clean Architecture** and **Vertical Slice Architecture**, applying **Coherence Modelling** to keep business capabilities isolated, cohesive, and easy to evolve over time.
+
+Designed with a **domain-first** approach, the project prioritizes maintainability, scalability, and testability while remaining independent of infrastructure and external frameworks.
+
+### 🎯 Goals
+
++ Model user-related business rules in a cohesive domain.
++ Expose a modular and versionable HTTP API.
++ Support CQRS-style use cases through Vertical Slices.
++ Be ready to evolve into independent bounded contexts or standalone microservices without major architectural changes.
 
 ---
 
 ## 📑 Table of Contents
 
++ [Coherence Modelling (Overview)](#coherence-modelling)
 + [Architecture Overview](#architecture-overview)
 + [Project Structure](#project-structure)
 + [Development Environment](#development-environment)
@@ -25,6 +35,18 @@ This microsservice is intentionally modular, scalable and prepared for future ev
 + [Testing](#testing)
 + [CI/CD Pipeline](#cicd-pipeline)
 + [Conventions & Coding Standards](#conventions--coding-standards)
+
+---
+
+# 🧠 Coherence Modelling (Overview)
+
+**Coherence Modelling** is a software architecture and domain modelling approach created by **me**. It focuses on organizing systems around highly cohesive business capabilities, promoting clear boundaries, low coupling, scalability, and long-term maintainability.
+
+The approach is designed to work alongside architectures such as **Clean Architecture** and **Vertical Slice Architecture**, enabling modular systems that can evolve naturally into bounded contexts or independent microservices.
+
+> [!IMPORTANT]
+>
+> **Coherence Modelling is a proprietary architectural approach created by Pedro Mequelim.** For documentation, implementation details, or adoption guidance, please contact the author directly.
 
 ---
 
@@ -46,7 +68,7 @@ This microsservice is intentionally modular, scalable and prepared for future ev
 
   + **PostgreSQL + EF Core**;
 
-    + snake_case naming convention, clean database modeling, and migrations included.
+    + `snake_case` naming convention, clean database modeling, and migrations included.
 
   + **Dockerized Development Environment**.
 
@@ -61,8 +83,18 @@ This microsservice is intentionally modular, scalable and prepared for future ev
 ```
 LedgerLiteUsersAPI/
 ├── src/
-    ├──Tests/
+    ├──Tests/                    # Unit Tests (Test-Driven Development [TDD])
     │   ├── Users.Domain.Tests/
+    ├── Users.Application/       # Use cases and application orchestration
+    │   ├── DTOs/
+    │   │   ├── BankAccountDto
+    │   │   ├── UserDto
+    │   │   └── UserSummaryDto
+    │   ├──  Mappings/
+    │   │   ├── DomainToDtoMappingProfile
+    │   │   └── DtoToDomainMappingProfile
+    │   ├── .gitignore
+    │   └── Users.Application.csproj
     ├── Users.Domain/           # Core domain (no dependencies)
     │   ├── Entities/
     │   │   ├── Enums
@@ -306,6 +338,20 @@ Feature/User/CreateUser/
 
 ---
 
+## 🗺 Context Map (simplified)
+
+![Complete Diagram (C4 Container)](./docs/diagrams/Complete%20Architecture%20(C4%20-%20Container).jpg)
+
+> [!NOTE]
+>
+> Each context communicates only through well-defined application boundaries.
+
+### How are EmployeesAPI endpoints prepared to communicate with the OrderServiceAPI service?
+
+![UserAPI Diagram](./docs/diagrams/UsersAPI.jpg)
+
+---
+
 ## 📘 API Documentation
 
 > [!WARNING]
@@ -341,6 +387,12 @@ dotnet test
 | `POSTGRES_DB`                  | Database name                               |
 | `PRODUCTION_CONNECTION_STRING` | Production DB connection string             |
 | `STAGING_CONNECTION_STRING`    | Staging DB connection string                |
+
+---
+
+## Deployment Strategy
+
+![Deployment Strategy](./docs/diagrams/Deployment%20Diagram.jpg)
 
 ---
 
