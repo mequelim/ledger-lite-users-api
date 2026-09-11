@@ -171,18 +171,6 @@ sonar-project.properties
 .hooks/
 
 # ============================
-# Dependencies (optional front-end)
-# ============================
-
-# Node.js (if front-end or UI assets exist)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-pnpm-lock.yaml
-
-# ============================
 # Backup and Temporary Files
 # ============================
 
