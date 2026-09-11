@@ -23,18 +23,18 @@ Designed with a **domain-first** approach, the project prioritizes maintainabili
 
 ## 📑 Table of Contents
 
-+ [Coherence Modelling (Overview)](#coherence-modelling)
-+ [Architecture Overview](#architecture-overview)
-+ [Project Structure](#project-structure)
-+ [Development Environment](#development-environment)
-+ [Running with Docker](#running-with-docker)
-+ [Migrations](#migrations)
-+ [Vertical Slice Structure](#vertical-slice-structure)
-+ [Context Map](#context-map)
-+ [API Documentation](#api-documentation)
-+ [Testing](#testing)
-+ [CI/CD Pipeline](#cicd-pipeline)
-+ [Conventions & Coding Standards](#conventions--coding-standards)
++ [Coherence Modelling (Overview)](#-coherence-modelling-overview)
++ [Architecture Overview](#-architecture-overview)
++ [Project Structure](#-project-structure)
++ [Development Environment](#-development-environment)
++ [Running with Docker](#-running-with-docker-and-env)
++ [Migrations](#-migrations)
++ [Vertical Slice Structure](#-vertical-slice-structure)
++ [Context Map](#-context-map-simplified)
++ [API Documentation](#-api-documentation)
++ [Testing](#-testing)
++ [CI/CD Pipeline](#-cicd-pipeline)
++ [Conventions & Coding Standards](#-conventions--coding-standards)
 
 ---
 
