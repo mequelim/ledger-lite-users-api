@@ -60,78 +60,54 @@ This microsservice is intentionally modular, scalable and prepared for future ev
 
 ```
 LedgerLiteUsersAPI/
-├── LedgerLiteUsers.slnx
-└── src/
-    ├── LedgerLiteUsers.Domain/           # Core domain (no dependencies)
-    │   ├── Abstractions/
-    │   │   ├── Result.cs                            # Success/Failure result wrapper
-    │   │   └── Errors/
-    │   │       ├── Error.cs                         # Error type definition
-    │   │       └── ValidationError.cs               # Validation error collection
-    │   └── Entities/
-    │       ├── AuditableEntity.cs                   # Base class with CreatedOn/UpdatedOn
-    │       └── Book.cs                              # Domain entity
-    │
-    ├── LedgerLiteUsers.Application/      # Use cases & vertical slices
-    │   ├── DependencyInjection.cs                   # Application layer DI registration
-    │   ├── GlobalUsings.cs                          # ASP.NET Core global usings
-    │   ├── Abstractions/
-    │   │   ├── IApiEndpoint.cs                      # Endpoint contract
-    │   │   ├── IHandler.cs                          # Handler contract
-    │   │   └── Data/
-    │   │       ├── IRepository.cs                   # Repository abstraction
-    │   │       └── IUnitOfWork.cs                   # Unit of Work abstraction
-    │   ├── Constants/
-    │   │   └── ApiTags.cs                           # OpenAPI tags
-    │   ├── Extensions/
-    │   │   ├── MapEndpointExtensions.cs             # Endpoint registration
-    │   │   └── ResultExtensions.cs                  # Result pattern matching
-    │   ├── Features/                                # Vertical slices (features)
-    │   │   └── BookFeature/
-    │   │       ├── BookErrors.cs                    # Feature-specific errors
-    │   │       ├── CreateBook/
-    │   │       │   ├── CreateBookHandler.cs         # Handler + Request/Response records
-    │   │       │   ├── CreateBookValidator.cs
-    │   │       │   └── CreateBookEndpoint.cs
-    │   │       ├── GetAllBooks/
-    │   │       │   ├── GetAllBooksHandler.cs
-    │   │       │   └── GetAllBooksEndpoint.cs
-    │   │       ├── GetBookById/
-    │   │       │   ├── GetBookByIdHandler.cs
-    │   │       │   ├── GetBookByIdValidator.cs
-    │   │       │   └── GetBookByIdEndpoint.cs
-    │   │       ├── UpdateBook/
-    │   │       │   ├── UpdateBookHandler.cs
-    │   │       │   ├── UpdateBookValidator.cs
-    │   │       │   └── UpdateBookEndpoint.cs
-    │   │       └── DeleteBook/
-    │   │           ├── DeleteBookHandler.cs
-    │   │           ├── DeleteBookValidator.cs
-    │   │           └── DeleteBookEndpoint.cs
-    │   └── Pipelines/                               # Request processing decorators
-    │       ├── ValidationDecorator.cs
-    │       └── LoggingDecorator.cs
-    │
-    ├── LedgerLiteUsers.Persistence/   # External concerns                  # Infrastructure DI registration
-    │   ├── Database/
-    │   │   └── ApplicationDbContext.cs              # EF Core DbContext
-    │   ├── Interceptors/
-    │   │   └── AuditInterceptor.cs                  # Auto CreatedOn/UpdatedOn
-    │   ├── Migrations/
-    │   │   └── ...
-    │   └── Repository/
-    │       ├── Repository.cs                        # Generic repository implementation
-    │       └── UnitOfWork.cs                        # Unit of Work implementation
-    │
-    └── LedgerLiteUsers.WebApi/           # Thin host / entry point
-        ├── DependencyInjection.cs
-        ├── Program.cs                               # App startup & DI composition
-        ├── appsettings.json
-        ├── appsettings.Development.json
-        ├── Exceptions/
-        │   └── CustomExceptionHandler.cs            # Global exception handler
-        └── Extensions/
-            └── HealthChecksExtensions.cs            # Health check configuration
+├── src/
+    ├──Tests/
+    │   ├── Users.Domain.Tests/
+    ├── Users.Domain/           # Core domain (no dependencies)
+    │   ├── Entities/
+    │   │   ├── Enums
+    |   │   │   └── BankAccountType.cs
+    │   │   ├── BankAccount.cs
+    │   │   ├── BaseEntity.cs
+    │   │   └── User.cs
+    │   ├── Exceptions
+    │   │   ├── BankAccountExceptions/
+    |   │   │   ├── BankAccountAlreadyActiveException.cs
+    |   │   │   ├── BankAccountAlreadyExistsException.cs
+    |   │   │   ├── BankAccountAlreadyInactiveException.cs
+    |   │   │   ├── BankAccountNotFoundException.cs
+    |   │   │   ├── InvalidBankAccountAccountNumberException.cs
+    |   │   │   └── InvalidBankAccountAgencyException.cs
+    │   │   ├── UserExceptions/
+    |   │   │   ├── DuplicateEmailException.cs
+    |   │   │   ├── InvalidUserAgeException.cs
+    |   │   │   ├── InvalidUserEmailException.cs
+    |   │   │   ├── InvalidUserPhoneException.cs
+    |   │   │   ├── UserAlreadyActiveException.cs
+    |   │   │   ├── UserAlreadyExistsException.cs
+    |   │   │   ├── UserAlreadyInactiveException.cs
+    |   │   │   ├── UserInactiveException.cs
+    |   │   │   └── UserNotFoundException.cs
+    │   │   └── DomainException.cs
+    │   ├── Interfaces
+    │   │   ├── Auditable
+    |   |   |   └── IAuditableEntity.cs
+    │   │   └── Validators
+    |   │   │   ├── IBankAccountDataValidator.cs
+    |   |   │   └── IUserDataValidator.cs
+    │   ├── Validators
+    │   │   ├── BankAccountValidator.cs
+    │   │   └── UserValidator.cs
+    │   ├── .gitignore
+    │   └── Users.Domain.csproj
+    ├── .gitignore
+    └── LedgerLiteUsersAPI.slnx
+├── .editorconfig
+├── .env.example
+├── .gitignore
+├── CONTRIBUTING.md
+├── LICENSE.md
+└── README.md
 ```
 
 ### Clean Architecture Layers
