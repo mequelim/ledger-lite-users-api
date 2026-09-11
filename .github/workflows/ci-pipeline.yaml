@@ -19,15 +19,13 @@ jobs:
         dotnet-version: 10.0.x
 
     - name: Restore dependencies
-      run: dotnet restore src/LedgerLiteUsers/LedgerLiteUsersAPI.slnx
+      run: dotnet restore src/LedgerLiteUsersAPI/LedgerLiteUsersAPI.slnx
 
     - name: Build
-      run: dotnet build src/LedgerLiteUsers/LedgerLiteUsersAPI.slnx --no-restore --configuration Release
+      run: dotnet build src/LedgerLiteUsersAPI/LedgerLiteUsersAPI.slnx --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test src/LedgerLiteUsers/LedgerLiteUsersAPI.slnx --no-build --configuration Release --verbosity normal
-      # The following command will only run the `OnGarage.EmployeeAPI.Tests.csproj` project, without going through the solution:
-      # run: dotnet test src/OnGarageEmployeesAPI/OnGarage.EmployeeAPI.Tests/OnGarage.EmployeeAPI.Tests.csproj --no-build --configuration Release --verbosity normal
+      run: dotnet test src/LedgerLiteUsersAPI/LedgerLiteUsersAPI.slnx --no-build --configuration Release --verbosity normal
 
     # - name: Build the Docker image
       # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)#
