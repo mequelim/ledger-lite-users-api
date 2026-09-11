@@ -1,0 +1,24 @@
+using AutoMapper;
+using Users.Application.DTOs;
+using Users.Domain.Entities;
+
+namespace Users.Application.Mappings
+{
+    public class DomainToDtoMappingProfile : Profile
+    {
+        public DomainToDtoMappingProfile()
+        {
+            CreateMap<BankAccount, BankAccountDto>()
+                .ForMember(
+                    (destination) => destination.BankName,
+                    (options) => options.MapFrom((src) => src.BankName)
+                );
+            CreateMap<User, UserDto>();
+            CreateMap<User, UserSummaryDto>()
+                .ForMember(
+                    (destination) => destination.BankAccountDto,
+                    (options) => options.MapFrom((src) => src.BankAccount)
+                );
+        }
+    }
+}
