@@ -14,9 +14,9 @@ Designed with a **domain-first** approach, the project prioritizes maintainabili
 
 ### 🎯 Goals
 
-+ Model user-related business rules in a cohesive domain.
-+ Expose a modular and versionable HTTP API.
-+ Support CQRS-style use cases through Vertical Slices.
++ Model user-related business rules in a cohesive domain;
++ Expose a modular and versionable HTTP API;
++ Support CQRS-style use cases through Vertical Slices;
 + Be ready to evolve into independent bounded contexts or standalone microservices without major architectural changes.
 
 ---
