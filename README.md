@@ -452,5 +452,5 @@ dotnet test
 ## 👨‍💻 Author
 
 + Pedro Henrique Mequelim da Silva;
-+ Mobile and FullStack .NET Developer & Software Architecture;
++ Mobile & Backend Engineer;
 + Brazil, 🇧🇷
