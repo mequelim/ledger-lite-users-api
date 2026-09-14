@@ -12,12 +12,12 @@ namespace Users.Domain.Tests.Mocks
         private const bool IsActive = true;
 
         // Relationships:
-        private BankAccount? _bankAccount;
+        private readonly List<BankAccount> _bankAccounts = new();
 
         // Methods:
         public UserBuilder WithBankAccount(BankAccount bankAccount)
         {
-            _bankAccount = bankAccount;
+            _bankAccounts.Add(bankAccount);
             return this;
         }
 
@@ -28,7 +28,9 @@ namespace Users.Domain.Tests.Mocks
                 Email, Phone, IsActive
             );
 
-            user.BankAccount = _bankAccount ?? BankAccountFactory.CreateDefault(user.Id);
+            if(_bankAccounts.Count == 0) _bankAccounts.Add(BankAccountFactory.CreateDefault(user.Id));
+
+            foreach(BankAccount bankAccount in _bankAccounts) user.BankAccounts.Add(bankAccount);
 
             return user;
         }
