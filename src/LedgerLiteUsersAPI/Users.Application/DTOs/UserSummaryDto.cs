@@ -9,6 +9,6 @@ namespace Users.Application.DTOs
         public bool IsActive { get; set; }
 
         // Nested relationship:
-        public BankAccountDto BankAccountDto { get; set; }
+        public List<BankAccountDto> BankAccounts { get; set; } = [];
     }
 }
