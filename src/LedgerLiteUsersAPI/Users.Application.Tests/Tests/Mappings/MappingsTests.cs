@@ -7,7 +7,7 @@ using Users.Application.Tests.Mocks;
 using Users.Domain.Entities;
 using Users.Domain.Entities.Enums;
 
-namespace Users.Application.Tests.Mappings
+namespace Users.Application.Tests.Tests.Mappings
 {
     public class MappingsTests
     {
