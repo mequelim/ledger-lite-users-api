@@ -30,4 +30,8 @@
       <ProjectReference Include="..\Users.Application\Users.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Tests\" />
+    </ItemGroup>
+
 </Project>
