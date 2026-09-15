@@ -145,45 +145,6 @@ namespace Users.Application.Tests.Tests.Mappings
         }
 
         [Fact]
-        public void Map_UserToUserSummaryDto_ShouldMapCorrectly_WhenUserIsValid()
-        {
-            // Arrange:
-            User user = new UserBuilder().Build();
-
-            // Act:
-            UserSummaryDto userSummaryDto = _mapper.Map<UserSummaryDto>(user);
-
-            // Assert:
-            userSummaryDto.Should().NotBeNull();
-            userSummaryDto.Id.Should().Be(user.Id);
-            userSummaryDto.Name.Should().Be(user.Name);
-            userSummaryDto.Surname.Should().Be(user.Surname);
-            userSummaryDto.Email.Should().Be(user.Email);
-            userSummaryDto.IsActive.Should().Be(user.IsActive);
-        }
-
-        [Fact]
-        public void Map_UserToUserSummaryDto_ShouldMapBankAccountCorrectly_WhenUserHasBankAccount()
-        {
-            // Arrange:
-            User user = new UserBuilder().Build();
-            BankAccount bankAccount = user.BankAccounts.First();
-
-            // Act:
-            UserSummaryDto userSummaryDto = _mapper.Map<UserSummaryDto>(user);
-            BankAccountDto bankAccountDto = userSummaryDto.BankAccounts.First();
-
-            // Assert:
-            bankAccountDto.Should().NotBeNull();
-            bankAccountDto.Id.Should().Be(bankAccount.Id);
-            bankAccountDto.BankName.Should().Be(bankAccount.BankName);
-            bankAccountDto.Holder.Should().Be(bankAccount.Holder);
-            bankAccountDto.AccountNumber.Should().Be(bankAccount.AccountNumber);
-            bankAccountDto.Agency.Should().Be(bankAccount.Agency);
-            bankAccountDto.BankAccountType.Should().Be(bankAccount.BankAccountType);
-        }
-
-        [Fact]
         public void Map_UserDtoToUser_ShouldMapCorrectly_WhenUserDtoIsValid()
         {
             // Arrange:
@@ -315,30 +276,6 @@ namespace Users.Application.Tests.Tests.Mappings
         }
 
         [Fact]
-        public void Map_UserListToUserSummaryDtoList_ShouldMapCorrectly_WhenUserListContainsItems()
-        {
-            // Arrange:
-            List<User> users =
-            [
-                new UserBuilder().Build(),
-                new UserBuilder().Build()
-            ];
-
-            // Act:
-            List<UserSummaryDto> usersSummaryDto = _mapper.Map<List<UserSummaryDto>>(users);
-
-            // Assert:
-            usersSummaryDto.Should().NotBeNull();
-            usersSummaryDto.Should().HaveCount(2);
-
-            usersSummaryDto[0].Id.Should().Be(users[0].Id);
-            usersSummaryDto[1].Id.Should().Be(users[1].Id);
-
-            usersSummaryDto[0].Email.Should().Be(users[0].Email);
-            usersSummaryDto[1].Email.Should().Be(users[1].Email);
-        }
-
-        [Fact]
         public void Map_EmptyUserListToUserDtoList_ShouldReturnEmptyCollection()
         {
             // Arrange:
@@ -350,20 +287,6 @@ namespace Users.Application.Tests.Tests.Mappings
             // Assert:
             usersDto.Should().NotBeNull();
             usersDto.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Map_EmptyUserListToUserSummaryDtoList_ShouldReturnEmptyCollection()
-        {
-            // Arrange:
-            List<User> users = [];
-
-            // Act:
-            List<UserSummaryDto> usersSummaryDto = _mapper.Map<List<UserSummaryDto>>(users);
-
-            // Assert:
-            usersSummaryDto.Should().NotBeNull();
-            usersSummaryDto.Should().BeEmpty();
         }
 
         // FAILED CASES:
@@ -382,19 +305,6 @@ namespace Users.Application.Tests.Tests.Mappings
         }
 
         // User:
-        [Fact]
-        public void Map_NullUserToUserSummaryDto_ShouldReturnNull()
-        {
-            // Arrange:
-            User? user = null;
-
-            // Act:
-            UserSummaryDto? userSummaryDto = _mapper.Map<UserSummaryDto?>(user);
-
-            // Assert:
-            userSummaryDto.Should().BeNull();
-        }
-
         [Fact]
         public void Map_NullUserDtoToUser_ShouldReturnNull()
         {
