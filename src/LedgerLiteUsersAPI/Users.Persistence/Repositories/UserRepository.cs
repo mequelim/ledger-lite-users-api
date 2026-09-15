@@ -56,22 +56,22 @@ namespace Users.Persistence.Repositories
         }
 
         /// <summary>
-        /// Retrieves a collection of users whose name or surname matches the specified search term, asynchronously.
+        /// Retrieves a collection of users whose name or surname matches the specified value asynchronously.
         /// </summary>
-        /// <param name="name">The search term to match against user names or surnames. Cannot be null or whitespace.</param>
-        /// <returns>An enumerable collection of users whose name or surname matches the search term.</returns>
+        /// <param name="name">The string value to search for in the users' name or surname. Cannot be null, empty, or whitespace.</param>
+        /// <returns>A collection of users whose name or surname contains the specified value.</returns>
         /// <exception cref="ArgumentException">Thrown when the provided name is null, empty, or consists only of whitespace.</exception>
         public async Task<IEnumerable<User>> GetUserByNameOrSurnameAsync(string name)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("User name cannot be null or empty!", nameof(name));
 
-            string searchTerm = $"%{name.Trim()}%";
+            string search = name.Trim();
 
             return await databaseContext.Users
                 .AsNoTracking()
                 .Where(
-                    (user) => EF.Functions.Like(user.Name, searchTerm) ||
-                              EF.Functions.Like(user.Surname, searchTerm)
+                    (user) => user.Name.Contains(search) ||
+                              user.Surname.Contains(search)
                 )
                 .ToListAsync();
         }
