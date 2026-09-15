@@ -2,16 +2,26 @@ namespace Users.Domain.Exceptions.UserExceptions
 {
     public sealed class UserNotFoundException : DomainException
     {
-        public Guid UserId { get; }
+        public string PropertyName { get; }
+        public object PropertyValue { get; }
 
         // Constructors:
-        // Constructor with userId:
-        public UserNotFoundException(Guid userId) : base($"User with id '{userId}' was not found!") => UserId = userId;
+        // Generic constructor:
+        public UserNotFoundException(string propertyName, object propertyValue) : base($"User with {propertyName} '{propertyValue}' was not found!")
+        {
+            (PropertyName, PropertyValue) = (propertyName, propertyValue);
+        }
 
-        // Constructor with userId and custom message:
-        public UserNotFoundException(Guid userId, string message) : base(message) => UserId = userId;
+        // Constructor with a custom message:
+        public UserNotFoundException(string propertyName, object propertyValue, string message) : base(message)
+        {
+            (PropertyName, PropertyValue) = (propertyName, propertyValue);
+        }
 
-        // Constructor with userId, custom message and inner exception:
-        public UserNotFoundException(Guid userId, string message, Exception innerException) : base(message, innerException) => UserId = userId;
+        // Constructor with message and inner exception:
+        public UserNotFoundException(string propertyName, object propertyValue, string message, Exception innerException) : base(message, innerException)
+        {
+            (PropertyName, PropertyValue) = (propertyName, propertyValue);
+        }
     }
 }

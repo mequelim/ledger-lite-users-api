@@ -6,29 +6,31 @@ namespace Users.Application.Tests.Mocks
     {
         private const string Name = "Pedro";
         private const string Surname = "Mequelim";
-        private readonly DateOnly _birthdate = new(2002, 02, 15);
+        private readonly DateOnly _dateOfBirth = new(2002, 02, 15);
         private const string Email = "pedro@email.com";
         private const string Phone = "+55 (41) 9 1234-4567";
         private const bool IsActive = true;
 
         // Relationships:
-        private BankAccount? _bankAccount;
+        private readonly List<BankAccount> _bankAccounts = new();
 
         // Methods:
         public UserBuilder WithBankAccount(BankAccount bankAccount)
         {
-            _bankAccount = bankAccount;
+            _bankAccounts.Add(bankAccount);
             return this;
         }
 
         public User Build()
         {
             User user = new(
-                Name, Surname, _birthdate,
+                Name, Surname, _dateOfBirth,
                 Email, Phone, IsActive
             );
 
-            user.BankAccount = _bankAccount ?? BankAccountFactory.CreateDefault(user.Id);
+            if(_bankAccounts.Count == 0) _bankAccounts.Add(BankAccountFactory.CreateDefault(user.Id));
+
+            foreach(BankAccount bankAccount in _bankAccounts) user.BankAccounts.Add(bankAccount);
 
             return user;
         }

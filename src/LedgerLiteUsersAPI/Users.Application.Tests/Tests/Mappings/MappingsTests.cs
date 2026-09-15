@@ -7,7 +7,7 @@ using Users.Application.Tests.Mocks;
 using Users.Domain.Entities;
 using Users.Domain.Entities.Enums;
 
-namespace Users.Application.Tests.Mappings
+namespace Users.Application.Tests.Tests.Mappings
 {
     public class MappingsTests
     {
@@ -80,18 +80,20 @@ namespace Users.Application.Tests.Mappings
         {
             // Arrange:
             User user = new UserBuilder().Build();
+            BankAccount bankAccount = user.BankAccounts.First();
 
             // Act:
             UserDto userDto = _mapper.Map<UserDto>(user);
+            BankAccountDto bankAccountDto = userDto.BankAccounts.First();
 
             // Assert:
-            userDto.BankAccount.Should().NotBeNull();
-            userDto.BankAccount.Id.Should().Be(user.BankAccount!.Id);
-            userDto.BankAccount.BankName.Should().Be(user.BankAccount.BankName);
-            userDto.BankAccount.Holder.Should().Be(user.BankAccount.Holder);
-            userDto.BankAccount.AccountNumber.Should().Be(user.BankAccount.AccountNumber);
-            userDto.BankAccount.Agency.Should().Be(user.BankAccount.Agency);
-            userDto.BankAccount.BankAccountType.Should().Be(user.BankAccount.BankAccountType);
+            bankAccountDto.Should().NotBeNull();
+            bankAccountDto.Id.Should().Be(bankAccount.Id);
+            bankAccountDto.BankName.Should().Be(bankAccount.BankName);
+            bankAccountDto.Holder.Should().Be(bankAccount.Holder);
+            bankAccountDto.AccountNumber.Should().Be(bankAccount.AccountNumber);
+            bankAccountDto.Agency.Should().Be(bankAccount.Agency);
+            bankAccountDto.BankAccountType.Should().Be(bankAccount.BankAccountType);
         }
 
         [Fact]
@@ -106,8 +108,8 @@ namespace Users.Application.Tests.Mappings
             UserDto userDto = _mapper.Map<UserDto>(user);
 
             // Assert:
-            userDto.BankAccount.Should().NotBeNull();
-            userDto.BankAccount.Holder.Should().BeNull();
+            userDto.BankAccounts.Should().ContainSingle();
+            userDto.BankAccounts.First().Holder.Should().BeNull();
         }
 
         [Fact]
@@ -140,43 +142,6 @@ namespace Users.Application.Tests.Mappings
 
             // Assert:
             bankAccountDto.Holder.Should().BeNull();
-        }
-
-        [Fact]
-        public void Map_UserToUserSummaryDto_ShouldMapCorrectly_WhenUserIsValid()
-        {
-            // Arrange:
-            User user = new UserBuilder().Build();
-
-            // Act:
-            UserSummaryDto userSummaryDto = _mapper.Map<UserSummaryDto>(user);
-
-            // Assert:
-            userSummaryDto.Should().NotBeNull();
-            userSummaryDto.Id.Should().Be(user.Id);
-            userSummaryDto.Name.Should().Be(user.Name);
-            userSummaryDto.Surname.Should().Be(user.Surname);
-            userSummaryDto.Email.Should().Be(user.Email);
-            userSummaryDto.IsActive.Should().Be(user.IsActive);
-        }
-
-        [Fact]
-        public void Map_UserToUserSummaryDto_ShouldMapBankAccountCorrectly_WhenUserHasBankAccount()
-        {
-            // Arrange:
-            User user = new UserBuilder().Build();
-
-            // Act:
-            UserSummaryDto userSummaryDto = _mapper.Map<UserSummaryDto>(user);
-
-            // Assert:
-            userSummaryDto.BankAccountDto.Should().NotBeNull();
-            userSummaryDto.BankAccountDto.Id.Should().Be(user.BankAccount!.Id);
-            userSummaryDto.BankAccountDto.BankName.Should().Be(user.BankAccount.BankName);
-            userSummaryDto.BankAccountDto.Holder.Should().Be(user.BankAccount.Holder);
-            userSummaryDto.BankAccountDto.AccountNumber.Should().Be(user.BankAccount.AccountNumber);
-            userSummaryDto.BankAccountDto.Agency.Should().Be(user.BankAccount.Agency);
-            userSummaryDto.BankAccountDto.BankAccountType.Should().Be(user.BankAccount.BankAccountType);
         }
 
         [Fact]
@@ -218,18 +183,20 @@ namespace Users.Application.Tests.Mappings
         {
             // Arrange:
             UserDto userDto = _mapper.Map<UserDto>(new UserBuilder().Build());
+            BankAccountDto bankAccountDto = userDto.BankAccounts.First();
 
             // Act:
             User user = _mapper.Map<User>(userDto);
+            BankAccount bankAccount = user.BankAccounts.First();
 
             // Assert:
-            user.BankAccount.Should().NotBeNull();
-            user.BankAccount!.Id.Should().Be(userDto.BankAccount.Id);
-            user.BankAccount.BankName.Should().Be(userDto.BankAccount.BankName);
-            user.BankAccount.Holder.Should().Be(userDto.BankAccount.Holder);
-            user.BankAccount.AccountNumber.Should().Be(userDto.BankAccount.AccountNumber);
-            user.BankAccount.Agency.Should().Be(userDto.BankAccount.Agency);
-            user.BankAccount.BankAccountType.Should().Be(userDto.BankAccount.BankAccountType);
+            bankAccount.Should().NotBeNull();
+            bankAccount.Id.Should().Be(bankAccountDto.Id);
+            bankAccount.BankName.Should().Be(bankAccountDto.BankName);
+            bankAccount.Holder.Should().Be(bankAccountDto.Holder);
+            bankAccount.AccountNumber.Should().Be(bankAccountDto.AccountNumber);
+            bankAccount.Agency.Should().Be(bankAccountDto.Agency);
+            bankAccount.BankAccountType.Should().Be(bankAccountDto.BankAccountType);
         }
 
         // Bank Account:
@@ -309,30 +276,6 @@ namespace Users.Application.Tests.Mappings
         }
 
         [Fact]
-        public void Map_UserListToUserSummaryDtoList_ShouldMapCorrectly_WhenUserListContainsItems()
-        {
-            // Arrange:
-            List<User> users =
-            [
-                new UserBuilder().Build(),
-                new UserBuilder().Build()
-            ];
-
-            // Act:
-            List<UserSummaryDto> usersSummaryDto = _mapper.Map<List<UserSummaryDto>>(users);
-
-            // Assert:
-            usersSummaryDto.Should().NotBeNull();
-            usersSummaryDto.Should().HaveCount(2);
-
-            usersSummaryDto[0].Id.Should().Be(users[0].Id);
-            usersSummaryDto[1].Id.Should().Be(users[1].Id);
-
-            usersSummaryDto[0].Email.Should().Be(users[0].Email);
-            usersSummaryDto[1].Email.Should().Be(users[1].Email);
-        }
-
-        [Fact]
         public void Map_EmptyUserListToUserDtoList_ShouldReturnEmptyCollection()
         {
             // Arrange:
@@ -344,20 +287,6 @@ namespace Users.Application.Tests.Mappings
             // Assert:
             usersDto.Should().NotBeNull();
             usersDto.Should().BeEmpty();
-        }
-
-        [Fact]
-        public void Map_EmptyUserListToUserSummaryDtoList_ShouldReturnEmptyCollection()
-        {
-            // Arrange:
-            List<User> users = [];
-
-            // Act:
-            List<UserSummaryDto> usersSummaryDto = _mapper.Map<List<UserSummaryDto>>(users);
-
-            // Assert:
-            usersSummaryDto.Should().NotBeNull();
-            usersSummaryDto.Should().BeEmpty();
         }
 
         // FAILED CASES:
@@ -376,19 +305,6 @@ namespace Users.Application.Tests.Mappings
         }
 
         // User:
-        [Fact]
-        public void Map_NullUserToUserSummaryDto_ShouldReturnNull()
-        {
-            // Arrange:
-            User? user = null;
-
-            // Act:
-            UserSummaryDto? userSummaryDto = _mapper.Map<UserSummaryDto?>(user);
-
-            // Assert:
-            userSummaryDto.Should().BeNull();
-        }
-
         [Fact]
         public void Map_NullUserDtoToUser_ShouldReturnNull()
         {
@@ -430,18 +346,18 @@ namespace Users.Application.Tests.Mappings
         }
 
         [Fact]
-        public void Map_UserDtoToUser_ShouldMapNullBankAccount_WhenBankAccountDtoIsNull()
+        public void Map_UserDtoToUser_ShouldMapEmptyBankAccounts_WhenBankAccountsDtoIsEmpty()
         {
             // Arrange:
             UserDto userDto = _mapper.Map<UserDto>(new UserBuilder().Build());
-            userDto.BankAccount = null!;
+            userDto.BankAccounts = [];
 
             // Act:
             User user = _mapper.Map<User>(userDto);
 
             // Assert:
             user.Should().NotBeNull();
-            user.BankAccount.Should().BeNull();
+            user.BankAccounts.Should().BeEmpty();
         }
     }
 }
