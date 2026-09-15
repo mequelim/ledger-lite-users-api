@@ -355,7 +355,7 @@ Feature/User/CreateUser/
 
 ## 🗺 Context Map (simplified)
 
-![Complete Diagram (C4 Container)](./docs/diagrams/Complete%20Architecture%20(C4%20-%20Container).jpg)
+![Complete Diagram (C4 Container)](./docs/diagrams/complete-architecture-c4-container.jpg)
 
 > [!NOTE]
 >
@@ -363,7 +363,7 @@ Feature/User/CreateUser/
 
 ### How are EmployeesAPI endpoints prepared to communicate with the OrderServiceAPI service?
 
-![UserAPI Diagram](./docs/diagrams/UsersAPI.jpg)
+![UserAPI Diagram](./docs/diagrams/users-api.jpg)
 
 ---
 
@@ -407,7 +407,7 @@ dotnet test
 
 ## Deployment Strategy
 
-![Deployment Strategy](./docs/diagrams/Deployment%20Diagram.jpg)
+![Deployment Strategy](./docs/diagrams/deployment-diagram.jpg)
 
 ---
 

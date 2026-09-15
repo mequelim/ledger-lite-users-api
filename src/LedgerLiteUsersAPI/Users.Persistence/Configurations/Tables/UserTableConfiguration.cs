@@ -4,7 +4,7 @@ using Users.Domain.Entities;
 
 namespace Users.Persistence.Configurations.Tables
 {
-    public class UserEmployeeTableConfiguration : IEntityTypeConfiguration<User>
+    public class UserTableConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
