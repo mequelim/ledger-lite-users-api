@@ -49,11 +49,11 @@ namespace Users.Persistence.Repositories
         }
 
         /// <summary>
-        /// Retrieves all bank accounts associated with a user whose name, surname, or full name matches the given user name.
+        /// Retrieves a collection of bank accounts associated with a user whose name matches the specified search term.
         /// </summary>
-        /// <param name="userName">The name or surname of the user to search for.</param>
-        /// <returns>An asynchronous task that resolves to an enumerable collection of <see cref="BankAccount"/> objects.</returns>
-        /// <exception cref="ArgumentException">Thrown when the provided <paramref name="userName"/> is null, empty, or whitespace.</exception>
+        /// <param name="userName">The name or part of the name of the user to search for. This can match the user's first name, last name, or full name.</param>
+        /// <returns>An asynchronous task resolving to an enumerable collection of <see cref="BankAccount"/> objects that match the specified user name.</returns>
+        /// <exception cref="ArgumentException">Thrown when the provided <paramref name="userName"/> is null, empty, or consists only of whitespace.</exception>
         public async Task<IEnumerable<BankAccount>> GetBankAccountByUserNameAsync(string userName)
         {
             if(string.IsNullOrWhiteSpace(userName)) throw new ArgumentException("User name cannot be null or empty!", nameof(userName));
@@ -62,11 +62,12 @@ namespace Users.Persistence.Repositories
 
             return await databaseContext.BankAccounts
                 .AsNoTracking()
+                .Include(b => b.User)
                 .Where(
-                    (bankAccount) => EF.Functions.ILike(bankAccount.User.Name, searchTerm) ||
-                                     EF.Functions.ILike(bankAccount.User.Surname, searchTerm) ||
-                                     EF.Functions.ILike($"{bankAccount.User.Name} {bankAccount.User.Surname}", searchTerm)
-                 )
+                        (bankAccount) => EF.Functions.Like(bankAccount.User.Name, searchTerm) ||
+                                         EF.Functions.Like(bankAccount.User.Surname, searchTerm) ||
+                                         EF.Functions.Like(bankAccount.User.Name + " " + bankAccount.User.Surname, searchTerm)
+                )
                 .ToListAsync();
         }
 
