@@ -87,12 +87,12 @@ LedgerLiteUsersAPI/
     │   ├── Users.Domain.Tests/
     ├── Users.Application/       # Use cases and application orchestration
     │   ├── DTOs/
-    │   │   ├── BankAccountDto
-    │   │   ├── UserDto
-    │   │   └── UserSummaryDto
+    │   │   ├── BankAccountDto.cs
+    │   │   ├── UserDto.cs
+    │   │   └── UserSummaryDto.cs
     │   ├──  Mappings/
-    │   │   ├── DomainToDtoMappingProfile
-    │   │   └── DtoToDomainMappingProfile
+    │   │   ├── DomainToDtoMappingProfile.cs
+    │   │   └── DtoToDomainMappingProfile.cs
     │   ├── .gitignore
     │   └── Users.Application.csproj
     ├── Users.Domain/           # Core domain (no dependencies)
@@ -132,6 +132,21 @@ LedgerLiteUsersAPI/
     │   │   └── UserValidator.cs
     │   ├── .gitignore
     │   └── Users.Domain.csproj
+    ├── Users.Persistence/       # Use cases and application orchestration
+    │   ├── Configurations/
+    │   │   ├── Tables/
+    |   │   │   ├── BankAccountTableConfiguration.cs
+    |   │   │   └── UserEmployeeTableConfiguration.cs
+    │   │   └── UserSummaryDto
+    │   ├── Database/
+    │   │   └── AppDbContext.cs
+    │   ├── Interceptors/
+    │   │   └── UpdateAuditableEntitiesInterceptor.cs
+    │   ├── Repositories/
+    │   │   ├── BankAccountRepository.cs
+    │   │   └── UserRepository.cs
+    │   ├── .gitignore
+    │   └── Users.Persistence.csproj
     ├── .gitignore
     └── LedgerLiteUsersAPI.slnx
 ├── .editorconfig
