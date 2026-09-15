@@ -13,7 +13,7 @@ namespace Users.Domain.Entities
         public bool IsActive { get; set; }
 
         // Relationships:
-        public BankAccount? BankAccount { get; set; }
+        public ICollection<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
 
         public User(string name, string surname, DateOnly birthdate, string email, string phone, bool isActive)
         {

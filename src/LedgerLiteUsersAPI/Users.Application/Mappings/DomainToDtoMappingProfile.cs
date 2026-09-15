@@ -14,11 +14,6 @@ namespace Users.Application.Mappings
                     (options) => options.MapFrom((src) => src.BankName)
                 );
             CreateMap<User, UserDto>();
-            CreateMap<User, UserSummaryDto>()
-                .ForMember(
-                    (destination) => destination.BankAccountDto,
-                    (options) => options.MapFrom((src) => src.BankAccount)
-                );
         }
     }
 }

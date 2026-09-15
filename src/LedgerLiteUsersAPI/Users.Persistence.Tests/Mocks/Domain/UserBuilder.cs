@@ -1,6 +1,6 @@
 using Users.Domain.Entities;
 
-namespace Users.Domain.Tests.Mocks
+namespace Users.Persistence.Tests.Mocks.Domain
 {
     public class UserBuilder
     {
