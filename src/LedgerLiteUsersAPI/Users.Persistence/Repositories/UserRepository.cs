@@ -56,11 +56,11 @@ namespace Users.Persistence.Repositories
         }
 
         /// <summary>
-        /// Retrieves users whose name or surname matches the specified search term asynchronously.
+        /// Retrieves users from the repository whose name or surname matches the provided search term asynchronously.
         /// </summary>
-        /// <param name="name">The name or surname to search for.</param>
-        /// <returns>An enumerable collection of users matching the search term.</returns>
-        /// <exception cref="ArgumentException">Thrown when the provided name is null, empty, or whitespace.</exception>
+        /// <param name="name">The name or surname of the user to search for. It cannot be null or empty.</param>
+        /// <returns>An enumerable collection of users that match the specified search criteria.</returns>
+        /// <exception cref="ArgumentException">Thrown when the provided name is null or empty.</exception>
         public async Task<IEnumerable<User>> GetUserByNameOrSurnameAsync(string name)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("User name cannot be null or empty!", nameof(name));
@@ -69,18 +69,19 @@ namespace Users.Persistence.Repositories
 
             return await databaseContext.Users
                 .AsNoTracking()
-                .Where((user) => EF.Functions.ILike(user.Name, searchTerm) ||
-                                 EF.Functions.ILike(user.Surname, searchTerm)
+                .Where(
+                    (user) => EF.Functions.Like(name, searchTerm) ||
+                                     EF.Functions.Like(name, searchTerm)
                 )
                 .ToListAsync();
         }
 
         /// <summary>
-        /// Retrieves users from the repository whose full name matches the specified value asynchronously.
+        /// Retrieves a collection of users whose full name matches the specified value asynchronously.
         /// </summary>
-        /// <param name="fullName">The full name of the user to search for, combining name and surname.</param>
-        /// <returns>An enumerable collection of users matching the specified full name.</returns>
-        /// <exception cref="ArgumentException">Thrown when the provided full name is null or empty.</exception>
+        /// <param name="fullName">The full name of the user to search for.</param>
+        /// <returns>A collection of users that match the specified full name.</returns>
+        /// <exception cref="ArgumentException">Thrown when the provided full name is null, empty, or whitespace.</exception>
         public async Task<IEnumerable<User>> GetUserByFullNameAsync(string fullName)
         {
             if(string.IsNullOrWhiteSpace(fullName)) throw new ArgumentException("User name cannot be null or empty!", nameof(fullName));
@@ -89,7 +90,7 @@ namespace Users.Persistence.Repositories
 
             return await databaseContext.Users
                 .AsNoTracking()
-                .Where((user) => EF.Functions.ILike($"{user.Name} {user.Surname}", searchTerm))
+                .Where((user) => EF.Functions.Like(user.Name + " " + user.Surname, searchTerm))
                 .ToListAsync();
         }
 
