@@ -11,6 +11,6 @@ namespace Users.Application.DTOs
         public bool IsActive { get; set; }
 
         // Nested Relationship:
-        public BankAccountDto BankAccount { get; set; } = null!;
+        public List<BankAccountDto> BankAccounts { get; set; } = [];
     }
 }

@@ -1,0 +1,72 @@
+## .NET build artifacts:
+**/bin/
+**/obj/
+**/out/
+**/publish/
+**/*.user
+**/*.suo
+
+## Test results:
+**/TestResults/
+**/coverage/
+**/*.trx
+**/*.cobertura.xml
+
+## NuGet:
+**/packages/
+*.nupkg
+*.snupkg
+.nuget/
+
+## Docker:
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+## Git:
+.git/
+.gitignore
+.gitattributes
+
+## IDEs & Text Editors:
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## OS:
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## Environment & Secrets:
+.env
+.env.*
+!.env.example
+appsettings.Development.json
+appsettings.*.json
+!appsettings.json
+
+## PostgreSQL:
+**/pgdata/
+**/postgres-data/
+*.sql
+!migrations/**/*.sql
+
+## Logs:
+**/logs/
+*.log
+
+## Documents and miscellaneous items:
+README.md
+CHANGELOG.md
+LICENSE
+docs/
+
+## CI/CD:
+.github/
+.gitlab-ci.yml
+azure-pipelines.yml

@@ -28,7 +28,7 @@ namespace Users.Application.Mappings
                     (options) => options.Ignore()
                 )
                 .ForMember(
-                    destination => destination.User,
+                    (destination) => destination.User,
                     (options) => options.Ignore()
                 )
                 .ForMember(
@@ -49,7 +49,7 @@ namespace Users.Application.Mappings
                 );
 
             CreateMap<UserDto, User>()
-                .ConstructUsing(dto => new User(
+                .ConstructUsing((dto) => new User(
                     dto.Name,
                     dto.Surname,
                     dto.Birthdate,
@@ -58,12 +58,8 @@ namespace Users.Application.Mappings
                     dto.IsActive
                 ))
                 .ForMember(
-                    (destintation) => destintation.Id,
-                    (options) => options.MapFrom(src => src.Id))
-                .ForMember(
-                    (destination) => destination.BankAccount,
-                    (options) => options.MapFrom(src => src.BankAccount)
-                )
+                    (destination) => destination.Id,
+                    (options) => options.MapFrom((src) => src.Id))
                 .ForMember(
                     (destination) => destination.CreatedBy,
                     (options) => options.Ignore()
