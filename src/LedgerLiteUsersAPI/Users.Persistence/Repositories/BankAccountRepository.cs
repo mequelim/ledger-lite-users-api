@@ -16,19 +16,20 @@ namespace Users.Persistence.Repositories
         public async Task<IEnumerable<BankAccount>> GetAllAsync() => await databaseContext.BankAccounts.ToListAsync();
 
         /// <summary>
-        /// Retrieves a bank account by its unique identifier.
+        /// Retrieves a bank account from the database by its unique identifier.
         /// </summary>
         /// <param name="bankAccountId">The unique identifier of the bank account to retrieve.</param>
-        /// <returns>An asynchronous task that resolves to the <see cref="BankAccount"/> object if found.</returns>
-        /// <exception cref="ArgumentException">Thrown when the provided bankAccountId is an empty GUID.</exception>
-        /// <exception cref="BankAccountNotFoundException">Thrown when no bank account with the specified identifier is found.</exception>
+        /// <returns>An asynchronous task that resolves to the requested <see cref="BankAccount"/> object if found.</returns>
+        /// <exception cref="ArgumentException">Thrown when the provided bank account ID is empty.</exception>
+        /// <exception cref="BankAccountNotFoundException">Thrown when a bank account with the specified ID cannot be found.</exception>
         public async Task<BankAccount> GetBankAccountByIdAsync(Guid bankAccountId)
         {
-            if(bankAccountId == Guid.Empty) throw new ArgumentException("Bank account id cannot be empty.", nameof(bankAccountId));
+            if(bankAccountId == Guid.Empty) throw new ArgumentException("Bank account id cannot be empty!", nameof(bankAccountId));
 
-            return await databaseContext.BankAccounts.SingleOrDefaultAsync(
-                (bankAccount) => bankAccount.Id == bankAccountId
-            ) ?? throw new BankAccountNotFoundException(nameof(BankAccount.Id), bankAccountId);
+            return await databaseContext.BankAccounts
+                       .AsNoTracking()
+                       .SingleOrDefaultAsync((bankAccount) => bankAccount.Id == bankAccountId)
+                   ?? throw new BankAccountNotFoundException(nameof(BankAccount.Id), bankAccountId);
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace Users.Persistence.Repositories
         /// <exception cref="ArgumentException">Thrown when the provided user ID is empty.</exception>
         public async Task<IEnumerable<BankAccount>> GetBankAccountByUserIdAsync(Guid userId)
         {
-            if(userId == Guid.Empty) throw new ArgumentException("User id cannot be empty.", nameof(userId));
+            if(userId == Guid.Empty) throw new ArgumentException("User id cannot be empty!", nameof(userId));
 
             return await databaseContext.BankAccounts
                 .AsNoTracking()
@@ -55,7 +56,7 @@ namespace Users.Persistence.Repositories
         /// <exception cref="ArgumentException">Thrown when the provided <paramref name="userName"/> is null, empty, or whitespace.</exception>
         public async Task<IEnumerable<BankAccount>> GetBankAccountByUserNameAsync(string userName)
         {
-            if(string.IsNullOrWhiteSpace(userName)) throw new ArgumentException("User name cannot be null or empty.", nameof(userName));
+            if(string.IsNullOrWhiteSpace(userName)) throw new ArgumentException("User name cannot be null or empty!", nameof(userName));
 
             string searchTerm = $"%{userName.Trim()}%";
 
@@ -116,17 +117,18 @@ namespace Users.Persistence.Repositories
         }
 
         /// <summary>
-        /// Deletes a bank account based on the provided identifier.
+        /// Deletes a bank account from the database based on the specified identifier.
         /// </summary>
-        /// <param name="bankAccountId">The unique identifier of the bank account to delete.</param>
+        /// <param name="bankAccountId">The unique identifier of the bank account to be deleted.</param>
         /// <returns>An asynchronous task that resolves to the deleted <see cref="BankAccount"/> object.</returns>
-        /// <exception cref="ArgumentException">Thrown when the provided bank account id is empty.</exception>
-        /// <exception cref="BankAccountNotFoundException">Thrown when no bank account is found with the specified identifier.</exception>
+        /// <exception cref="ArgumentException">Thrown when the provided bank account ID is empty.</exception>
+        /// <exception cref="BankAccountNotFoundException">Thrown when a bank account with the specified ID cannot be found.</exception>
         public async Task<BankAccount> DeleteAsync(Guid bankAccountId)
         {
-            if(bankAccountId == Guid.Empty) throw new ArgumentException("Bank account id cannot be empty.", nameof(bankAccountId));
+            if(bankAccountId == Guid.Empty) throw new ArgumentException("Bank account id cannot be empty!", nameof(bankAccountId));
 
             BankAccount bankAccount = await databaseContext.BankAccounts
+                                          .AsNoTracking()
                                           .FirstOrDefaultAsync((b) => b.Id == bankAccountId)
                                       ?? throw new BankAccountNotFoundException(nameof(BankAccount.Id), bankAccountId);
 
