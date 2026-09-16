@@ -56,7 +56,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         [Fact]
-        public async Task GetAllUsersActiveUsersAsync_ShouldReturnOnlyActiveUsers_WhenActiveUsersExist()
+        public async Task GetActiveUsersAsync_ShouldReturnOnlyActiveUsers_WhenActiveUsersExist()
         {
             // Arrange:
             User activeUser = GenerateCompleteUser();
@@ -70,7 +70,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetAllUsersActiveUsersAsync();
+            IEnumerable<User> result = await _repository.GetActiveUsersAsync();
 
             // Assert:
             IEnumerable<User> users = result as User[] ?? [.. result];
@@ -80,7 +80,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         [Fact]
-        public async Task GetAllUsersInactiveUsersAsync_ShouldReturnOnlyInactiveUsers_WhenInactiveUsersExist()
+        public async Task GetInactiveUsersAsync_ShouldReturnOnlyInactiveUsers_WhenInactiveUsersExist()
         {
             // Arrange:
             User activeUser = new UserBuilder().Build();
@@ -93,7 +93,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetAllUsersInactiveUsersAsync();
+            IEnumerable<User> result = await _repository.GetInactiveUsersAsync();
             IEnumerable<User> users = result as User[] ?? [.. result];
 
             // Assert:
@@ -129,8 +129,11 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task GetUserByIdAsync_ShouldThrowUserNotFoundException_WhenUserDoesNotExist()
         {
-            // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<UserNotFoundException>(() => _repository.GetUserByIdAsync(Guid.NewGuid()));
+            // Arrange & Act:
+            User? result = await _repository.GetUserByIdAsync(Guid.NewGuid());
+
+            // Assert:
+            Assert.Null(result);
         }
 
         [Fact]
@@ -246,8 +249,11 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task GetUserByEmailAsync_ShouldThrowInvalidUserEmailException_WhenEmailDoesNotExist()
         {
-            // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<InvalidUserEmailException>(() => _repository.GetUserByEmailAsync("notfound@email.com"));
+            // Arrange & Act:
+            User? result = await _repository.GetUserByEmailAsync("notfound@email.com");
+
+            // Assert:
+            Assert.Null(result);
         }
 
         [Fact]
@@ -283,21 +289,15 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldPersistAndReturnUser_WhenDataIsValid()
+        public async Task Create_ShouldPersistAndReturnUser_WhenDataIsValid()
         {
-            // Arrange:
             User user = GenerateCompleteUser();
+            User result = _repository.Create(user);
+            await _dbContext.SaveChangesAsync();
 
-            // Act:
-            User result = await _repository.CreateAsync(user);
-
-            // Assert:
             Assert.Equal(user.Id, result.Id);
-
             _dbContext.ChangeTracker.Clear();
-
-            User? persisted = await _dbContext.Users.FindAsync(user.Id);
-            Assert.NotNull(persisted);
+            Assert.NotNull(await _dbContext.Users.FindAsync(user.Id));
         }
 
         [Fact]
@@ -312,7 +312,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             user.Name = "João";
 
             // Act:
-            User result = await _repository.UpdateAsync(user);
+            User result = _repository.Update(user);
             User? persisted = await _dbContext.Users.FindAsync(user.Id);
 
             // Assert:
@@ -323,21 +323,16 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task DeleteAsync_ShouldDeleteAndReturnUser_WhenUserExists()
         {
-            // Arrange:
             User user = GenerateCompleteUser();
-
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
-
             _dbContext.ChangeTracker.Clear();
 
-            // Act:
             User result = await _repository.DeleteAsync(user.Id);
-            User? persisted = await _dbContext.Users.FindAsync(user.Id);
+            await _dbContext.SaveChangesAsync();
 
-            // Assert:
             Assert.Equal(user.Id, result.Id);
-            Assert.Null(persisted);
+            Assert.Null(await _dbContext.Users.FindAsync(user.Id));
         }
 
         [Fact]
