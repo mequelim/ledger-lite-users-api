@@ -277,15 +277,17 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task CreateAsync_ShouldPersistAndReturnBankAccount_WhenDataIsValid()
         {
+            // Arrange
             BankAccount account = GenerateCompleteBankAccount();
+            BankAccount result = _repository.Create(account);
 
-            BankAccount result = await _repository.CreateAsync(account);
-
-            Assert.Equal(account.Id, result.Id);
+            // Act:
+            BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id);
 
             _dbContext.ChangeTracker.Clear();
 
-            BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id);
+            // Assert:
+            Assert.Equal(account.Id, result.Id);
             Assert.NotNull(persisted);
         }
 
@@ -301,7 +303,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             account.BankName = "Updated bank";
 
             // Act:
-            BankAccount result = await _repository.UpdateAsync(account);
+            BankAccount result = _repository.Update(account);
             BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id);
 
             // Assert:
@@ -310,36 +312,36 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldThrowInvalidBankAccountAccountNumberException_WhenAccountNumberIsInvalid()
+        public void UpdateAsync_ShouldThrowInvalidBankAccountAccountNumberException_WhenAccountNumberIsInvalid()
         {
             // Arrange & Act:
             BankAccount account = GenerateCompleteBankAccount();
             account.AccountNumber = string.Empty;
 
             // Assert:
-            await Assert.ThrowsAsync<InvalidBankAccountAccountNumberException>(() => _repository.UpdateAsync(account));
+            Assert.Throws<InvalidBankAccountAccountNumberException>(() => _repository.Update(account));
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldThrowInvalidBankAccountAgencyException_WhenAgencyIsInvalid()
+        public void UpdateAsync_ShouldThrowInvalidBankAccountAgencyException_WhenAgencyIsInvalid()
         {
             // Arrange & Act:
             BankAccount account = GenerateCompleteBankAccount();
             account.Agency = string.Empty;
 
             // Assert:
-            await Assert.ThrowsAsync<InvalidBankAccountAgencyException>(() => _repository.UpdateAsync(account));
+            Assert.Throws<InvalidBankAccountAgencyException>(() => _repository.Update(account));
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldThrowInvalidBankNameException_WhenBankNameIsNullOrWhitespace()
+        public void UpdateAsync_ShouldThrowInvalidBankNameException_WhenBankNameIsNullOrWhitespace()
         {
             // Arrange & Act:
             BankAccount account = GenerateCompleteBankAccount();
             account.BankName = string.Empty;
 
             // Assert:
-            await Assert.ThrowsAsync<InvalidBankNameException>(() => _repository.UpdateAsync(account));
+            Assert.Throws<InvalidBankNameException>(() => _repository.Update(account));
         }
 
         [Fact]
@@ -355,6 +357,8 @@ namespace Users.Persistence.Tests.Tests.Repositories
 
             // Act:
             BankAccount result = await _repository.DeleteAsync(account.Id);
+            await _dbContext.SaveChangesAsync();
+
             BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id);
 
             // Assert:
