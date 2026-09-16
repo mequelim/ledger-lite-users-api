@@ -33,12 +33,12 @@ namespace Users.Persistence.Repositories
         }
 
         /// <summary>
-        /// Retrieves all bank accounts associated with a specific user.
+        /// Retrieves all bank accounts associated with the specified user ID.
         /// </summary>
         /// <param name="userId">The unique identifier of the user whose bank accounts are to be retrieved.</param>
-        /// <returns>An asynchronous task that resolves to an enumerable collection of <see cref="BankAccount"/> objects associated with the specified user.</returns>
+        /// <returns>An asynchronous task that resolves to an enumerable collection of <see cref="BankAccount"/> objects associated with the specified user ID.</returns>
         /// <exception cref="ArgumentException">Thrown when the provided user ID is empty.</exception>
-        public async Task<IEnumerable<BankAccount>> GetBankAccountByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<BankAccount?>> GetBankAccountByUserIdAsync(Guid userId)
         {
             if(userId == Guid.Empty) throw new ArgumentException("User id cannot be empty!", nameof(userId));
 
@@ -88,14 +88,13 @@ namespace Users.Persistence.Repositories
         }
 
         /// <summary>
-        /// Creates a new bank account in the database.
+        /// Adds a new bank account to the database.
         /// </summary>
-        /// <param name="bankAccount">The <see cref="BankAccount"/> object to be added to the database.</param>
-        /// <returns>An asynchronous task that resolves to the created <see cref="BankAccount"/> object.</returns>
-        public async Task<BankAccount> CreateAsync(BankAccount bankAccount)
+        /// <param name="bankAccount">The bank account object to be added.</param>
+        /// <returns>The added <see cref="BankAccount"/> object.</returns>
+        public BankAccount Create(BankAccount bankAccount)
         {
             databaseContext.BankAccounts.Add(bankAccount);
-            await databaseContext.SaveChangesAsync();
 
             return bankAccount;
         }
@@ -103,38 +102,41 @@ namespace Users.Persistence.Repositories
         /// <summary>
         /// Updates an existing bank account in the database.
         /// </summary>
-        /// <param name="bankAccount">The <see cref="BankAccount"/> object to update.</param>
-        /// <returns>An asynchronous task that resolves to the updated <see cref="BankAccount"/> object.</returns>
-        public async Task<BankAccount> UpdateAsync(BankAccount bankAccount)
+        /// <param name="bankAccount">The bank account entity containing the updated data.</param>
+        /// <returns>The updated <see cref="BankAccount"/> object.</returns>
+        /// <exception cref="InvalidBankAccountAccountNumberException">Thrown when the account number of the bank account is invalid.</exception>
+        /// <exception cref="InvalidBankAccountAgencyException">Thrown when the agency of the bank account is invalid.</exception>
+        /// <exception cref="InvalidBankNameException">Thrown when the bank name is null, empty, or contains only whitespace.</exception>
+        public BankAccount Update(BankAccount bankAccount)
         {
-            if(!new BankAccountDataValidator().IsValidAccountNumber(bankAccount.AccountNumber)) throw new InvalidBankAccountAccountNumberException(bankAccount.AccountNumber);
+            if(!new BankAccountDataValidator().IsValidAccountNumber(bankAccount.AccountNumber))
+            {
+                throw new InvalidBankAccountAccountNumberException(bankAccount.AccountNumber);
+            }
             if(!new BankAccountDataValidator().IsValidAgency(bankAccount.Agency)) throw new InvalidBankAccountAgencyException(bankAccount.Agency);
             if(string.IsNullOrWhiteSpace(bankAccount.BankName)) throw new InvalidBankNameException(bankAccount.BankName);
 
             databaseContext.BankAccounts.Update(bankAccount);
-            await databaseContext.SaveChangesAsync();
 
             return bankAccount;
         }
 
         /// <summary>
-        /// Deletes a bank account from the database based on the specified identifier.
+        /// Deletes a bank account with the specified ID from the database.
         /// </summary>
-        /// <param name="bankAccountId">The unique identifier of the bank account to be deleted.</param>
+        /// <param name="bankAccountId">The unique identifier of the bank account to delete.</param>
         /// <returns>An asynchronous task that resolves to the deleted <see cref="BankAccount"/> object.</returns>
         /// <exception cref="ArgumentException">Thrown when the provided bank account ID is empty.</exception>
-        /// <exception cref="BankAccountNotFoundException">Thrown when a bank account with the specified ID cannot be found.</exception>
+        /// <exception cref="BankAccountNotFoundException">Thrown when no bank account with the specified ID is found.</exception>
         public async Task<BankAccount> DeleteAsync(Guid bankAccountId)
         {
             if(bankAccountId == Guid.Empty) throw new ArgumentException("Bank account id cannot be empty!", nameof(bankAccountId));
 
             BankAccount bankAccount = await databaseContext.BankAccounts
-                                          .AsNoTracking()
                                           .FirstOrDefaultAsync((b) => b.Id == bankAccountId)
                                       ?? throw new BankAccountNotFoundException(nameof(BankAccount.Id), bankAccountId);
 
             databaseContext.BankAccounts.Remove(bankAccount);
-            await databaseContext.SaveChangesAsync();
 
             return bankAccount;
         }

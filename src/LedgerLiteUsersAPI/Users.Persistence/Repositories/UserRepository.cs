@@ -18,7 +18,7 @@ namespace Users.Persistence.Repositories
         /// Retrieves all active users from the repository asynchronously.
         /// </summary>
         /// <returns>An enumerable collection of active users.</returns>
-        public async Task<IEnumerable<User>> GetAllUsersActiveUsersAsync()
+        public async Task<IEnumerable<User>> GetActiveUsersAsync()
         {
             return await databaseContext.Users
                 .AsNoTracking()
@@ -30,7 +30,7 @@ namespace Users.Persistence.Repositories
         /// Retrieves all inactive users from the repository asynchronously.
         /// </summary>
         /// <returns>An enumerable collection of inactive users.</returns>
-        public async Task<IEnumerable<User>> GetAllUsersInactiveUsersAsync()
+        public async Task<IEnumerable<User>> GetInactiveUsersAsync()
         {
             return await databaseContext.Users
                 .AsNoTracking()
@@ -41,18 +41,16 @@ namespace Users.Persistence.Repositories
         /// <summary>
         /// Retrieves a user by their unique identifier asynchronously.
         /// </summary>
-        /// <param name="userId">The unique identifier of the user to be retrieved.</param>
-        /// <returns>The user associated with the specified identifier.</returns>
-        /// <exception cref="ArgumentException">Thrown when the provided userId is an empty Guid.</exception>
-        /// <exception cref="UserNotFoundException">Thrown when a user with the specified identifier is not found.</exception>
-        public async Task<User> GetUserByIdAsync(Guid userId)
+        /// <param name="userId">The unique identifier of the user to retrieve.</param>
+        /// <returns>The user matching the provided identifier, or null if no user is found.</returns>
+        /// <exception cref="ArgumentException">Thrown when the provided userId is an empty GUID.</exception>
+        public async Task<User?> GetUserByIdAsync(Guid userId)
         {
             if(userId == Guid.Empty) throw new ArgumentException("User id cannot be empty!", nameof(userId));
 
             return await databaseContext.Users
-                       .AsNoTracking()
-                       .SingleOrDefaultAsync((user) => user.Id == userId)
-                   ?? throw new UserNotFoundException(nameof(User.Id), userId);
+                .AsNoTracking()
+                .SingleOrDefaultAsync((user) => user.Id == userId);
         }
 
         /// <summary>
@@ -95,20 +93,17 @@ namespace Users.Persistence.Repositories
         }
 
         /// <summary>
-        /// Retrieves a user by their email address asynchronously.
+        /// Retrieves a user from the repository based on their email address asynchronously.
         /// </summary>
         /// <param name="email">The email address of the user to retrieve.</param>
-        /// <returns>A task representing the asynchronous operation. The task result contains the user with the specified email.</returns>
-        /// <exception cref="ArgumentException">Thrown when the provided email is null or empty.</exception>
-        /// <exception cref="InvalidUserEmailException">Thrown when no user with the specified email is found.</exception>
-        public async Task<User> GetUserByEmailAsync(string email)
+        /// <returns>The user associated with the specified email address, or null if no user is found.</returns>
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
             if(string.IsNullOrWhiteSpace(email)) throw new ArgumentException("User email cannot be null or empty!", nameof(email));
 
             return await databaseContext.Users
-                       .AsNoTracking()
-                       .SingleOrDefaultAsync((user) => user.Email == email)
-                   ?? throw new InvalidUserEmailException(nameof(email));
+                .AsNoTracking()
+                .SingleOrDefaultAsync((user) => user.Email == email);
         }
 
         /// <summary>
@@ -129,49 +124,45 @@ namespace Users.Persistence.Repositories
         }
 
         /// <summary>
-        /// Creates a new user and saves it to the repository asynchronously.
+        /// Asynchronously creates a new user in the repository.
         /// </summary>
-        /// <param name="user">The user entity to create.</param>
-        /// <returns>The created user entity after it has been saved.</returns>
-        public async Task<User> CreateAsync(User user)
+        /// <param name="user">The user entity to add to the repository.</param>
+        /// <returns>The created user entity.</returns>
+        public User Create(User user)
         {
             databaseContext.Users.Add(user);
-            await databaseContext.SaveChangesAsync();
 
             return user;
         }
 
         /// <summary>
-        /// Updates an existing user in the repository asynchronously.
+        /// Updates an existing user in the repository.
         /// </summary>
         /// <param name="user">The user entity to update.</param>
         /// <returns>The updated user entity.</returns>
-        public async Task<User> UpdateAsync(User user)
+        public User Update(User user)
         {
             databaseContext.Users.Update(user);
-            await databaseContext.SaveChangesAsync();
 
             return user;
         }
 
         /// <summary>
-        /// Deletes a user from the repository by their unique identifier asynchronously.
+        /// Deletes the user with the specified identifier from the repository asynchronously.
         /// </summary>
         /// <param name="userId">The unique identifier of the user to be deleted.</param>
-        /// <returns>The user that was deleted.</returns>
-        /// <exception cref="ArgumentException">Thrown when the provided user ID is empty.</exception>
-        /// <exception cref="UserNotFoundException">Thrown when a user with the specified ID is not found.</exception>
+        /// <returns>The deleted user entity.</returns>
+        /// <exception cref="ArgumentException">Thrown when the provided user identifier is empty.</exception>
+        /// <exception cref="UserNotFoundException">Thrown when a user with the specified identifier does not exist.</exception>
         public async Task<User> DeleteAsync(Guid userId)
         {
             if(userId == Guid.Empty) throw new ArgumentException("User id cannot be empty!", nameof(userId));
 
             User user = await databaseContext.Users
-                            .AsNoTracking()
                             .FirstOrDefaultAsync((user) => user.Id == userId)
                         ?? throw new UserNotFoundException(nameof(User.Id), userId);
 
             databaseContext.Users.Remove(user);
-            await databaseContext.SaveChangesAsync();
 
             return user;
         }
