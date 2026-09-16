@@ -108,7 +108,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            User result = await _repository.GetUserByIdAsync(user.Id);
+            User? result = await _repository.GetUserByIdAsync(user.Id);
 
             // Assert:
             Assert.NotNull(result);
@@ -228,7 +228,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            User result = await _repository.GetUserByEmailAsync(user.Email);
+            User? result = await _repository.GetUserByEmailAsync(user.Email);
 
             // Assert:
             Assert.NotNull(result);
@@ -291,12 +291,16 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task Create_ShouldPersistAndReturnUser_WhenDataIsValid()
         {
+            // Arrange:
             User user = GenerateCompleteUser();
             User result = _repository.Create(user);
-            await _dbContext.SaveChangesAsync();
 
-            Assert.Equal(user.Id, result.Id);
+            // Act:
+            await _dbContext.SaveChangesAsync();
             _dbContext.ChangeTracker.Clear();
+
+            // Assert:
+            Assert.Equal(user.Id, result.Id);
             Assert.NotNull(await _dbContext.Users.FindAsync(user.Id));
         }
 
@@ -323,14 +327,18 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task DeleteAsync_ShouldDeleteAndReturnUser_WhenUserExists()
         {
+            // Arrange:
             User user = GenerateCompleteUser();
+
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
             _dbContext.ChangeTracker.Clear();
 
+            // Act:
             User result = await _repository.DeleteAsync(user.Id);
             await _dbContext.SaveChangesAsync();
 
+            // Assert:
             Assert.Equal(user.Id, result.Id);
             Assert.Null(await _dbContext.Users.FindAsync(user.Id));
         }
