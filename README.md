@@ -84,69 +84,22 @@ The approach is designed to work alongside architectures such as **Clean Archite
 LedgerLiteUsersAPI/
 ├── src/
     ├──Tests/                    # Unit Tests (Test-Driven Development [TDD])
+    │   ├── Users.Application.Tests/
     │   ├── Users.Domain.Tests/
+    │   └── Users.Peristence.Tests/
     ├── Users.Application/       # Use cases and application orchestration
     │   ├── DTOs/
-    │   │   ├── BankAccountDto.cs
-    │   │   ├── UserDto.cs
-    │   │   └── UserSummaryDto.cs
-    │   ├──  Mappings/
-    │   │   ├── DomainToDtoMappingProfile.cs
-    │   │   └── DtoToDomainMappingProfile.cs
-    │   ├── .gitignore
-    │   └── Users.Application.csproj
+    │   └── Mappings/
     ├── Users.Domain/           # Core domain (no dependencies)
     │   ├── Entities/
-    │   │   ├── Enums
-    |   │   │   └── BankAccountType.cs
-    │   │   ├── BankAccount.cs
-    │   │   ├── BaseEntity.cs
-    │   │   └── User.cs
-    │   ├── Exceptions
-    │   │   ├── BankAccountExceptions/
-    |   │   │   ├── BankAccountAlreadyActiveException.cs
-    |   │   │   ├── BankAccountAlreadyExistsException.cs
-    |   │   │   ├── BankAccountAlreadyInactiveException.cs
-    |   │   │   ├── BankAccountNotFoundException.cs
-    |   │   │   ├── InvalidBankAccountAccountNumberException.cs
-    |   │   │   └── InvalidBankAccountAgencyException.cs
-    │   │   ├── UserExceptions/
-    |   │   │   ├── DuplicateEmailException.cs
-    |   │   │   ├── InvalidUserAgeException.cs
-    |   │   │   ├── InvalidUserEmailException.cs
-    |   │   │   ├── InvalidUserPhoneException.cs
-    |   │   │   ├── UserAlreadyActiveException.cs
-    |   │   │   ├── UserAlreadyExistsException.cs
-    |   │   │   ├── UserAlreadyInactiveException.cs
-    |   │   │   ├── UserInactiveException.cs
-    |   │   │   └── UserNotFoundException.cs
-    │   │   └── DomainException.cs
-    │   ├── Interfaces
-    │   │   ├── Auditable
-    |   |   |   └── IAuditableEntity.cs
-    │   │   └── Validators
-    |   │   │   ├── IBankAccountDataValidator.cs
-    |   |   │   └── IUserDataValidator.cs
-    │   ├── Validators
-    │   │   ├── BankAccountValidator.cs
-    │   │   └── UserValidator.cs
-    │   ├── .gitignore
-    │   └── Users.Domain.csproj
+    │   ├── Exceptions/
+    │   ├── Interfaces/
+    │   └── Validators/
     ├── Users.Persistence/       # Use cases and application orchestration
     │   ├── Configurations/
-    │   │   ├── Tables/
-    |   │   │   ├── BankAccountTableConfiguration.cs
-    |   │   │   └── UserEmployeeTableConfiguration.cs
-    │   │   └── UserSummaryDto
     │   ├── Database/
-    │   │   └── AppDbContext.cs
     │   ├── Interceptors/
-    │   │   └── UpdateAuditableEntitiesInterceptor.cs
-    │   ├── Repositories/
-    │   │   ├── BankAccountRepository.cs
-    │   │   └── UserRepository.cs
-    │   ├── .gitignore
-    │   └── Users.Persistence.csproj
+    │   └── Repositories/
     ├── .gitignore
     └── LedgerLiteUsersAPI.slnx
 ├── .editorconfig
