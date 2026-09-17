@@ -12,6 +12,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
     {
         private readonly AppDbContext _dbContext;
         private readonly UserRepository _repository;
+        private readonly CancellationToken _cancellationToken = CancellationToken.None;
 
         // Constructor:
         public UserRepositoryTests()
@@ -21,14 +22,14 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         // Methods:
-        private User GenerateCompleteUser() => new UserBuilder().Build();
+        private static User GenerateCompleteUser() => new UserBuilder().Build();
 
         private async Task<User> PersistUserAsync()
         {
             User user = GenerateCompleteUser();
 
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Users.AddAsync(user, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             return user;
         }
@@ -48,7 +49,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetAllAsync();
+            IEnumerable<User> result = await _repository.GetAllAsync(_cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
@@ -70,7 +71,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetActiveUsersAsync();
+            IEnumerable<User> result = await _repository.GetActiveUsersAsync(_cancellationToken);
 
             // Assert:
             IEnumerable<User> users = result as User[] ?? [.. result];
@@ -93,7 +94,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetInactiveUsersAsync();
+            IEnumerable<User> result = await _repository.GetInactiveUsersAsync(_cancellationToken);
             IEnumerable<User> users = result as User[] ?? [.. result];
 
             // Assert:
@@ -108,7 +109,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            User? result = await _repository.GetUserByIdAsync(user.Id);
+            User? result = await _repository.GetUserByIdAsync(user.Id, _cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
@@ -123,14 +124,14 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetUserByIdAsync_ShouldThrowArgumentException_WhenUserIdIsEmpty()
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByIdAsync(Guid.Empty));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByIdAsync(Guid.Empty, _cancellationToken));
         }
 
         [Fact]
         public async Task GetUserByIdAsync_ShouldThrowUserNotFoundException_WhenUserDoesNotExist()
         {
             // Arrange & Act:
-            User? result = await _repository.GetUserByIdAsync(Guid.NewGuid());
+            User? result = await _repository.GetUserByIdAsync(Guid.NewGuid(), _cancellationToken);
 
             // Assert:
             Assert.Null(result);
@@ -143,7 +144,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Pedro");
+            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Pedro", _cancellationToken);
 
             // Assert:
             Assert.Contains(result, u => u.Id == user.Id);
@@ -156,7 +157,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Mequelim");
+            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Mequelim", _cancellationToken);
 
             // Assert:
             Assert.Contains(result, u => u.Id == user.Id);
@@ -169,7 +170,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await PersistUserAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Fernanda");
+            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Fernanda", _cancellationToken);
 
             // Assert:
             Assert.Empty(result);
@@ -182,7 +183,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetUserByNameOrSurnameAsync_ShouldThrowArgumentException_WhenNameIsNullOrWhitespace(string? name)
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByNameOrSurnameAsync(name!));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByNameOrSurnameAsync(name!, _cancellationToken));
         }
 
         [Fact]
@@ -192,7 +193,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetUserByFullNameAsync("Pedro Mequelim");
+            IEnumerable<User> result = await _repository.GetUserByFullNameAsync("Pedro Mequelim", _cancellationToken);
 
             // Assert:
             Assert.Contains(result, u => u.Id == user.Id);
@@ -205,7 +206,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await PersistUserAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetUserByFullNameAsync("Fernanda Silva");
+            IEnumerable<User> result = await _repository.GetUserByFullNameAsync("Fernanda Silva", _cancellationToken);
 
             // Assert:
             Assert.Empty(result);
@@ -218,7 +219,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetUserByFullNameAsync_ShouldThrowArgumentException_WhenFullNameIsNullOrWhitespace(string? fullName)
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByFullNameAsync(fullName!));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByFullNameAsync(fullName!, _cancellationToken));
         }
 
         [Fact]
@@ -228,7 +229,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            User? result = await _repository.GetUserByEmailAsync(user.Email);
+            User? result = await _repository.GetUserByEmailAsync(user.Email, _cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
@@ -243,14 +244,14 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetUserByEmailAsync_ShouldThrowArgumentException_WhenEmailIsNullOrWhitespace(string? email)
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByEmailAsync(email!));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByEmailAsync(email!, _cancellationToken));
         }
 
         [Fact]
         public async Task GetUserByEmailAsync_ShouldThrowInvalidUserEmailException_WhenEmailDoesNotExist()
         {
             // Arrange & Act:
-            User? result = await _repository.GetUserByEmailAsync("notfound@email.com");
+            User? result = await _repository.GetUserByEmailAsync("notfound@email.com", _cancellationToken);
 
             // Assert:
             Assert.Null(result);
@@ -263,7 +264,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            User result = await _repository.GetUserByPhoneAsync(user.Phone);
+            User result = await _repository.GetUserByPhoneAsync(user.Phone, _cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
@@ -278,14 +279,14 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetUserByPhoneAsync_ShouldThrowArgumentException_WhenPhoneIsNullOrWhitespace(string? phone)
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByPhoneAsync(phone!));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByPhoneAsync(phone!, _cancellationToken));
         }
 
         [Fact]
         public async Task GetUserByPhoneAsync_ShouldThrowInvalidUserPhoneException_WhenPhoneDoesNotExist()
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<InvalidUserPhoneException>(() => _repository.GetUserByPhoneAsync("11000000000"));
+            await Assert.ThrowsAsync<InvalidUserPhoneException>(() => _repository.GetUserByPhoneAsync("11000000000", _cancellationToken));
         }
 
         [Fact]
@@ -335,7 +336,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             _dbContext.ChangeTracker.Clear();
 
             // Act:
-            User result = await _repository.DeleteAsync(user.Id);
+            User result = await _repository.DeleteAsync(user.Id, _cancellationToken);
             await _dbContext.SaveChangesAsync();
 
             // Assert:
@@ -347,14 +348,14 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task DeleteAsync_ShouldThrowArgumentException_WhenUserIdIsEmpty()
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.DeleteAsync(Guid.Empty));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.DeleteAsync(Guid.Empty, _cancellationToken));
         }
 
         [Fact]
         public async Task DeleteAsync_ShouldThrowUserNotFoundException_WhenUserDoesNotExist()
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<UserNotFoundException>(() => _repository.DeleteAsync(Guid.NewGuid()));
+            await Assert.ThrowsAsync<UserNotFoundException>(() => _repository.DeleteAsync(Guid.NewGuid(), _cancellationToken));
         }
     }
 }

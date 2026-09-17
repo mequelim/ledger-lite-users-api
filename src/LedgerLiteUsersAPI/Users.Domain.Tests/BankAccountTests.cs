@@ -58,7 +58,7 @@ namespace Users.Domain.Tests
         public void Create_WhenAccountNumberIsInvalid_ShouldThrowInvalidBankAccountAccountNumberException(string invalidAccountNumber)
         {
             // Arrange & Act:
-            InvalidBankAccountAccountNumberException exception = Assert.Throws<InvalidBankAccountAccountNumberException>(() => new BankAccount(
+            InvalidAccountNumberException exception = Assert.Throws<InvalidAccountNumberException>(() => new BankAccount(
                 "Itaú",
                 "Titular",
                 invalidAccountNumber,
@@ -81,7 +81,7 @@ namespace Users.Domain.Tests
         public void Create_WhenAgencyIsInvalid_ShouldThrowInvalidBankAccountAgencyException(string invalidAgency)
         {
             // Arrange & Act:
-            InvalidBankAccountAgencyException exception = Assert.Throws<InvalidBankAccountAgencyException>(() => new BankAccount(
+            InvalidAgencyException exception = Assert.Throws<InvalidAgencyException>(() => new BankAccount(
                 "Bradesco",
                 "Titular",
                 "12345-6",

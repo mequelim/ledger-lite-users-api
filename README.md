@@ -88,7 +88,8 @@ LedgerLiteUsersAPI/
     │   ├── Users.Domain.Tests/
     │   └── Users.Peristence.Tests/
     ├── Users.Application/       # Use cases and application orchestration
-    │   ├── DTOs/
+    │   ├── DTO/
+    │   ├── Features/
     │   └── Mappings/
     ├── Users.Domain/           # Core domain (no dependencies)
     │   ├── Entities/
