@@ -11,6 +11,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
     {
         private readonly AppDbContext _dbContext;
         private readonly BankAccountRepository _repository;
+        private readonly CancellationToken _cancellationToken = CancellationToken.None;
 
         // Constructor:
         public BankAccountRepositoryTests()
@@ -47,7 +48,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<BankAccount> result = await _repository.GetAllAsync();
+            IEnumerable<BankAccount> result = await _repository.GetAllAsync(_cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
@@ -65,7 +66,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            BankAccount result = await _repository.GetBankAccountByIdAsync(account.Id);
+            BankAccount result = await _repository.GetBankAccountByIdAsync(account.Id, _cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
@@ -81,13 +82,13 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task GetBankAccountByIdAsync_ShouldThrowArgumentException_WhenBankAccountIdIsEmpty()
         {
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetBankAccountByIdAsync(Guid.Empty));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetBankAccountByIdAsync(Guid.Empty, _cancellationToken));
         }
 
         [Fact]
         public async Task GetBankAccountByIdAsync_ShouldThrowBankAccountNotFoundException_WhenBankAccountDoesNotExist()
         {
-            await Assert.ThrowsAsync<BankAccountNotFoundException>(() => _repository.GetBankAccountByIdAsync(Guid.NewGuid()));
+            await Assert.ThrowsAsync<BankAccountNotFoundException>(() => _repository.GetBankAccountByIdAsync(Guid.NewGuid(), _cancellationToken));
         }
 
         [Fact]
@@ -110,8 +111,8 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserIdAsync(user.Id);
-            IEnumerable<BankAccount> bankAccounts = result as BankAccount[] ?? [.. result];
+            IEnumerable<BankAccount?> result = await _repository.GetBankAccountByUserIdAsync(user.Id, _cancellationToken);
+            IEnumerable<BankAccount> bankAccounts = result as BankAccount[] ?? [.. result!];
 
             // Assert:
             Assert.Equal(2, bankAccounts.Count());
@@ -125,7 +126,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserIdAsync(user.Id);
+            IEnumerable<BankAccount?> result = await _repository.GetBankAccountByUserIdAsync(user.Id, _cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
@@ -136,7 +137,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetBankAccountByUserIdAsync_ShouldThrowArgumentException_WhenUserIdIsEmpty()
         {
             // Assert, Act: & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetBankAccountByUserIdAsync(Guid.Empty));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetBankAccountByUserIdAsync(Guid.Empty, _cancellationToken));
         }
 
         [Fact]
@@ -154,7 +155,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Pedro");
+            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Pedro", _cancellationToken);
 
             // Assert
             Assert.Contains(result, b => b.Id == account.Id);
@@ -175,7 +176,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Mequelim");
+            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Mequelim", _cancellationToken);
 
             // Assert:
             Assert.Contains(result, b => b.Id == account.Id);
@@ -196,7 +197,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Pedro Mequelim");
+            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Pedro Mequelim", _cancellationToken);
 
             // Assert:
             Assert.Contains(result, b => b.Id == account.Id);
@@ -211,7 +212,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.BankAccounts.AddAsync(account);
             await _dbContext.SaveChangesAsync();
 
-            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Fernanda");
+            IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Fernanda", _cancellationToken);
 
             Assert.Empty(result);
         }
@@ -223,7 +224,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetBankAccountByUserNameAsync_ShouldThrowArgumentException_WhenUserNameIsNullOrWhitespace(string? userName)
         {
             // Assert, Act: & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetBankAccountByUserNameAsync(userName!));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetBankAccountByUserNameAsync(userName!, _cancellationToken));
         }
 
         [Fact]
@@ -239,7 +240,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<BankAccount> result = await _repository.GetBankAccountByBankNameAsync("Santander");
+            IEnumerable<BankAccount> result = await _repository.GetBankAccountByBankNameAsync("Santander", _cancellationToken);
             IEnumerable<BankAccount> bankAccounts = result as BankAccount[] ?? [.. result];
 
             // Assert:
@@ -258,7 +259,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.BankAccounts.AddAsync(account);
             await _dbContext.SaveChangesAsync();
 
-            IEnumerable<BankAccount> result = await _repository.GetBankAccountByBankNameAsync("Santander");
+            IEnumerable<BankAccount> result = await _repository.GetBankAccountByBankNameAsync("Santander", _cancellationToken);
 
             // Assert:
             Assert.Empty(result);
@@ -271,7 +272,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetBankAccountByBankNameAsync_ShouldThrowInvalidBankNameException_WhenBankNameIsNullOrWhitespace(string? bankName)
         {
             // Assert, Act: & Arrange:
-            await Assert.ThrowsAsync<InvalidBankNameException>(() => _repository.GetBankAccountByBankNameAsync(bankName!));
+            await Assert.ThrowsAsync<InvalidBankNameException>(() => _repository.GetBankAccountByBankNameAsync(bankName!, _cancellationToken));
         }
 
         [Fact]
@@ -356,7 +357,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             _dbContext.ChangeTracker.Clear();
 
             // Act:
-            BankAccount result = await _repository.DeleteAsync(account.Id);
+            BankAccount result = await _repository.DeleteAsync(account.Id, _cancellationToken);
             await _dbContext.SaveChangesAsync();
 
             BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id);
@@ -370,14 +371,14 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task DeleteAsync_ShouldThrowArgumentException_WhenBankAccountIdIsEmpty()
         {
             // Assert, Act: & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.DeleteAsync(Guid.Empty));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.DeleteAsync(Guid.Empty, _cancellationToken));
         }
 
         [Fact]
         public async Task DeleteAsync_ShouldThrowBankAccountNotFoundException_WhenBankAccountDoesNotExist()
         {
             // Assert, Act: & Arrange:
-            await Assert.ThrowsAsync<BankAccountNotFoundException>(() => _repository.DeleteAsync(Guid.NewGuid()));
+            await Assert.ThrowsAsync<BankAccountNotFoundException>(() => _repository.DeleteAsync(Guid.NewGuid(), _cancellationToken));
         }
     }
 }

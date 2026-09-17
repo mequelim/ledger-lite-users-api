@@ -1,7 +1,7 @@
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
-using Users.Application.DTOs;
+using Users.Application.DTO;
 using Users.Application.Mappings;
 using Users.Application.Tests.Mocks;
 using Users.Domain.Entities;
@@ -94,6 +94,7 @@ namespace Users.Application.Tests.Tests.Mappings
             bankAccountDto.AccountNumber.Should().Be(bankAccount.AccountNumber);
             bankAccountDto.Agency.Should().Be(bankAccount.Agency);
             bankAccountDto.BankAccountType.Should().Be(bankAccount.BankAccountType);
+            bankAccountDto.UserId.Should().Be(bankAccount.UserId);
         }
 
         [Fact]
@@ -129,6 +130,7 @@ namespace Users.Application.Tests.Tests.Mappings
             bankAccountDto.AccountNumber.Should().Be(bankAccount.AccountNumber);
             bankAccountDto.Agency.Should().Be(bankAccount.Agency);
             bankAccountDto.BankAccountType.Should().Be(bankAccount.BankAccountType);
+            bankAccountDto.UserId.Should().Be(bankAccount.UserId);
         }
 
         [Fact]
@@ -169,7 +171,10 @@ namespace Users.Application.Tests.Tests.Mappings
         {
             // Arrange:
             UserDto userDto = _mapper.Map<UserDto>(new UserBuilder().Build());
-            userDto.IsActive = false;
+            userDto = userDto with
+            {
+                IsActive = false
+            };
 
             // Act:
             User user = _mapper.Map<User>(userDto);
@@ -197,6 +202,7 @@ namespace Users.Application.Tests.Tests.Mappings
             bankAccount.AccountNumber.Should().Be(bankAccountDto.AccountNumber);
             bankAccount.Agency.Should().Be(bankAccountDto.Agency);
             bankAccount.BankAccountType.Should().Be(bankAccountDto.BankAccountType);
+            bankAccount.UserId.Should().Be(Guid.Empty);
         }
 
         // Bank Account:
@@ -219,6 +225,7 @@ namespace Users.Application.Tests.Tests.Mappings
             bankAccount.AccountNumber.Should().Be(bankAccountDto.AccountNumber);
             bankAccount.Agency.Should().Be(bankAccountDto.Agency);
             bankAccount.BankAccountType.Should().Be(bankAccountDto.BankAccountType);
+            bankAccount.UserId.Should().Be(Guid.Empty);
         }
 
         [Fact]
@@ -350,7 +357,10 @@ namespace Users.Application.Tests.Tests.Mappings
         {
             // Arrange:
             UserDto userDto = _mapper.Map<UserDto>(new UserBuilder().Build());
-            userDto.BankAccounts = [];
+            userDto = userDto with
+            {
+                BankAccounts = []
+            };
 
             // Act:
             User user = _mapper.Map<User>(userDto);
