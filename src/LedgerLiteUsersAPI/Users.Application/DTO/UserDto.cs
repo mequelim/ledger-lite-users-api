@@ -1,16 +1,27 @@
+using Users.Domain.Entities;
+
 namespace Users.Application.DTO
 {
-    public class UserDto
+    public sealed record UserDto(
+        Guid Id,
+        string Name,
+        string Surname,
+        DateOnly Birthdate,
+        string Email,
+        string Phone,
+        bool IsActive,
+        List<BankAccountDto> BankAccounts
+    )
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public DateOnly Birthdate { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public bool IsActive { get; set; }
-
-        // Nested Relationship:
-        public List<BankAccountDto> BankAccounts { get; set; } = [];
+        public static UserDto FromEntity(User user) => new(
+            Id: user.Id,
+            Name: user.Name,
+            Surname: user.Surname,
+            Birthdate: user.Birthdate,
+            Email: user.Email,
+            Phone: user.Phone,
+            IsActive: user.IsActive,
+            BankAccounts: user.BankAccounts.Select(BankAccountDto.FromEntity).ToList()
+        );
     }
 }
