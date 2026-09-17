@@ -75,9 +75,9 @@ namespace Users.Persistence.Repositories
         {
             if(!new BankAccountDataValidator().IsValidAccountNumber(bankAccount.AccountNumber))
             {
-                throw new InvalidBankAccountNumberException(bankAccount.AccountNumber);
+                throw new InvalidAccountNumberException(bankAccount.AccountNumber);
             }
-            if(!new BankAccountDataValidator().IsValidAgency(bankAccount.Agency)) throw new InvalidBankAccountAgencyException(bankAccount.Agency);
+            if(!new BankAccountDataValidator().IsValidAgency(bankAccount.Agency)) throw new InvalidAgencyException(bankAccount.Agency);
             if(string.IsNullOrWhiteSpace(bankAccount.BankName)) throw new InvalidBankNameException(bankAccount.BankName);
 
             databaseContext.BankAccounts.Update(bankAccount);

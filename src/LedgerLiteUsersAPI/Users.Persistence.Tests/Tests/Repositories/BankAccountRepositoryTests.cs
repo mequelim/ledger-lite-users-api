@@ -320,7 +320,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             account.AccountNumber = string.Empty;
 
             // Assert:
-            Assert.Throws<InvalidBankAccountNumberException>(() => _repository.Update(account));
+            Assert.Throws<InvalidAccountNumberException>(() => _repository.Update(account));
         }
 
         [Fact]
@@ -331,7 +331,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             account.Agency = string.Empty;
 
             // Assert:
-            Assert.Throws<InvalidBankAccountAgencyException>(() => _repository.Update(account));
+            Assert.Throws<InvalidAgencyException>(() => _repository.Update(account));
         }
 
         [Fact]

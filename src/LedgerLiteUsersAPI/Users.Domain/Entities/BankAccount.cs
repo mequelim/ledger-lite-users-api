@@ -25,8 +25,8 @@ namespace Users.Domain.Entities
             Guid userId
         )
         {
-            if(!new BankAccountDataValidator().IsValidAccountNumber(accountNumber)) throw new InvalidBankAccountNumberException(accountNumber);
-            if(!new BankAccountDataValidator().IsValidAgency(agency)) throw new InvalidBankAccountAgencyException(agency);
+            if(!new BankAccountDataValidator().IsValidAccountNumber(accountNumber)) throw new InvalidAccountNumberException(accountNumber);
+            if(!new BankAccountDataValidator().IsValidAgency(agency)) throw new InvalidAgencyException(agency);
 
             BankName = bankName;
             Holder = holder;

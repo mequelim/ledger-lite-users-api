@@ -32,11 +32,11 @@ namespace Users.Application.Features.BankAccountFeatures.Create
                     command.UserId
                 );
             }
-            catch(InvalidBankAccountNumberException exception)
+            catch(InvalidAccountNumberException exception)
             {
                 return Result<CreateBankAccountResponse>.Failure(exception.Message);
             }
-            catch(InvalidBankAccountAgencyException exception)
+            catch(InvalidAgencyException exception)
             {
                 return Result<CreateBankAccountResponse>.Failure(exception.Message);
             }
