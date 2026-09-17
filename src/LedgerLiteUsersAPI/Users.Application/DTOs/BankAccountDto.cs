@@ -1,14 +1,26 @@
+using Users.Domain.Entities;
 using Users.Domain.Entities.Enums;
 
 namespace Users.Application.DTOs
 {
-    public class BankAccountDto
+    public sealed record BankAccountDto(
+        Guid Id,
+        string BankName,
+        string? Holder,
+        string AccountNumber,
+        string Agency,
+        BankAccountType BankAccountType,
+        Guid UserId
+    )
     {
-        public Guid Id { get; set; }
-        public string BankName { get; set; }
-        public string? Holder { get; set; }
-        public string AccountNumber { get; set; }
-        public string Agency { get; set; }
-        public BankAccountType BankAccountType { get; set; }
+        public static BankAccountDto FromEntity(BankAccount bankAccount) => new(
+            Id: bankAccount.Id,
+            BankName: bankAccount.BankName,
+            Holder: bankAccount.Holder,
+            AccountNumber: bankAccount.AccountNumber,
+            Agency: bankAccount.Agency,
+            BankAccountType: bankAccount.BankAccountType,
+            UserId: bankAccount.UserId
+        );
     }
 }
