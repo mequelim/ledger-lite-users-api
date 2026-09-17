@@ -1,4 +1,4 @@
-namespace Users.Application.DTOs
+namespace Users.Application.DTO
 {
     public class UserDto
     {

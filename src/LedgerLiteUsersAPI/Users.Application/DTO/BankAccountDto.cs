@@ -1,7 +1,7 @@
 using Users.Domain.Entities;
 using Users.Domain.Entities.Enums;
 
-namespace Users.Application.DTOs
+namespace Users.Application.DTO
 {
     public sealed record BankAccountDto(
         Guid Id,
