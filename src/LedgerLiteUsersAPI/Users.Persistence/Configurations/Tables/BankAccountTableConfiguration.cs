@@ -43,6 +43,10 @@ namespace Users.Persistence.Configurations.Tables
                 .HasMaxLength(100)
                 .IsRequired();
 
+            builder
+                .Property((bankAccount) => bankAccount.Holder)
+                .HasMaxLength(200);
+
             // Foreign Key (FK):
             builder
                 .Property((bankAccount) => bankAccount.UserId)
