@@ -22,14 +22,14 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         // Methods:
-        private User GenerateCompleteUser() => new UserBuilder().Build();
+        private static User GenerateCompleteUser() => new UserBuilder().Build();
 
         private async Task<User> PersistUserAsync()
         {
             User user = GenerateCompleteUser();
 
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Users.AddAsync(user, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             return user;
         }
