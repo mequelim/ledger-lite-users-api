@@ -104,14 +104,14 @@ namespace Users.Persistence.Repositories
         /// </summary>
         /// <param name="bankAccount">The bank account entity containing the updated data.</param>
         /// <returns>The updated <see cref="BankAccount"/> object.</returns>
-        /// <exception cref="InvalidBankAccountAccountNumberException">Thrown when the account number of the bank account is invalid.</exception>
+        /// <exception cref="InvalidBankAccountNumberException">Thrown when the account number of the bank account is invalid.</exception>
         /// <exception cref="InvalidBankAccountAgencyException">Thrown when the agency of the bank account is invalid.</exception>
         /// <exception cref="InvalidBankNameException">Thrown when the bank name is null, empty, or contains only whitespace.</exception>
         public BankAccount Update(BankAccount bankAccount)
         {
             if(!new BankAccountDataValidator().IsValidAccountNumber(bankAccount.AccountNumber))
             {
-                throw new InvalidBankAccountAccountNumberException(bankAccount.AccountNumber);
+                throw new InvalidBankAccountNumberException(bankAccount.AccountNumber);
             }
             if(!new BankAccountDataValidator().IsValidAgency(bankAccount.Agency)) throw new InvalidBankAccountAgencyException(bankAccount.Agency);
             if(string.IsNullOrWhiteSpace(bankAccount.BankName)) throw new InvalidBankNameException(bankAccount.BankName);

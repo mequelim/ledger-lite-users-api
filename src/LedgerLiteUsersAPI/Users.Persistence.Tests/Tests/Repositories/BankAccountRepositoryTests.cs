@@ -319,7 +319,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             account.AccountNumber = string.Empty;
 
             // Assert:
-            Assert.Throws<InvalidBankAccountAccountNumberException>(() => _repository.Update(account));
+            Assert.Throws<InvalidBankAccountNumberException>(() => _repository.Update(account));
         }
 
         [Fact]
