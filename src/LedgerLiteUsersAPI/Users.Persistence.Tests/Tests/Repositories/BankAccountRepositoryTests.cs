@@ -21,9 +21,9 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         // Methods:
-        private BankAccount GenerateCompleteBankAccount() => BankAccountFactory.CreateDefault();
+        private static BankAccount GenerateCompleteBankAccount() => BankAccountFactory.CreateDefault();
 
-        private BankAccount GenerateBankAccountWithoutHolder() => BankAccountFactory.CreateWithoutHolder();
+        private static BankAccount GenerateBankAccountWithoutHolder() => BankAccountFactory.CreateWithoutHolder();
 
         private async Task<User> PersistUserAsync()
         {
