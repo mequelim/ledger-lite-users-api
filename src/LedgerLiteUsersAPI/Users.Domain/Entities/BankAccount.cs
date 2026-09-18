@@ -10,7 +10,7 @@ namespace Users.Domain.Entities
         public string? Holder { get; set; }
         public string AccountNumber { get; set; }
         public string Agency { get; set; }
-        public BankAccountType BankAccountType { get; set; }
+        public BankAccountType BankAccountType { get; init; }
 
         // Foreign Keys (FKs):
         public Guid UserId { get; set; }
