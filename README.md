@@ -91,7 +91,7 @@ LedgerLiteUsersAPI/
     │   ├── DTO/
     │   ├── Features/
     │   └── Mappings/
-    ├── Users.Domain/           # Core domain (no dependencies)
+    ├── Users.Domain/            # Core domain (no dependencies)
     │   ├── Entities/
     │   ├── Exceptions/
     │   ├── Interfaces/
