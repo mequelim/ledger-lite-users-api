@@ -45,7 +45,7 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Create
                 Holder: "Pedro Henrique",
                 AccountNumber: "12345678-9",
                 Agency: "0001",
-                BankAccountType: BankAccountType.Empresarial
+                BankAccountType: BankAccountType.Business
             );
         }
 

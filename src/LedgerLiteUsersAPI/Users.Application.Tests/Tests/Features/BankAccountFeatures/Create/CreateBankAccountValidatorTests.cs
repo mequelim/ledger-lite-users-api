@@ -18,7 +18,7 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Create
                 Holder: null,
                 AccountNumber: "1234567890",
                 Agency: "0001",
-                BankAccountType: BankAccountType.Corrente
+                BankAccountType: BankAccountType.Checking
             );
         }
 

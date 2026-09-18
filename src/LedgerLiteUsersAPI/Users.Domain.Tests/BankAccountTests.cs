@@ -21,7 +21,7 @@ namespace Users.Domain.Tests
                 "Pedro Mequelim",
                 accountNumber,
                 agency,
-                BankAccountType.Corrente,
+                BankAccountType.Checking,
                 userId
             );
 
@@ -31,7 +31,7 @@ namespace Users.Domain.Tests
             Assert.Equal("Pedro Mequelim", bankAccount.Holder);
             Assert.Equal(accountNumber, bankAccount.AccountNumber);
             Assert.Equal(agency, bankAccount.Agency);
-            Assert.Equal(BankAccountType.Corrente, bankAccount.BankAccountType);
+            Assert.Equal(BankAccountType.Checking, bankAccount.BankAccountType);
             Assert.Equal(userId, bankAccount.UserId);
         }
 
@@ -63,7 +63,7 @@ namespace Users.Domain.Tests
                 "Titular",
                 invalidAccountNumber,
                 "1234",
-                BankAccountType.Corrente,
+                BankAccountType.Checking,
                 Guid.NewGuid()
             ));
 
@@ -86,7 +86,7 @@ namespace Users.Domain.Tests
                 "Titular",
                 "12345-6",
                 invalidAgency,
-                BankAccountType.Empresarial,
+                BankAccountType.Business,
                 Guid.NewGuid()
             ));
 

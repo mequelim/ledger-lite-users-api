@@ -12,7 +12,7 @@ namespace Users.Application.Tests.Mocks
                 "Pedro",
                 "010234678-7",
                 "1234",
-                BankAccountType.Corrente,
+                BankAccountType.Checking,
                 userId ?? Guid.NewGuid()
             );
         }
@@ -24,7 +24,7 @@ namespace Users.Application.Tests.Mocks
                 null,
                 "010234678-7",
                 "6789",
-                BankAccountType.Corrente,
+                BankAccountType.Payroll,
                 userId ?? Guid.NewGuid()
             );
         }

@@ -244,7 +244,7 @@ namespace Users.Application.Tests.Tests.Mappings
         }
 
         [Fact]
-        public void Map_BankAccountDtoToBankAccount_ShouldMapCorrectly_WhenBankAccountTypeIsCorrente()
+        public void Map_BankAccountDtoToBankAccount_ShouldMapCorrectly_WhenBankAccountTypeIsChecking()
         {
             // Arrange:
             BankAccountDto bankAccountDto = _mapper.Map<BankAccountDto>(
@@ -255,7 +255,7 @@ namespace Users.Application.Tests.Tests.Mappings
             BankAccount bankAccount = _mapper.Map<BankAccount>(bankAccountDto);
 
             // Assert:
-            bankAccount.BankAccountType.Should().Be(BankAccountType.Corrente);
+            bankAccount.BankAccountType.Should().Be(BankAccountType.Checking);
         }
 
         [Fact]
