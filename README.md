@@ -103,10 +103,13 @@ LedgerLiteUsersAPI/
     │   └── Repositories/
     ├── .gitignore
     └── LedgerLiteUsersAPI.slnx
+├── .dockerignore
 ├── .editorconfig
 ├── .env.example
 ├── .gitignore
 ├── CONTRIBUTING.md
+├── docker-compose.yaml
+├── Dockerfile
 ├── LICENSE.md
 └── README.md
 ```
