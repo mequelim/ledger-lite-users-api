@@ -30,8 +30,8 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = new UserBuilder().Build();
             user.BankAccounts.Clear();
 
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Users.AddAsync(user, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             return user;
         }
@@ -45,7 +45,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             BankAccount account02 = GenerateBankAccountWithoutHolder();
 
             await _dbContext.BankAccounts.AddRangeAsync(account01, account02);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
             IEnumerable<BankAccount> result = await _repository.GetAllAsync(_cancellationToken);
@@ -62,11 +62,11 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
             BankAccount account = GenerateCompleteBankAccount();
 
-            await _dbContext.BankAccounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BankAccounts.AddAsync(account, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
-            BankAccount result = await _repository.GetBankAccountByIdAsync(account.Id, _cancellationToken);
+            BankAccount? result = await _repository.GetBankAccountByIdAsync(account.Id, _cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
@@ -82,12 +82,14 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task GetBankAccountByIdAsync_ShouldThrowArgumentException_WhenBankAccountIdIsEmpty()
         {
+            // Arrange, Act & Assert:
             await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetBankAccountByIdAsync(Guid.Empty, _cancellationToken));
         }
 
         [Fact]
         public async Task GetBankAccountByIdAsync_ShouldThrowBankAccountNotFoundException_WhenBankAccountDoesNotExist()
         {
+            // Arrange, Act & Assert:
             await Assert.ThrowsAsync<BankAccountNotFoundException>(() => _repository.GetBankAccountByIdAsync(Guid.NewGuid(), _cancellationToken));
         }
 
@@ -108,7 +110,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             otherAccount.UserId = otherUser.Id;
 
             await _dbContext.BankAccounts.AddRangeAsync(account01, account02, otherAccount);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
             IEnumerable<BankAccount?> result = await _repository.GetBankAccountByUserIdAsync(user.Id, _cancellationToken);
@@ -151,8 +153,8 @@ namespace Users.Persistence.Tests.Tests.Repositories
             account.UserId = user.Id;
             account.Holder = $"{user.Name} {user.Surname}";
 
-            await _dbContext.BankAccounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BankAccounts.AddAsync(account, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
             IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Pedro", _cancellationToken);
@@ -172,8 +174,8 @@ namespace Users.Persistence.Tests.Tests.Repositories
             account.UserId = user.Id;
             account.Holder = $"{user.Name} {user.Surname}";
 
-            await _dbContext.BankAccounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BankAccounts.AddAsync(account, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
             IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Mequelim", _cancellationToken);
@@ -193,8 +195,8 @@ namespace Users.Persistence.Tests.Tests.Repositories
             account.UserId = user.Id;
             account.Holder = $"{user.Name} {user.Surname}";
 
-            await _dbContext.BankAccounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BankAccounts.AddAsync(account, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
             IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Pedro Mequelim", _cancellationToken);
@@ -206,14 +208,17 @@ namespace Users.Persistence.Tests.Tests.Repositories
         [Fact]
         public async Task GetBankAccountByUserNameAsync_ShouldReturnEmpty_WhenNoUserMatches()
         {
+            // Arrange:
             User user = await PersistUserAsync();
             BankAccount account = GenerateCompleteBankAccount();
 
-            await _dbContext.BankAccounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BankAccounts.AddAsync(account, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
+            // Act:
             IEnumerable<BankAccount> result = await _repository.GetBankAccountByUserNameAsync("Fernanda", _cancellationToken);
 
+            // Assert:
             Assert.Empty(result);
         }
 
@@ -237,7 +242,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             otherAccount.BankName = "Itaú";
 
             await _dbContext.BankAccounts.AddRangeAsync(account, otherAccount);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
             IEnumerable<BankAccount> result = await _repository.GetBankAccountByBankNameAsync("Santander", _cancellationToken);
@@ -255,10 +260,10 @@ namespace Users.Persistence.Tests.Tests.Repositories
             BankAccount account = GenerateBankAccountWithoutHolder();
             account.BankName = "Nubank";
 
-            // Act:
-            await _dbContext.BankAccounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BankAccounts.AddAsync(account, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
+            // Act:
             IEnumerable<BankAccount> result = await _repository.GetBankAccountByBankNameAsync("Santander", _cancellationToken);
 
             // Assert:
@@ -283,7 +288,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             BankAccount result = _repository.Create(account);
 
             // Act:
-            BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id);
+            BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id, _cancellationToken);
 
             _dbContext.ChangeTracker.Clear();
 
@@ -298,8 +303,8 @@ namespace Users.Persistence.Tests.Tests.Repositories
             // Arrange:
             BankAccount account = GenerateCompleteBankAccount();
 
-            await _dbContext.BankAccounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BankAccounts.AddAsync(account, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             account.BankName = "Updated bank";
 
@@ -351,16 +356,16 @@ namespace Users.Persistence.Tests.Tests.Repositories
             // Arrange:
             BankAccount account = GenerateCompleteBankAccount();
 
-            await _dbContext.BankAccounts.AddAsync(account);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.BankAccounts.AddAsync(account, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             _dbContext.ChangeTracker.Clear();
 
             // Act:
             BankAccount result = await _repository.DeleteAsync(account.Id, _cancellationToken);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
-            BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id);
+            BankAccount? persisted = await _dbContext.BankAccounts.FindAsync(account.Id, _cancellationToken);
 
             // Assert:
             Assert.Equal(account.Id, result.Id);
