@@ -14,7 +14,7 @@ namespace Users.Persistence.Repositories
             return await databaseContext.BankAccounts.ToListAsync(cancellationToken);
         }
 
-        public async Task<BankAccount> GetBankAccountByIdAsync(Guid bankAccountId, CancellationToken cancellationToken)
+        public async Task<BankAccount?> GetBankAccountByIdAsync(Guid bankAccountId, CancellationToken cancellationToken)
         {
             if(bankAccountId == Guid.Empty) throw new ArgumentException("Bank account id cannot be empty!", nameof(bankAccountId));
 
@@ -73,10 +73,7 @@ namespace Users.Persistence.Repositories
 
         public BankAccount Update(BankAccount bankAccount)
         {
-            if(!new BankAccountDataValidator().IsValidAccountNumber(bankAccount.AccountNumber))
-            {
-                throw new InvalidAccountNumberException(bankAccount.AccountNumber);
-            }
+            if(!new BankAccountDataValidator().IsValidAccountNumber(bankAccount.AccountNumber)) throw new InvalidAccountNumberException(bankAccount.AccountNumber);
             if(!new BankAccountDataValidator().IsValidAgency(bankAccount.Agency)) throw new InvalidAgencyException(bankAccount.Agency);
             if(string.IsNullOrWhiteSpace(bankAccount.BankName)) throw new InvalidBankNameException(bankAccount.BankName);
 
