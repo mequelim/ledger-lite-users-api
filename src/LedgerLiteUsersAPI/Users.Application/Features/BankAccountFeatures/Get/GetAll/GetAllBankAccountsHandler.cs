@@ -7,7 +7,7 @@ namespace Users.Application.Features.BankAccountFeatures.Get.GetAll
 {
     public sealed class GetAllBankAccountsHandler(IBankAccountRepository bankAccountRepository) : IRequestHandler<GetAllBankAccountsQuery, Result<GetAllBankAccountsResponse>>
     {
-        public async Task<Result<GetAllBankAccountsResponse>> Handle(GetAllBankAccountsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<GetAllBankAccountsResponse>> Handle(GetAllBankAccountsQuery query, CancellationToken cancellationToken)
         {
             IEnumerable<BankAccount> bankAccounts = await bankAccountRepository.GetAllAsync(cancellationToken);
 
