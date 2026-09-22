@@ -27,7 +27,7 @@ namespace Users.Persistence.Repositories
                    ?? throw new BankAccountNotFoundException(nameof(BankAccount.Id), bankAccountId);
         }
 
-        public async Task<IEnumerable<BankAccount?>> GetBankAccountByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<BankAccount>> GetBankAccountByUserIdAsync(Guid userId, CancellationToken cancellationToken)
         {
             if(userId == Guid.Empty) throw new ArgumentException("User id cannot be empty!", nameof(userId));
 
