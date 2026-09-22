@@ -52,9 +52,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
             // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
-                failure =>
-                    failure.PropertyName == nameof(command.AccountNumber) &&
-                    failure.ErrorMessage == "The bank account is required!"
+                (failure) => failure.PropertyName == nameof(command.AccountNumber) &&
+                             failure.ErrorMessage == "The bank account is required!"
             );
         }
 
@@ -73,9 +72,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
             // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
-                failure =>
-                    failure.PropertyName == nameof(command.AccountNumber) &&
-                    failure.ErrorMessage == "The bank account must not exceed 20 characters!"
+                (failure) => failure.PropertyName == nameof(command.AccountNumber) &&
+                             failure.ErrorMessage == "The bank account must not exceed 20 characters!"
             );
         }
 
@@ -94,9 +92,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
             // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
-                failure =>
-                    failure.PropertyName == nameof(command.Agency) &&
-                    failure.ErrorMessage == "The agency is required!"
+                (failure) => failure.PropertyName == nameof(command.Agency) &&
+                             failure.ErrorMessage == "The agency is required!"
             );
         }
 
@@ -115,9 +112,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
             // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
-                failure =>
-                    failure.PropertyName == nameof(command.Agency) &&
-                    failure.ErrorMessage == "The agency must not exceed 12 characters!"
+                (failure) => failure.PropertyName == nameof(command.Agency) &&
+                             failure.ErrorMessage == "The agency must not exceed 12 characters!"
             );
         }
 
@@ -136,9 +132,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
             // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
-                failure =>
-                    failure.PropertyName == nameof(command.BankAccountType) &&
-                    failure.ErrorMessage == "You need to select a bank account type!"
+                (failure) => failure.PropertyName == nameof(command.BankAccountType) &&
+                             failure.ErrorMessage == "You need to select a bank account type!"
             );
         }
 
@@ -157,9 +152,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
             // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
-                failure =>
-                    failure.PropertyName == nameof(command.BankName) &&
-                    failure.ErrorMessage == "The bank name is required!"
+                (failure) => failure.PropertyName == nameof(command.BankName) &&
+                             failure.ErrorMessage == "The bank name is required!"
             );
         }
 
@@ -178,9 +172,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
             // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
-                failure =>
-                    failure.PropertyName == nameof(command.BankName) &&
-                    failure.ErrorMessage == "The bank name must not exceed 100 characters!"
+                (failure) => failure.PropertyName == nameof(command.BankName) &&
+                             failure.ErrorMessage == "The bank name must not exceed 100 characters!"
             );
         }
 
@@ -216,9 +209,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
             // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
-                failure =>
-                    failure.PropertyName == nameof(command.Holder) &&
-                    failure.ErrorMessage == "The holder name must not exceed 200 characters!"
+                (failure) => failure.PropertyName == nameof(command.Holder) &&
+                             failure.ErrorMessage == "The holder name must not exceed 200 characters!"
             );
         }
     }

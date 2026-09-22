@@ -39,7 +39,6 @@ namespace Users.Domain.Tests
         public void Create_WhenHolderIsnull_BankAccountShouldBeCreate()
         {
             // Arrange & Act:
-            Guid userId = Guid.NewGuid();
             BankAccount bankAccount = BankAccountFactory.CreateWithoutHolder();
 
             // Assert:

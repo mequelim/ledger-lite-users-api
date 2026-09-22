@@ -7,7 +7,10 @@ using Users.Persistence.Database;
 
 namespace Users.Application.Features.BankAccountFeatures.Update
 {
-    public sealed class UpdateBankAccountHandler(IBankAccountRepository bankAccountRepository, AppDbContext databaseContext) : IRequestHandler<UpdateBankAccountCommand, Result<UpdateBankAccountResponse>>
+    public sealed class UpdateBankAccountHandler(
+        IBankAccountRepository bankAccountRepository,
+        AppDbContext databaseContext
+    ) : IRequestHandler<UpdateBankAccountCommand, Result<UpdateBankAccountResponse>>
     {
         public async Task<Result<UpdateBankAccountResponse>> Handle(UpdateBankAccountCommand command, CancellationToken cancellationToken)
         {
@@ -39,7 +42,7 @@ namespace Users.Application.Features.BankAccountFeatures.Update
                 return Result<UpdateBankAccountResponse>.Failure(exception.Message);
             }
 
-            UpdateBankAccountResponse response = new UpdateBankAccountResponse(
+            UpdateBankAccountResponse response = new(
                 bankAccount.Id,
                 bankAccount.UserId,
                 bankAccount.BankName,
