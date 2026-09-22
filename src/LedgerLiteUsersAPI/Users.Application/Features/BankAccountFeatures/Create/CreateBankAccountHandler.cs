@@ -44,7 +44,7 @@ namespace Users.Application.Features.BankAccountFeatures.Create
             bankAccountRepository.Create(bankAccount);
             await databaseContext.SaveChangesAsync(cancellationToken);
 
-            CreateBankAccountResponse response = new CreateBankAccountResponse(
+            CreateBankAccountResponse response = new(
                 bankAccount.Id,
                 bankAccount.UserId,
                 bankAccount.BankName,
