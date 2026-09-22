@@ -51,7 +51,7 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Create
 
         private static User CreateValidUser(Guid userId)
         {
-            User user = new User(
+            User user = new(
                 name: "Pedro",
                 surname: "Henrique",
                 birthdate: new DateOnly(1998, 5, 10),

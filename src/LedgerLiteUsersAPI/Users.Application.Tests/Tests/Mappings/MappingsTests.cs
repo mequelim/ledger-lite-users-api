@@ -210,9 +210,7 @@ namespace Users.Application.Tests.Tests.Mappings
         public void Map_BankAccountDtoToBankAccount_ShouldMapCorrectly_WhenBankAccountDtoIsValid()
         {
             // Arrange:
-            BankAccountDto bankAccountDto = _mapper.Map<BankAccountDto>(
-                BankAccountFactory.CreateDefault()
-            );
+            BankAccountDto bankAccountDto = _mapper.Map<BankAccountDto>(BankAccountFactory.CreateDefault());
 
             // Act:
             BankAccount bankAccount = _mapper.Map<BankAccount>(bankAccountDto);
@@ -232,9 +230,7 @@ namespace Users.Application.Tests.Tests.Mappings
         public void Map_BankAccountDtoToBankAccount_ShouldMapCorrectly_WhenHolderIsNull()
         {
             // Arrange:
-            BankAccountDto bankAccountDto = _mapper.Map<BankAccountDto>(
-                BankAccountFactory.CreateWithoutHolder()
-            );
+            BankAccountDto bankAccountDto = _mapper.Map<BankAccountDto>(BankAccountFactory.CreateWithoutHolder());
 
             // Act:
             BankAccount bankAccount = _mapper.Map<BankAccount>(bankAccountDto);
@@ -247,9 +243,7 @@ namespace Users.Application.Tests.Tests.Mappings
         public void Map_BankAccountDtoToBankAccount_ShouldMapCorrectly_WhenBankAccountTypeIsChecking()
         {
             // Arrange:
-            BankAccountDto bankAccountDto = _mapper.Map<BankAccountDto>(
-                BankAccountFactory.CreateDefault()
-            );
+            BankAccountDto bankAccountDto = _mapper.Map<BankAccountDto>(BankAccountFactory.CreateDefault());
 
             // Act:
             BankAccount bankAccount = _mapper.Map<BankAccount>(bankAccountDto);
