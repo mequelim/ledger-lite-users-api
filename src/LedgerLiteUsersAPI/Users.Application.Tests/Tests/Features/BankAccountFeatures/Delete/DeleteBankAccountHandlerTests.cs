@@ -25,7 +25,6 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Delete
                 .Options;
 
             _databaseContext = new AppDbContext(options);
-
             _bankAccountHandler = new DeleteBankAccountHandler(_bankAccountRepository, _databaseContext);
         }
 

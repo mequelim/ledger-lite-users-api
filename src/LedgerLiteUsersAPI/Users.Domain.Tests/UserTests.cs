@@ -64,7 +64,7 @@ namespace Users.Domain.Tests
         public void Create_WhenAgeIsInvalid_ShouldThrowInvalidUserAgeException()
         {
             // Arrange & Act:
-            DateOnly birthDate = new DateOnly(2011, 02, 15);
+            DateOnly birthDate = new(2011, 02, 15);
             InvalidUserAgeException exception = Assert.Throws<InvalidUserAgeException>(
                 () => new User(
                     name: "Pedro",

@@ -170,9 +170,10 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Create
 
             // Assert:
             result.IsValid.Should().BeFalse();
-            result.Errors.Should().Contain(error =>
-                error.PropertyName == nameof(command.BankName) &&
-                error.ErrorMessage == "The bank name must not exceed 100 characters!");
+            result.Errors.Should().Contain(
+                (failure) => failure.PropertyName == nameof(command.BankName) &&
+                             failure.ErrorMessage == "The bank name must not exceed 100 characters!"
+            );
         }
 
         [Fact]

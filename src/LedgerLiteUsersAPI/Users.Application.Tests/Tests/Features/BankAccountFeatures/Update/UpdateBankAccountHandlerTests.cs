@@ -114,7 +114,7 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
 
             _bankAccountRepository
                 .Update(Arg.Any<BankAccount>())
-                .Returns(call => call.Arg<BankAccount>());
+                .Returns((call) => call.Arg<BankAccount>());
 
             // Act:
             Result<UpdateBankAccountResponse> result = await _bankAccountHandler.Handle(command, CancellationToken.None);
@@ -156,8 +156,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
                 .Returns(bankAccount);
 
             _bankAccountRepository
-                .When(repository => repository.Update(Arg.Any<BankAccount>()))
-                .Do(_ => throw new InvalidAccountNumberException(command.AccountNumber));
+                .When((repository) => repository.Update(Arg.Any<BankAccount>()))
+                .Do((_) => throw new InvalidAccountNumberException(command.AccountNumber));
 
             // Act:
             Result<UpdateBankAccountResponse> result = await _bankAccountHandler.Handle(command, CancellationToken.None);
@@ -182,8 +182,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
                 .Returns(bankAccount);
 
             _bankAccountRepository
-                .When(repository => repository.Update(Arg.Any<BankAccount>()))
-                .Do(_ => throw new InvalidAgencyException(command.Agency));
+                .When((repository) => repository.Update(Arg.Any<BankAccount>()))
+                .Do((_) => throw new InvalidAgencyException(command.Agency));
 
             // Act:
             Result<UpdateBankAccountResponse> result = await _bankAccountHandler.Handle(command, CancellationToken.None);
@@ -208,8 +208,8 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
                 .Returns(bankAccount);
 
             _bankAccountRepository
-                .When(repository => repository.Update(Arg.Any<BankAccount>()))
-                .Do(_ => throw new InvalidBankNameException(command.BankName));
+                .When((repository) => repository.Update(Arg.Any<BankAccount>()))
+                .Do((_) => throw new InvalidBankNameException(command.BankName));
 
             // Act:
             Result<UpdateBankAccountResponse> result = await _bankAccountHandler.Handle(command, CancellationToken.None);
