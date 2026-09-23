@@ -116,27 +116,23 @@ LedgerLiteUsersAPI/
 
 ### Clean Architecture Layers
 
-> [!WARNING]
->
-> Update this topic at the end of the project.
-
 ```markdown
 ┌─────────────────────────────────────────────┐
-│                  WebApi                      │  ← Entry point, thin host
-│         (Program.cs, Exception Handler)     │
+│                  WebApi                     │  ← Entry point, thin host
+│      (Program.cs, Exception Handler)        │
 ├─────────────────────────────────────────────┤
-│              Infrastructure                  │  ← EF Core, Repository, Interceptors
-│      (External World)    │
+│              Infrastructure                 │  ← EF Core, Repository, Interceptors
+│             (External World)                │
 ├─────────────────────────────────────────────┤
 ├─────────────────────────────────────────────┤
-│              Persisttence                  │  ← EF Core, Repository, Interceptors
-│      (DbContext, Repository, UnitOfWork)    │
+│                Persistence                  │  ← EF Core, Repository, Interceptors
+│           (DbContext, Repository)           │
 ├─────────────────────────────────────────────┤
-│               Application                    │  ← Vertical slices live here
-│  (Features, Handlers, Validators, Endpoints)│
+│                Application                  │  ← Vertical slices live here
+│ (Features, Handlers, Validators, Endpoints) │
 ├─────────────────────────────────────────────┤
-│                  Domain                      │  ← Entities, Result, Errors
-│      (Book, AuditableEntity, Error)         │
+│                  Domain                     │  ← Entities, Result, Errors
+│      (User, AuditableEntity, Error)         │
 └─────────────────────────────────────────────┘
 ```
 
@@ -153,41 +149,6 @@ LedgerLiteUsersAPI/
 ## 🔧 Environment Setup
 
 + This project uses a single `.env` file at the repository root.
-+ However, this file is not committed — instead, it is generated locally using a helper script:
-
-### Generate `.env` automatically
-
-+ The script creates:
-
-  + `.env` with default values;
-  + Leaves `.env.example` untouched;
-  + Avoids committing sensitive data.
-
-#### macOS / Linux (Ubuntu) [Bash]
-
-```shell
-bash scripts/generate-env.sh
-```
-
-#### Windows 11 (PowerShell) [with WSL]
-
-```shell
-wsl bash scripts/generate-env.sh
-```
-
-#### Windows 11 (PowerShell) [without WSL]
-
-> [!IMPORTANT]
->
-> You need to use **Git Bash**!
-
-```shell
-./scripts/generate-env.sh
-
-# Or (use PowerShell)
-
-& "C:/Program Files/Git/bin/bash.exe" ./scripts/generate-env.sh
-```
 
 ---
 
@@ -236,12 +197,9 @@ http://localhost:8080
 
 ### PostgreSQL runs on
 
-```shell
-localhost:5432
-user: garage
-password: garage123
-database: garage
-```
+> [!NOTE]
+>
+> Add your credentials to the `.env` file.
 
 ---
 
@@ -294,18 +252,17 @@ LedgerLiteUsersAPI.Users
     ├── Command.cs
     ├── Handler.cs
     ├── Validator.cs
-    ├── Response.cs
-    └── MappingProfile.cs
+    └── Response.cs
 ```
 
 ### Example
 
 ```markdown
 Feature/User/CreateUser/
-  CreateUserCommand.cs
-  CreateUserHandler.cs
-  CreateUserValidator.cs
-  CreateUserResponse.cs
+├── CreateUserCommand.cs
+├── CreateUserHandler.cs
+├── CreateUserValidator.cs
+└── CreateUserResponse.cs
 ```
 
 ---
@@ -347,18 +304,6 @@ Feature/User/CreateUser/
 ```shell
 dotnet test
 ```
-
----
-
-## 🔐 Required GitHub Secrets
-
-| Secret Name                    | Description                                 |
-| ------------------------------ | ------------------------------------------- |
-| `POSTGRES_PASSWORD`            | Password for PostgreSQL in all environments |
-| `POSTGRES_USER`                | Username for PostgreSQL                     |
-| `POSTGRES_DB`                  | Database name                               |
-| `PRODUCTION_CONNECTION_STRING` | Production DB connection string             |
-| `STAGING_CONNECTION_STRING`    | Staging DB connection string                |
 
 ---
 
