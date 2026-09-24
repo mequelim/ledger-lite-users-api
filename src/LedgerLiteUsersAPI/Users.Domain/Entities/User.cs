@@ -5,8 +5,6 @@ namespace Users.Domain.Entities
 {
     public class User : BaseEntity
     {
-        private static readonly List<BankAccount> BankAccountsList = [];
-
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateOnly Birthdate { get; set; }
@@ -15,7 +13,7 @@ namespace Users.Domain.Entities
         public bool IsActive { get; set; }
 
         // Relationships:
-        public ICollection<BankAccount> BankAccounts { get; set; } = BankAccountsList.AsReadOnly();
+        public ICollection<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
 
         // Constructor:
         public User(string name, string surname, DateOnly birthdate, string email, string phone, bool isActive)
@@ -33,11 +31,11 @@ namespace Users.Domain.Entities
         }
 
         // Methods:
-        public static void AddBankAccount(BankAccount bankAccount)
+        public void AddBankAccount(BankAccount bankAccount)
         {
             ArgumentNullException.ThrowIfNull(bankAccount);
 
-            BankAccountsList.Add(bankAccount);
+            BankAccounts.Add(bankAccount);
         }
     }
 }
