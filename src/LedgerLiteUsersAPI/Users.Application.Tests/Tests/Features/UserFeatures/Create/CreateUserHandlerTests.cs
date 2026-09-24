@@ -7,7 +7,7 @@ using Users.Domain.Entities;
 using Users.Domain.Interfaces.Repositories;
 using Users.Persistence.Database;
 
-namespace Users.Application.Tests.Tests.Features.UserFeatures
+namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
 {
     public class CreateUserHandlerTests : IDisposable
     {

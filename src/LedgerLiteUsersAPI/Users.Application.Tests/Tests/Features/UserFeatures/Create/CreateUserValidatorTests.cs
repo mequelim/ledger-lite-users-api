@@ -2,7 +2,7 @@ using FluentAssertions;
 using FluentValidation.Results;
 using Users.Application.Features.UserFeatures.Create;
 
-namespace Users.Application.Tests.Tests.Features.UserFeatures
+namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
 {
     public class CreateUserValidatorTests
     {
