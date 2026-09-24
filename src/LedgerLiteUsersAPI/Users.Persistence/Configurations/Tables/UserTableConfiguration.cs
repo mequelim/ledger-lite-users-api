@@ -24,6 +24,10 @@ namespace Users.Persistence.Configurations.Tables
                 .IsRequired();
 
             builder
+                .Property((user) => user.Birthdate)
+                .IsRequired();
+
+            builder
                 .Property((user) => user.Surname)
                 .HasMaxLength(100)
                 .IsRequired();

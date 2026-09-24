@@ -264,7 +264,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User user = await PersistUserAsync();
 
             // Act:
-            User result = await _repository.GetUserByPhoneAsync(user.Phone, _cancellationToken);
+            User? result = await _repository.GetUserByPhoneAsync(user.Phone, _cancellationToken);
 
             // Assert:
             Assert.NotNull(result);
