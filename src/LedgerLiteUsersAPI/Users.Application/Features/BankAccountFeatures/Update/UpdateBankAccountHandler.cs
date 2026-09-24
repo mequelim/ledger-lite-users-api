@@ -24,23 +24,8 @@ namespace Users.Application.Features.BankAccountFeatures.Update
             bankAccount.Agency = command.Agency;
             bankAccount.BankAccountType = command.BankAccountType;
 
-            try
-            {
-                bankAccountRepository.Update(bankAccount);
-                await databaseContext.SaveChangesAsync(cancellationToken);
-            }
-            catch(InvalidAccountNumberException exception)
-            {
-                return Result<UpdateBankAccountResponse>.Failure(exception.Message);
-            }
-            catch(InvalidAgencyException exception)
-            {
-                return Result<UpdateBankAccountResponse>.Failure(exception.Message);
-            }
-            catch(InvalidBankNameException exception)
-            {
-                return Result<UpdateBankAccountResponse>.Failure(exception.Message);
-            }
+            bankAccountRepository.Update(bankAccount);
+            await databaseContext.SaveChangesAsync(cancellationToken);
 
             UpdateBankAccountResponse response = new(
                 bankAccount.Id,
