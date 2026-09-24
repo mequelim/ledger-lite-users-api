@@ -15,6 +15,7 @@ namespace Users.Domain.Entities
         // Relationships:
         public ICollection<BankAccount> BankAccounts { get; set; } = new List<BankAccount>();
 
+        // Constructor:
         public User(string name, string surname, DateOnly birthdate, string email, string phone, bool isActive)
         {
             if(!new UserDataValidator().IsValidBirthdate(birthdate)) throw new InvalidUserAgeException(birthdate);
@@ -27,6 +28,14 @@ namespace Users.Domain.Entities
             Email = email;
             Phone = phone;
             IsActive = isActive;
+        }
+
+        // Methods:
+        public void AddBankAccount(BankAccount bankAccount)
+        {
+            ArgumentNullException.ThrowIfNull(bankAccount);
+
+            BankAccounts.Add(bankAccount);
         }
     }
 }

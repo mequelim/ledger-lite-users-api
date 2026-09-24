@@ -82,7 +82,7 @@ namespace Users.Persistence.Repositories
                 );
         }
 
-        public async Task<User> GetUserByPhoneAsync(string phone, CancellationToken cancellationToken)
+        public async Task<User?> GetUserByPhoneAsync(string phone, CancellationToken cancellationToken)
         {
             if(string.IsNullOrWhiteSpace(phone)) throw new ArgumentException("User phone cannot be null or empty!", nameof(phone));
 
