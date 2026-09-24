@@ -7,7 +7,7 @@ using Users.Persistence.Database;
 
 namespace Users.Application.Features.BankAccountFeatures.Create
 {
-    public class CreateBankAccountHandler(
+    public sealed class CreateBankAccountHandler(
         IUserRepository userRepository,
         IBankAccountRepository bankAccountRepository,
         AppDbContext databaseContext
