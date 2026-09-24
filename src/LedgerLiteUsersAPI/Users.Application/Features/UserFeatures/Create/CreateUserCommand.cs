@@ -3,7 +3,7 @@ using Users.Application.Common.Results;
 
 namespace Users.Application.Features.UserFeatures.Create
 {
-    public record CreateUserCommand(
+    public sealed record CreateUserCommand(
         string Name,
         string Surname,
         DateOnly Birthdate,
