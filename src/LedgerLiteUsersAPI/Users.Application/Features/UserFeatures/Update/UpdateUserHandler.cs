@@ -25,23 +25,8 @@ namespace Users.Application.Features.UserFeatures.Update
             user.Phone = command.Phone;
             user.IsActive = command.IsActive;
 
-            try
-            {
-                userRepository.Update(user);
-                await databaseContext.SaveChangesAsync(cancellationToken);
-            }
-            catch(InvalidUserAgeException exception)
-            {
-                return Result<UpdateUserResponse>.Failure(exception.Message);
-            }
-            catch(InvalidUserEmailException exception)
-            {
-                return Result<UpdateUserResponse>.Failure(exception.Message);
-            }
-            catch(InvalidUserPhoneException exception)
-            {
-                return Result<UpdateUserResponse>.Failure(exception.Message);
-            }
+            userRepository.Update(user);
+            await databaseContext.SaveChangesAsync(cancellationToken);
 
             UpdateUserResponse response = new(
                 user.Id,
