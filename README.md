@@ -86,21 +86,33 @@ LedgerLiteUsersAPI/
     ├──Tests/                    # Unit Tests (Test-Driven Development [TDD])
     │   ├── Users.Application.Tests/
     │   ├── Users.Domain.Tests/
-    │   └── Users.Peristence.Tests/
+    │   ├── Users.Persistence.Tests/
+    │   └── Users.WebAPI.Tests/
     ├── Users.Application/       # Use cases and application orchestration
     │   ├── DTO/
     │   ├── Features/
-    │   └── Mappings/
+    │   ├── Mappings/
+    │   └── Users.Application
     ├── Users.Domain/            # Core domain (no dependencies)
     │   ├── Entities/
     │   ├── Exceptions/
     │   ├── Interfaces/
-    │   └── Validators/
+    │   ├── Validators/
+    │   └── Users.Domain.csproj
     ├── Users.Persistence/       # Use cases and application orchestration
     │   ├── Configurations/
     │   ├── Database/
     │   ├── Interceptors/
-    │   └── Repositories/
+    │   ├── Repositories/
+    │   └── Users.Persistence.csproj
+    ├── Users.WebAPI/       # Use cases and application orchestration
+    │   ├── Common/
+    │   ├── Controllers/
+    │   ├── Properties/
+    │   ├── appsettings.json
+    │   ├── appsettings.Development.json
+    │   ├── DependencyInjection.cs
+    │   └── Program.cs
     ├── .gitignore
     └── LedgerLiteUsersAPI.slnx
 ├── .dockerignore
