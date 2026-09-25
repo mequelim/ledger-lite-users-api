@@ -112,7 +112,8 @@ LedgerLiteUsersAPI/
     │   ├── appsettings.json
     │   ├── appsettings.Development.json
     │   ├── DependencyInjection.cs
-    │   └── Program.cs
+    │   ├── Program.cs
+    │   └── Users.WebAPI.csproj
     ├── .gitignore
     └── LedgerLiteUsersAPI.slnx
 ├── .dockerignore
