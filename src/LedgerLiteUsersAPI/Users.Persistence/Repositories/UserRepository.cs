@@ -10,13 +10,17 @@ namespace Users.Persistence.Repositories
     {
         public async Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await databaseContext.Users.ToListAsync(cancellationToken);
+            return await databaseContext.Users
+                .AsNoTracking()
+                .Include((user) => user.BankAccounts)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<User>> GetActiveUsersAsync(CancellationToken cancellationToken)
         {
             return await databaseContext.Users
                 .AsNoTracking()
+                .Include((user) => user.BankAccounts)
                 .Where((user) => user.IsActive == true)
                 .ToListAsync(cancellationToken);
         }
@@ -25,6 +29,7 @@ namespace Users.Persistence.Repositories
         {
             return await databaseContext.Users
                 .AsNoTracking()
+                .Include((user) => user.BankAccounts)
                 .Where((user) => user.IsActive == false)
                 .ToListAsync(cancellationToken);
         }
@@ -35,6 +40,7 @@ namespace Users.Persistence.Repositories
 
             return await databaseContext.Users
                 .AsNoTracking()
+                .Include((user) => user.BankAccounts)
                 .SingleOrDefaultAsync(
                     (user) => user.Id == userId,
                     cancellationToken
@@ -49,6 +55,7 @@ namespace Users.Persistence.Repositories
 
             return await databaseContext.Users
                 .AsNoTracking()
+                .Include((user) => user.BankAccounts)
                 .Where((user) => user.Name.Contains(search) || user.Surname.Contains(search))
                 .ToListAsync(cancellationToken);
         }
@@ -61,6 +68,7 @@ namespace Users.Persistence.Repositories
 
             return await databaseContext.Users
                 .AsNoTracking()
+                .Include((user) => user.BankAccounts)
                 .Where(
                     (user) => EF.Functions.Like(
                         user.Name + " " + user.Surname,
@@ -76,6 +84,7 @@ namespace Users.Persistence.Repositories
 
             return await databaseContext.Users
                 .AsNoTracking()
+                .Include((user) => user.BankAccounts)
                 .SingleOrDefaultAsync(
                     (user) => user.Email == email,
                     cancellationToken
@@ -87,12 +96,12 @@ namespace Users.Persistence.Repositories
             if(string.IsNullOrWhiteSpace(phone)) throw new ArgumentException("User phone cannot be null or empty!", nameof(phone));
 
             return await databaseContext.Users
-                       .AsNoTracking()
-                       .SingleOrDefaultAsync(
-                           (user) => user.Phone == phone,
-                           cancellationToken
-                       )
-                   ?? throw new InvalidUserPhoneException(nameof(phone));
+                .AsNoTracking()
+                .Include((user) => user.BankAccounts)
+                .SingleOrDefaultAsync(
+                    (user) => user.Phone == phone,
+                    cancellationToken
+                );
         }
 
         public User Create(User user)
