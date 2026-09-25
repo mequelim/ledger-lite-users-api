@@ -8,8 +8,7 @@ namespace Users.Domain.Interfaces.Repositories
         Task<IEnumerable<User>> GetAllActiveUsersAsync(CancellationToken cancellationToken = default);
         Task<IEnumerable<User>> GetAllInactiveUsersAsync(CancellationToken cancellationToken = default);
         Task<User?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken = default);
-        Task<IEnumerable<User>> GetUserByNameOrSurnameAsync(string name, CancellationToken cancellationToken = default);
-        Task<IEnumerable<User>> GetUserByFullNameAsync(string fullName, CancellationToken cancellationToken = default);
+        Task<IEnumerable<User>> GetUserByNameAsync(string name, CancellationToken cancellationToken = default);
         Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default);
         Task<User?> GetUserByPhoneAsync(string phone, CancellationToken cancellationToken = default);
         User Create(User user);

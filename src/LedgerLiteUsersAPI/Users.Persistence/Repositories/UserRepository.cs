@@ -47,33 +47,19 @@ namespace Users.Persistence.Repositories
                 );
         }
 
-        public async Task<IEnumerable<User>> GetUserByNameOrSurnameAsync(string name, CancellationToken cancellationToken)
+        public async Task<IEnumerable<User>> GetUserByNameAsync(string name, CancellationToken cancellationToken)
         {
             if(string.IsNullOrWhiteSpace(name)) throw new ArgumentException("User name cannot be null or empty!", nameof(name));
 
-            string search = name.Trim();
-
-            return await databaseContext.Users
-                .AsNoTracking()
-                .Include((user) => user.BankAccounts)
-                .Where((user) => user.Name.Contains(search) || user.Surname.Contains(search))
-                .ToListAsync(cancellationToken);
-        }
-
-        public async Task<IEnumerable<User>> GetUserByFullNameAsync(string fullName, CancellationToken cancellationToken)
-        {
-            if(string.IsNullOrWhiteSpace(fullName)) throw new ArgumentException("User name cannot be null or empty!", nameof(fullName));
-
-            string searchTerm = $"%{fullName.Trim()}%";
+            string searchTerm = name.Trim();
 
             return await databaseContext.Users
                 .AsNoTracking()
                 .Include((user) => user.BankAccounts)
                 .Where(
-                    (user) => EF.Functions.Like(
-                        user.Name + " " + user.Surname,
-                        searchTerm
-                    )
+                    (user) => EF.Functions.Like(user.Name, searchTerm) ||
+                              EF.Functions.Like(user.Surname, searchTerm) ||
+                              EF.Functions.Like(user.Name + " " + user.Surname, searchTerm)
                 )
                 .ToListAsync(cancellationToken);
         }
