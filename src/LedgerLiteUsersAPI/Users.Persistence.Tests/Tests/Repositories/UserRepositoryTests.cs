@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+using FluentAssertions;
 using Users.Domain.Entities;
 using Users.Domain.Exceptions.UserExceptions;
 using Users.Persistence.Database;
@@ -46,7 +46,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             user02.Phone = "11999999999";
 
             await _dbContext.Users.AddRangeAsync(user01, user02);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
             IEnumerable<User> result = await _repository.GetAllAsync(_cancellationToken);
@@ -68,10 +68,10 @@ namespace Users.Persistence.Tests.Tests.Repositories
             inactiveUser.IsActive = false;
 
             await _dbContext.Users.AddRangeAsync(activeUser, inactiveUser);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
-            IEnumerable<User> result = await _repository.GetActiveUsersAsync(_cancellationToken);
+            IEnumerable<User> result = await _repository.GetAllActiveUsersAsync(_cancellationToken);
 
             // Assert:
             IEnumerable<User> users = result as User[] ?? [.. result];
@@ -84,17 +84,17 @@ namespace Users.Persistence.Tests.Tests.Repositories
         public async Task GetInactiveUsersAsync_ShouldReturnOnlyInactiveUsers_WhenInactiveUsersExist()
         {
             // Arrange:
-            User activeUser = new UserBuilder().Build();
+            User activeUser = GenerateCompleteUser();
 
-            User inactiveUser = new UserBuilder().Build();
+            User inactiveUser = GenerateCompleteUser();
             inactiveUser.IsActive = false;
             inactiveUser.Email = "inactive@email.com";
 
             await _dbContext.Users.AddRangeAsync(activeUser, inactiveUser);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
-            IEnumerable<User> result = await _repository.GetInactiveUsersAsync(_cancellationToken);
+            IEnumerable<User> result = await _repository.GetAllInactiveUsersAsync(_cancellationToken);
             IEnumerable<User> users = result as User[] ?? [.. result];
 
             // Assert:
@@ -138,88 +138,65 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         [Fact]
-        public async Task GetUserByNameOrSurnameAsync_ShouldReturnUsers_WhenNameMatches()
+        public async Task GetUserByNameAsync_ShouldReturnUsers_WhenNameMatches()
         {
             // Arrange:
             User user = await PersistUserAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Pedro", _cancellationToken);
+            IEnumerable<User> result = await _repository.GetUserByNameAsync("Pedro", _cancellationToken);
 
             // Assert:
-            Assert.Contains(result, u => u.Id == user.Id);
+            result.Should().Contain(userResult => userResult.Id == user.Id);
         }
 
         [Fact]
-        public async Task GetUserByNameOrSurnameAsync_ShouldReturnUsers_WhenSurnameMatches()
+        public async Task GetUserByNameAsync_ShouldReturnUsers_WhenSurnameMatches()
         {
             // Arrange:
             User user = await PersistUserAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Mequelim", _cancellationToken);
+            IEnumerable<User> result = await _repository.GetUserByNameAsync("Mequelim", _cancellationToken);
 
             // Assert:
-            Assert.Contains(result, u => u.Id == user.Id);
+            result.Should().Contain(userResult => userResult.Id == user.Id);
         }
 
         [Fact]
-        public async Task GetUserByNameOrSurnameAsync_ShouldReturnEmpty_WhenNoUserMatches()
+        public async Task GetUserByNameAsync_ShouldReturnUsers_WhenFullNameMatches()
+        {
+            // Arrange:
+            User user = await PersistUserAsync();
+
+            // Act:
+            IEnumerable<User> result = await _repository.GetUserByNameAsync("Pedro Mequelim", _cancellationToken);
+
+            // Assert:
+            result.Should().Contain(userResult => userResult.Id == user.Id);
+        }
+
+        [Fact]
+        public async Task GetUserByNameAsync_ShouldReturnEmpty_WhenNoUserMatches()
         {
             // Arrange:
             await PersistUserAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetUserByNameOrSurnameAsync("Fernanda", _cancellationToken);
+            IEnumerable<User> result = await _repository.GetUserByNameAsync("Fernanda Silva", _cancellationToken);
 
             // Assert:
-            Assert.Empty(result);
+            result.Should().BeEmpty();
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public async Task GetUserByNameOrSurnameAsync_ShouldThrowArgumentException_WhenNameIsNullOrWhitespace(string? name)
+        public async Task GetUserByNameAsync_ShouldThrowArgumentException_WhenNameIsNullOrWhitespace(string? name)
         {
             // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByNameOrSurnameAsync(name!, _cancellationToken));
-        }
-
-        [Fact]
-        public async Task GetUserByFullNameAsync_ShouldReturnUsers_WhenFullNameMatches()
-        {
-            // Arrange:
-            User user = await PersistUserAsync();
-
-            // Act:
-            IEnumerable<User> result = await _repository.GetUserByFullNameAsync("Pedro Mequelim", _cancellationToken);
-
-            // Assert:
-            Assert.Contains(result, u => u.Id == user.Id);
-        }
-
-        [Fact]
-        public async Task GetUserByFullNameAsync_ShouldReturnEmpty_WhenNoUserMatches()
-        {
-            // Arrange:
-            await PersistUserAsync();
-
-            // Act:
-            IEnumerable<User> result = await _repository.GetUserByFullNameAsync("Fernanda Silva", _cancellationToken);
-
-            // Assert:
-            Assert.Empty(result);
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("   ")]
-        public async Task GetUserByFullNameAsync_ShouldThrowArgumentException_WhenFullNameIsNullOrWhitespace(string? fullName)
-        {
-            // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByFullNameAsync(fullName!, _cancellationToken));
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.GetUserByNameAsync(name!, _cancellationToken));
         }
 
         [Fact]
@@ -283,10 +260,16 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         [Fact]
-        public async Task GetUserByPhoneAsync_ShouldThrowInvalidUserPhoneException_WhenPhoneDoesNotExist()
+        public async Task GetUserByPhoneAsync_ShouldReturnNull_WhenPhoneDoesNotExist()
         {
-            // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<InvalidUserPhoneException>(() => _repository.GetUserByPhoneAsync("11000000000", _cancellationToken));
+            // Arrange:
+            const string phone = "11000000000";
+
+            // Act:
+            User? result = await _repository.GetUserByPhoneAsync(phone, _cancellationToken);
+
+            // Assert:
+            result.Should().BeNull();
         }
 
         [Fact]
@@ -297,7 +280,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             User result = _repository.Create(user);
 
             // Act:
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
             _dbContext.ChangeTracker.Clear();
 
             // Assert:
@@ -311,8 +294,8 @@ namespace Users.Persistence.Tests.Tests.Repositories
             // Arrange:
             User user = GenerateCompleteUser();
 
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Users.AddAsync(user, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             user.Name = "João";
 
@@ -331,17 +314,17 @@ namespace Users.Persistence.Tests.Tests.Repositories
             // Arrange:
             User user = GenerateCompleteUser();
 
-            await _dbContext.Users.AddAsync(user);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.Users.AddAsync(user, _cancellationToken);
+            await _dbContext.SaveChangesAsync(_cancellationToken);
             _dbContext.ChangeTracker.Clear();
 
             // Act:
             User result = await _repository.DeleteAsync(user.Id, _cancellationToken);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Assert:
             Assert.Equal(user.Id, result.Id);
-            Assert.Null(await _dbContext.Users.FindAsync(user.Id));
+            Assert.Null(await _dbContext.Users.FindAsync(user.Id, _cancellationToken));
         }
 
         [Fact]
