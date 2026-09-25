@@ -10,7 +10,6 @@ namespace Users.Application.Features.BankAccountFeatures.Get.GetAll
         public async Task<Result<GetAllBankAccountsResponse>> Handle(GetAllBankAccountsQuery query, CancellationToken cancellationToken)
         {
             IEnumerable<BankAccount> bankAccounts = await bankAccountRepository.GetAllAsync(cancellationToken);
-
             GetAllBankAccountsResponse response = new(bankAccounts);
 
             return Result<GetAllBankAccountsResponse>.Success(response);
