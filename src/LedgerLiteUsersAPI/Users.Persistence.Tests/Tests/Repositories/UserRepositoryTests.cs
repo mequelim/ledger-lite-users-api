@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Users.Domain.Entities;
 using Users.Domain.Exceptions.UserExceptions;
 using Users.Persistence.Database;
