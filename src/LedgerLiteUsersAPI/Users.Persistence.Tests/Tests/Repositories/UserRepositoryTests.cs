@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Users.Domain.Entities;
 using Users.Domain.Exceptions.UserExceptions;
@@ -71,7 +72,7 @@ namespace Users.Persistence.Tests.Tests.Repositories
             await _dbContext.SaveChangesAsync();
 
             // Act:
-            IEnumerable<User> result = await _repository.GetActiveUsersAsync(_cancellationToken);
+            IEnumerable<User> result = await _repository.GetAllActiveUsersAsync(_cancellationToken);
 
             // Assert:
             IEnumerable<User> users = result as User[] ?? [.. result];
@@ -91,10 +92,10 @@ namespace Users.Persistence.Tests.Tests.Repositories
             inactiveUser.Email = "inactive@email.com";
 
             await _dbContext.Users.AddRangeAsync(activeUser, inactiveUser);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(_cancellationToken);
 
             // Act:
-            IEnumerable<User> result = await _repository.GetInactiveUsersAsync(_cancellationToken);
+            IEnumerable<User> result = await _repository.GetAllInactiveUsersAsync(_cancellationToken);
             IEnumerable<User> users = result as User[] ?? [.. result];
 
             // Assert:
@@ -283,10 +284,16 @@ namespace Users.Persistence.Tests.Tests.Repositories
         }
 
         [Fact]
-        public async Task GetUserByPhoneAsync_ShouldThrowInvalidUserPhoneException_WhenPhoneDoesNotExist()
+        public async Task GetUserByPhoneAsync_ShouldReturnNull_WhenPhoneDoesNotExist()
         {
-            // Assert, Act & Arrange:
-            await Assert.ThrowsAsync<InvalidUserPhoneException>(() => _repository.GetUserByPhoneAsync("11000000000", _cancellationToken));
+            // Arrange:
+            const string phone = "11000000000";
+
+            // Act:
+            User? result = await _repository.GetUserByPhoneAsync(phone, _cancellationToken);
+
+            // Assert:
+            result.Should().BeNull();
         }
 
         [Fact]
