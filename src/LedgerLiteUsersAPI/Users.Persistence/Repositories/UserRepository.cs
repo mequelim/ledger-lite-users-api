@@ -16,7 +16,7 @@ namespace Users.Persistence.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<User>> GetActiveUsersAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<User>> GetAllActiveUsersAsync(CancellationToken cancellationToken)
         {
             return await databaseContext.Users
                 .AsNoTracking()
@@ -25,7 +25,7 @@ namespace Users.Persistence.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<User>> GetInactiveUsersAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<User>> GetAllInactiveUsersAsync(CancellationToken cancellationToken)
         {
             return await databaseContext.Users
                 .AsNoTracking()
