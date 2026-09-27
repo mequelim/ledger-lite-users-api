@@ -23,6 +23,15 @@ namespace Users.WebAPI
     /// </summary>
     public static class DependencyInjection
     {
+        /// <summary>
+        /// Constructs a PostgreSQL connection string using environment variables.
+        /// </summary>
+        /// <remarks>
+        /// This method retrieves database configuration details such as host, port, username, password, and database name from environment variables.
+        /// It uses these values to build a connection string with the <see cref="NpgsqlConnectionStringBuilder"/> class.
+        /// The resulting connection string is used to configure the database context.
+        /// </remarks>
+        /// <returns>A fully constructed PostgreSQL connection string based on environment variables.</returns>
         private static string BuildConnectionStringFromEnvironment()
         {
             return new NpgsqlConnectionStringBuilder
@@ -186,9 +195,14 @@ namespace Users.WebAPI
             }
 
             /// <summary>
-            /// 
+            /// Configures the application's database service using a PostgreSQL connection string.
             /// </summary>
-            /// <returns></returns>
+            /// <remarks>
+            /// This method retrieves the database connection string from the application's configuration or generates it dynamically using environment variables if
+            /// the configuration value is not available.
+            /// It initializes the <see cref="AppDbContext"/> with the configured connection string as part of the dependency injection container.
+            /// </remarks>
+            /// <returns>The updated <see cref="WebApplicationBuilder"/> instance with the database configuration added.</returns>
             public WebApplicationBuilder AddDatabaseConfiguration()
             {
                 string connectionString = applicationBuilder.Configuration.GetConnectionString("DefaultPostgreSQLConnection")
