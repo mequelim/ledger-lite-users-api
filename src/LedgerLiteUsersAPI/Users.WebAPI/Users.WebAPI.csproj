@@ -13,4 +13,9 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.17.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Users.Application\Users.Application.csproj" />
+    <ProjectReference Include="..\Users.Persistence\Users.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>
