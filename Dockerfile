@@ -20,7 +20,7 @@ RUN dotnet restore LedgerLiteUsersAPI.slnx
 FROM build AS publish-api
 
 # Publishes the Persistence project containing the API:
-RUN dotnet publish Users.Persistence/Users.Persistence.csproj \
+RUN dotnet publish Users.WebAPI/Users.WebAPI.csproj \
     -c Release \
     -o /app/publish/api \
     --no-restore
@@ -33,4 +33,4 @@ WORKDIR /app
 COPY --from=publish-api /app/publish/api .
 EXPOSE 8080
 
-ENTRYPOINT [ "dotnet", "Employee.Infrastructure.dll" ]
+ENTRYPOINT [ "dotnet", "Users.WebAPI.dll" ]
