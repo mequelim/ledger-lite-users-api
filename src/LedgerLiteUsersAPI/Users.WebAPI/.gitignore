@@ -10,6 +10,7 @@
 /*.sln.docstates
 /TestResults/
 /_ReSharper*/
+appsettings.Development.json
 
 # ============================
 # IDEs and Editors
