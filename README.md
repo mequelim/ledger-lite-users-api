@@ -228,7 +228,7 @@ dotnet tool update --global dotnet-ef
 
 ```shell
 # cd LedgerLiteUsers.Persistence\
-dotnet ef migrations add {MigrationName} --project .\LedgerLiteUsers.Persistence\ --startup-project .\LedgerLiteUsers.WebApi\ --output-dir Persistence\Migrations
+dotnet ef migrations add {MigrationName} --project .\Users.Persistence\ --startup-project .\Users.WebAPI\ --output-dir Persistence\Migrations
 ```
 
 > [!NOTE]
@@ -239,14 +239,14 @@ dotnet ef migrations add {MigrationName} --project .\LedgerLiteUsers.Persistence
 
 ```shell
 # cd LedgerLiteUsers.Persistence\
-dotnet ef database update --project .\LedgerLiteUsers.Persistence\ --startup-project .\LedgerLiteUsers.WebApi\
+dotnet ef database update --project .\Users.Persistence\ --startup-project .\LedgerLiteUsers.WebApi\
 ```
 
 ### To remove a migration
 
 ```shell
 # cd LedgerLiteUsers.Persistence\
-dotnet ef migrations remove --project .\LedgerLiteUsers.Persistence\ --startup-project .\LedgerLiteUsers.WebApi\ --output-dir Persistence\Migrations
+dotnet ef migrations remove --project .\Users.Persistence\ --startup-project .\LedgerLiteUsers.WebApi\ --output-dir Persistence\Migrations
 ```
 
 ---
