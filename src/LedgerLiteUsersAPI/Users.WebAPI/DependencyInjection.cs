@@ -23,6 +23,18 @@ namespace Users.WebAPI
     /// </summary>
     public static class DependencyInjection
     {
+        private static string BuildConnectionStringFromEnvironment()
+        {
+            return new NpgsqlConnectionStringBuilder
+            {
+                Host = Environment.GetEnvironmentVariable("DATABASE_HOST"),
+                Port = int.Parse(Environment.GetEnvironmentVariable("DATABASE_PORT")!),
+                Username = Environment.GetEnvironmentVariable("DATABASE_USER"),
+                Password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD"),
+                Database = Environment.GetEnvironmentVariable("DATABASE_NAME")
+            }.ConnectionString;
+        }
+
         /// <summary>
         /// Provides extension methods to configure dependency injection for an Authentication API.
         /// </summary>
@@ -173,20 +185,19 @@ namespace Users.WebAPI
                 return applicationBuilder;
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <returns></returns>
             public WebApplicationBuilder AddDatabaseConfiguration()
             {
-                string connectionString = new NpgsqlConnectionStringBuilder
-                {
-                    Host = Environment.GetEnvironmentVariable("DATABASE_HOST"),
-                    Port = int.Parse(Environment.GetEnvironmentVariable("DATABASE_PORT")!),
-                    Username = Environment.GetEnvironmentVariable("DATABASE_USER"),
-                    Password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD"),
-                    Database = Environment.GetEnvironmentVariable("DATABASE_NAME")
-                }.ConnectionString;
+                string connectionString = applicationBuilder.Configuration.GetConnectionString("DefaultPostgreSQLConnection")
+                                          ?? BuildConnectionStringFromEnvironment();
 
                 applicationBuilder.Services.AddDbContext<AppDbContext>((options) => options.UseNpgsql(connectionString));
 
                 return applicationBuilder;
+
             }
 
             /// <summary>
