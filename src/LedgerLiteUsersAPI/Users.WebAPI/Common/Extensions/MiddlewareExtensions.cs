@@ -10,7 +10,7 @@ namespace Users.WebAPI.Common.Extensions
         /// <summary>
         /// Configures the application to use a predefined set of middlewares for handling HTTP requests.
         /// </summary>
-        /// <param name="application">The <see cref="IApplicationBuilder"/> instance to configure.</param>
+        /// <param name="applicationBuilder">The <see cref="IApplicationBuilder"/> instance to configure.</param>
         /// <returns>The configured <see cref="IApplicationBuilder"/> instance.</returns>
         /// <remarks>
         /// This method adds the following middlewares to the pipeline in the specified order:
