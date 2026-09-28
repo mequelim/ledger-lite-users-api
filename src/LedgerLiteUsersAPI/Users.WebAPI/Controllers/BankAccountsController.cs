@@ -14,7 +14,7 @@ namespace Users.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BankAccountController(IMediator mediator) : ControllerBase
+    public class BankAccountsController(IMediator mediator) : ControllerBase
     {
         // GET:
         [HttpGet("GetAllBankAccounts")]
