@@ -1,0 +1,27 @@
+info:
+  name: UpdateBankAccount/{bankAccountId}
+  type: http
+  seq: 6
+
+http:
+  method: PATCH
+  url: https://localhost:7018/api/BankAccounts/UpdateBankAccount/91e1b704-30cd-400d-9c94-a13eca0bb4fb
+  body:
+    type: json
+    data: |-
+      {
+        "userId": "",
+        "bankName": "",
+        "holder": null,
+        "accountNumber": "",
+        "agency": "",
+        "bankAccountType": "Checking"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

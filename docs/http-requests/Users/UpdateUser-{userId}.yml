@@ -1,0 +1,27 @@
+info:
+  name: UpdateUser/{userId}
+  type: http
+  seq: 9
+
+http:
+  method: PATCH
+  url: https://localhost:7018/api/Users/UpdateUser/{userId}
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "surname": "",
+        "birthdate": 1,
+        "email": "",
+        "phone": "",
+        "isActive": true
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
