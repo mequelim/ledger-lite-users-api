@@ -1,9 +1,10 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Scalar.AspNetCore;
+using Users.Application.Features.UserFeatures.Get.GetByUserName;
 using Users.Application.Mappings;
 using Users.Domain.Interfaces.Repositories;
 using Users.Persistence.Database;
@@ -61,20 +62,25 @@ namespace Users.WebAPI
             {
                 applicationBuilder.Services.Configure<JsonOptions>((options) =>
                 {
-                    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-                    options.SerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-                    options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 
-                    options.SerializerOptions.Converters.Add(new DecimalJsonConverter());
-                    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                    options.SerializerOptions.Converters.Add(new DateOnlyJsonConverter());
-                    options.SerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+                    options.JsonSerializerOptions.Converters.Add(new DecimalJsonConverter());
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+                    options.JsonSerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
                 });
 
                 // Registering mappings:
                 applicationBuilder.Services.AddAutoMapper(
                     (_) => { },
                     typeof(DomainToDtoMappingProfile)
+                );
+
+
+                applicationBuilder.Services.AddMediatR(
+                    (configuration) => configuration.RegisterServicesFromAssembly(typeof(GetUserByUserNameHandler).Assembly)
                 );
 
                 applicationBuilder.Services.AddScoped<IUserRepository, UserRepository>();
