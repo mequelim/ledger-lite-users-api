@@ -82,6 +82,7 @@ namespace Users.WebAPI
 
                 applicationBuilder.Services.AddControllers();
                 applicationBuilder.Services.AddEndpointsApiExplorer();
+                applicationBuilder.Services.AddOpenApi();
 
                 return applicationBuilder;
             }
