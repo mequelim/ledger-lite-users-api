@@ -5,8 +5,6 @@ WebApplicationBuilder applicationBuilder = WebApplication.CreateBuilder(args);
 applicationBuilder
     .AddApiServices()
     .AddDatabaseConfiguration()
-    .ConfigureAuthentication()
-    .ConfigureAuthorization()
     .AddCorsPolicy();
 
 WebApplication application = applicationBuilder

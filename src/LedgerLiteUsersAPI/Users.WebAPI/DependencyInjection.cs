@@ -1,11 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
 using Npgsql;
 using Scalar.AspNetCore;
 using Users.Application.Mappings;
@@ -86,110 +82,6 @@ namespace Users.WebAPI
 
                 applicationBuilder.Services.AddControllers();
                 applicationBuilder.Services.AddEndpointsApiExplorer();
-                applicationBuilder.Services.AddOpenApi((options) =>
-                {
-                    options.AddDocumentTransformer(async (document, _, cancellationToken) =>
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        document.Components ??= new OpenApiComponents();
-                        document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
-
-                        OpenApiSecurityScheme scheme = new()
-                        {
-                            Type = SecuritySchemeType.Http,
-                            Scheme = "bearer",
-                            BearerFormat = "JWT",
-                            Description = $"Obtain the token via API Client (e.g. Postman)!"
-                        };
-
-                        document.Components.SecuritySchemes["Bearer"] = scheme;
-
-                        OpenApiSecurityRequirement requirement = new()
-                        {
-                            [new OpenApiSecuritySchemeReference("Bearer", document)] = []
-                        };
-
-                        document.Security = [requirement];
-
-                        await Task.CompletedTask;
-                    });
-                });
-
-                return applicationBuilder;
-            }
-
-            /// <summary>
-            /// Configures authentication services for the application.
-            /// </summary>
-            /// <remarks>
-            /// This method sets up JWT Bearer authentication for the application.
-            /// It configures the authority for token validation using the Identity Server URL specified in the application's configuration.
-            /// Additionally, it customizes token validation parameters, such as disabling audience validation and setting the claim type for roles.
-            /// </remarks>
-            /// <returns>The same <see cref="WebApplicationBuilder"/> instance, allowing for method chaining.</returns>
-            public WebApplicationBuilder ConfigureAuthentication()
-            {
-                applicationBuilder.Services
-                    .AddAuthentication("Bearer")
-                    .AddJwtBearer((options) =>
-                    {
-                        options.Authority = applicationBuilder.Configuration["ServicesUrls:IdentityServer"];
-                        options.MapInboundClaims = false;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateAudience = false,
-                            RoleClaimType = "role"
-                        };
-
-                        options.Events = new JwtBearerEvents
-                        {
-                            OnAuthenticationFailed = (context) =>
-                            {
-                                Console.WriteLine($">>> JWT FAILED: {context.Exception.Message}");
-
-                                return Task.CompletedTask;
-                            },
-                            OnTokenValidated = (context) =>
-                            {
-                                Console.WriteLine($">>> JWT VALID, claims: {string.Join(", ", context.Principal!.Claims.Select(ctx => $"{ctx.Type}={ctx.Value}"))}");
-
-                                return Task.CompletedTask;
-                            }
-                        };
-                    });
-
-                return applicationBuilder;
-            }
-
-            /// <summary>
-            /// Configures authorization services and policies for the application.
-            /// </summary>
-            /// <remarks>
-            /// Sets the default authorization policy to require authenticated users and
-            /// registers the <c>ApiScope</c> policy, which requires the <c>scope</c>
-            /// claim with the value <c>geek_shopping</c>.
-            /// </remarks>
-            /// <returns>
-            /// The same <see cref="WebApplicationBuilder"/> instance, enabling method chaining.
-            /// </returns>
-            public WebApplicationBuilder ConfigureAuthorization()
-            {
-                applicationBuilder.Services.AddAuthorization((options) =>
-                {
-                    options.DefaultPolicy = new AuthorizationPolicyBuilder()
-                        .RequireAuthenticatedUser()
-                        .Build();
-
-                    options.AddPolicy(
-                        "ApiScope",
-                        (policy) =>
-                        {
-                            policy.RequireAuthenticatedUser();
-                            policy.RequireClaim("scope", "geek_shopping");
-                        }
-                    );
-                });
 
                 return applicationBuilder;
             }
