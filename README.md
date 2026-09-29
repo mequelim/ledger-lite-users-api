@@ -305,7 +305,7 @@ Feature/User/CreateUser/
 >
 > Update link at the end of the project!
 
-+ Scalar auto-generates documentation at `{link}`.
++ Scalar auto-generates documentation at `https://localhost:7018` (or `http://localhost:5182`).
 
 ---
 
