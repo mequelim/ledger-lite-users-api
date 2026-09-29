@@ -1,3 +1,7 @@
+> [!WARNING]
+>
+> This project has been discontinued!
+
 # 👨‍🔧 LedgerLiteUsersAPI.UsersAPI
 
 **.NET 10 • C# 14 • Coherence Modelling • Vertical Slice Architecture • Clean Architecture • PostgreSQL • Redis • Docker • GitHub Actions CI/CD**
