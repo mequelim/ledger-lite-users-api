@@ -27,5 +27,5 @@ jobs:
     - name: Test
       run: dotnet test src/LedgerLiteUsersAPI/LedgerLiteUsersAPI.slnx --no-build --configuration Release --verbosity normal
 
-    # - name: Build the Docker image
-      # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)#
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)#
