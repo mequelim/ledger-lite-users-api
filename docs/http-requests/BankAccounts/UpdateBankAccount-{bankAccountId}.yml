@@ -5,7 +5,7 @@ info:
 
 http:
   method: PATCH
-  url: https://localhost:7018/api/BankAccounts/UpdateBankAccount/91e1b704-30cd-400d-9c94-a13eca0bb4fb
+  url: https://localhost:7018/api/BankAccounts/UpdateBankAccount/{bankAccountId}
   body:
     type: json
     data: |-
