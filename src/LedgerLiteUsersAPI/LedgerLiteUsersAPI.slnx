@@ -3,6 +3,7 @@
     <Project Path="Users.Application.Tests/Users.Application.Tests.csproj" />
     <Project Path="Users.Domain.Tests/Users.Domain.Tests.csproj" />
     <Project Path="Users.Persistence.Tests/Users.Persistence.Tests.csproj" Id="2a1482a0-6dee-491b-9124-20af7630ae6c" />
+    <Project Path="Users.WebAPI.Tests/Users.WebAPI.Tests.csproj" Id="077c98b2-9d79-401a-95ba-e0316ff0fc41" />
   </Folder>
   <Project Path="Users.Application/Users.Application.csproj" />
   <Project Path="Users.Domain/Users.Domain.csproj" />
