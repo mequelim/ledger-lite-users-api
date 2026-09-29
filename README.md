@@ -283,6 +283,18 @@ Feature/User/CreateUser/
 
 ---
 
+## Authetication, Authorization & Security Flow
+
+![Authetication, Authorization & Security Flow](./docs/diagrams/authentication-and-security-flow.jpg)
+
+---
+
+## Deployment Strategy
+
+![Deployment Strategy](./docs/diagrams/deployment-diagram.jpg)
+
+---
+
 ## 📘 API Documentation
 
 > [!WARNING]
@@ -306,12 +318,6 @@ Feature/User/CreateUser/
 ```shell
 dotnet test
 ```
-
----
-
-## Deployment Strategy
-
-![Deployment Strategy](./docs/diagrams/deployment-diagram.jpg)
 
 ---
 
