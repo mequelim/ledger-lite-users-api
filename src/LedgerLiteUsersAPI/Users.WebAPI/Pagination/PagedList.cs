@@ -27,7 +27,7 @@ namespace Users.WebAPI.Pagination
         {
             int count = source.Count();
             var items = source
-                .Skip((pageNumber - 1) * pageNumber)
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
