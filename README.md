@@ -86,21 +86,34 @@ LedgerLiteUsersAPI/
     ├──Tests/                    # Unit Tests (Test-Driven Development [TDD])
     │   ├── Users.Application.Tests/
     │   ├── Users.Domain.Tests/
-    │   └── Users.Peristence.Tests/
+    │   ├── Users.Persistence.Tests/
+    │   └── Users.WebAPI.Tests/
     ├── Users.Application/       # Use cases and application orchestration
     │   ├── DTO/
     │   ├── Features/
-    │   └── Mappings/
+    │   ├── Mappings/
+    │   └── Users.Application
     ├── Users.Domain/            # Core domain (no dependencies)
     │   ├── Entities/
     │   ├── Exceptions/
     │   ├── Interfaces/
-    │   └── Validators/
+    │   ├── Validators/
+    │   └── Users.Domain.csproj
     ├── Users.Persistence/       # Use cases and application orchestration
     │   ├── Configurations/
     │   ├── Database/
     │   ├── Interceptors/
-    │   └── Repositories/
+    │   ├── Repositories/
+    │   └── Users.Persistence.csproj
+    ├── Users.WebAPI/       # Use cases and application orchestration
+    │   ├── Common/
+    │   ├── Controllers/
+    │   ├── Properties/
+    │   ├── appsettings.json
+    │   ├── appsettings.Development.json
+    │   ├── DependencyInjection.cs
+    │   ├── Program.cs
+    │   └── Users.WebAPI.csproj
     ├── .gitignore
     └── LedgerLiteUsersAPI.slnx
 ├── .dockerignore
@@ -214,8 +227,7 @@ dotnet tool update --global dotnet-ef
 ### To add migration
 
 ```shell
-# cd LedgerLiteUsers.Persistence\
-dotnet ef migrations add {MigrationName} --project .\LedgerLiteUsers.Infrastructure\ --startup-project .\LedgerLiteUsers.WebApi\ --output-dir Persistence\Migrations
+dotnet ef migrations add {MigrationName} --project .\Users.Persistence\ --startup-project .\Users.WebAPI\ --output-dir Persistence\Migrations
 ```
 
 > [!NOTE]
@@ -225,15 +237,13 @@ dotnet ef migrations add {MigrationName} --project .\LedgerLiteUsers.Infrastruct
 ### To apply migration
 
 ```shell
-# cd LedgerLiteUsers.Persistence\
-dotnet ef database update --project .\LedgerLiteUsers.Infrastructure\ --startup-project .\LedgerLiteUsers.WebApi\
+dotnet ef database update --project .\Users.Persistence\ --startup-project .\Users.WebAPI\
 ```
 
 ### To remove a migration
 
 ```shell
-# cd LedgerLiteUsers.Persistence\
-dotnet ef migrations remove --project .\LedgerLiteUsers.Infrastructure\ --startup-project .\LedgerLiteUsers.WebApi\ --output-dir Persistence\Migrations
+dotnet ef migrations remove --project .\Users.Persistence\ --startup-project .\Users.WebAPI\
 ```
 
 ---

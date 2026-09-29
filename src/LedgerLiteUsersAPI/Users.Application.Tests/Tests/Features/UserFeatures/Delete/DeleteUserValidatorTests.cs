@@ -8,15 +8,11 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Delete
     {
         private readonly DeleteUserValidator _userValidator = new();
 
-        // Methods:
-        private static DeleteUserCommand CreateValidCommand() => new DeleteUserCommand(Guid.NewGuid());
-
-        // Tests:
         [Fact]
         public async Task Validate_ShouldReturnSuccess_WhenCommandIsValid()
         {
             // Arrange:
-            DeleteUserCommand command = CreateValidCommand();
+            DeleteUserCommand command = new(Guid.NewGuid());
 
             // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
@@ -37,6 +33,7 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Delete
 
             // Assert:
             result.IsValid.Should().BeFalse();
+
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Id) &&
                              failure.ErrorMessage == "The user id is required!"

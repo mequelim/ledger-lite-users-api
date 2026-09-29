@@ -1,0 +1,27 @@
+info:
+  name: CreateBankAccount
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: https://localhost:7018/api/BankAccounts/CreateBankAccount
+  body:
+    type: json
+    data: |-
+      {
+        "userId": "",
+        "bankName": "",
+        "holder": null,
+        "accountNumber": "",
+        "agency": "",
+        "bankAccountType": "Checking"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

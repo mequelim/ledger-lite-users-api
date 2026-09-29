@@ -1,4 +1,3 @@
-
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
@@ -17,7 +16,6 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Delete
         private readonly AppDbContext _databaseContext;
         private readonly DeleteUserHandler _userHandler;
 
-        // Constructor:
         public DeleteUserHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
@@ -27,15 +25,11 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Delete
                 .Options;
 
             _databaseContext = new AppDbContext(options);
-
             _userHandler = new DeleteUserHandler(
                 _userRepository,
                 _databaseContext
             );
         }
-
-        // Methods:
-        private static DeleteUserCommand CreateValidCommand(Guid userId) => new(userId);
 
         public void Dispose()
         {
@@ -45,14 +39,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Delete
             GC.SuppressFinalize(this);
         }
 
-        // Tests:
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenUserDoesNotExist()
         {
             // Arrange:
             Guid userId = Guid.NewGuid();
 
-            DeleteUserCommand command = CreateValidCommand(userId);
+            DeleteUserCommand command = new(userId);
 
             _userRepository
                 .DeleteAsync(command.Id, Arg.Any<CancellationToken>())
@@ -65,7 +58,9 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Delete
 
             // Assert:
             result.IsSuccess.Should().BeFalse();
-            result.ErrorMessage.Should().NotBeNullOrWhiteSpace();
+            result.ErrorMessage.Should().Be(
+                new UserNotFoundException(nameof(User.Id), command.Id).Message
+            );
 
             await _userRepository
                 .Received(1)
@@ -73,12 +68,25 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Delete
         }
 
         [Fact]
-        public async Task Handle_ShouldDeleteUser_WhenUserExists()
+        public async Task Handle_ShouldDeleteUser_WhenCommandIsValid()
         {
             // Arrange:
             Guid userId = Guid.NewGuid();
 
-            DeleteUserCommand command = CreateValidCommand(userId);
+            DeleteUserCommand command = new(userId);
+
+            User user = new(
+                name: "Pedro",
+                surname: "Henrique",
+                birthdate: DateOnly.FromDateTime(DateTime.Today.AddYears(-25)),
+                email: "pedro@email.com",
+                phone: "11999999999",
+                isActive: true
+            );
+
+            _userRepository
+                .DeleteAsync(command.Id, Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(user));
 
             // Act:
             Result<DeleteUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
@@ -88,25 +96,8 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Delete
             result.ErrorMessage.Should().BeNullOrEmpty();
 
             result.Value.Should().NotBeNull();
-            result.Value.Id.Should().Be(userId);
+            result.Value.Id.Should().Be(command.Id);
 
-            await _userRepository
-                .Received(1)
-                .DeleteAsync(command.Id, Arg.Any<CancellationToken>());
-        }
-
-        [Fact]
-        public async Task Handle_ShouldCallRepositoryOnlyOnce_WhenUserExists()
-        {
-            // Arrange:
-            Guid userId = Guid.NewGuid();
-
-            DeleteUserCommand command = CreateValidCommand(userId);
-
-            // Act:
-            await _userHandler.Handle(command, CancellationToken.None);
-
-            // Assert:
             await _userRepository
                 .Received(1)
                 .DeleteAsync(command.Id, Arg.Any<CancellationToken>());

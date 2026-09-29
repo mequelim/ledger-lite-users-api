@@ -8,7 +8,6 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
     {
         private readonly CreateUserValidator _userValidator = new();
 
-        // Methods:
         private static CreateUserCommand CreateValidCommand()
         {
             return new CreateUserCommand(
@@ -21,17 +20,12 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
             );
         }
 
-        // Tests:
         [Fact]
         public async Task Validate_ShouldReturnSuccess_WhenCommandIsValid()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand();
-
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeTrue();
             result.Errors.Should().BeEmpty();
         }
@@ -39,18 +33,14 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenNameIsEmpty()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Name = string.Empty
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
-
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Name) &&
                              failure.ErrorMessage == "The user name is required!"
@@ -60,16 +50,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenNameExceedsMaximumLength()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Name = new string('A', 101)
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Name) &&
@@ -80,16 +67,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenSurnameIsEmpty()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Surname = string.Empty
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Surname) &&
@@ -100,16 +84,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenSurnameExceedsMaximumLength()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Surname = new string('A', 101)
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Surname) &&
@@ -118,20 +99,33 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         }
 
         [Fact]
+        public async Task Validate_ShouldReturnValidationError_WhenBirthdateIsEmpty()
+        {
+            CreateUserCommand command = CreateValidCommand() with
+            {
+                Birthdate = default
+            };
+
+            ValidationResult result = await _userValidator.ValidateAsync(command);
+
+            result.IsValid.Should().BeFalse();
+            result.Errors.Should().Contain(
+                (failure) => failure.PropertyName == nameof(command.Birthdate) &&
+                             failure.ErrorMessage == "The user birthdate is required!"
+            );
+        }
+
+        [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenBirthdateIsInvalid()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Birthdate = DateOnly.FromDateTime(DateTime.Today.AddYears(-10))
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
-
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Birthdate) &&
                              failure.ErrorMessage == "The user must be between 18 and 100 years old!"
@@ -141,18 +135,14 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenEmailIsEmpty()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Email = string.Empty
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
-
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Email) &&
                              failure.ErrorMessage == "The user e-mail is required!"
@@ -162,16 +152,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenEmailExceedsMaximumLength()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Email = new string('A', 151)
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Email) &&
@@ -182,16 +169,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenEmailFormatIsInvalid()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Email = "email-invalido"
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Email) &&
@@ -202,16 +186,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenPhoneIsEmpty()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Phone = string.Empty
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Phone) &&
@@ -222,16 +203,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenPhoneExceedsMaximumLength()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Phone = new string('1', 21)
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Phone) &&
@@ -242,16 +220,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         [Fact]
         public async Task Validate_ShouldReturnValidationError_WhenPhoneFormatIsInvalid()
         {
-            // Arrange:
             CreateUserCommand command = CreateValidCommand() with
             {
                 Phone = "12345"
             };
 
-            // Act:
             ValidationResult result = await _userValidator.ValidateAsync(command);
 
-            // Assert:
             result.IsValid.Should().BeFalse();
             result.Errors.Should().Contain(
                 (failure) => failure.PropertyName == nameof(command.Phone) &&

@@ -15,7 +15,6 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
         private readonly AppDbContext _databaseContext;
         private readonly CreateUserHandler _userHandler;
 
-        // Constructor:
         public CreateUserHandlerTests()
         {
             _userRepository = Substitute.For<IUserRepository>();
@@ -31,7 +30,6 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
             );
         }
 
-        // Methods:
         private static CreateUserCommand CreateValidCommand()
         {
             return new CreateUserCommand(
@@ -52,12 +50,12 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
             GC.SuppressFinalize(this);
         }
 
-        // Tests:
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenEmailAlreadyExists()
         {
-            // Arrange:
+            // Arrange
             CreateUserCommand command = CreateValidCommand();
+
             User existingUser = new(
                 command.Name,
                 command.Surname,
@@ -71,21 +69,24 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
                 .GetUserByEmailAsync(command.Email, Arg.Any<CancellationToken>())
                 .Returns(existingUser);
 
-            // Act:
+            // Act
             Result<CreateUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
 
-            // Assert:
+            // Assert
             result.IsSuccess.Should().BeFalse();
             result.ErrorMessage.Should().Be("User e-mail already exists!");
 
-            _userRepository.DidNotReceive().Create(Arg.Any<User>());
+            _userRepository
+                .DidNotReceive()
+                .Create(Arg.Any<User>());
         }
 
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenPhoneAlreadyExists()
         {
-            // Arrange:
+            // Arrange
             CreateUserCommand command = CreateValidCommand();
+
             User existingUser = new(
                 command.Name,
                 command.Surname,
@@ -103,20 +104,22 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
                 .GetUserByPhoneAsync(command.Phone, Arg.Any<CancellationToken>())
                 .Returns(existingUser);
 
-            // Act:
+            // Act
             Result<CreateUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
 
-            // Assert:
+            // Assert
             result.IsSuccess.Should().BeFalse();
             result.ErrorMessage.Should().Be("User phone already exists!");
 
-            _userRepository.DidNotReceive().Create(Arg.Any<User>());
+            _userRepository
+                .DidNotReceive()
+                .Create(Arg.Any<User>());
         }
 
         [Fact]
         public async Task Handle_ShouldCreateUser_WhenCommandIsValid()
         {
-            // Arrange:
+            // Arrange
             CreateUserCommand command = CreateValidCommand();
 
             _userRepository
@@ -130,13 +133,13 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
             User? createdUser = null;
 
             _userRepository
-                .When((repository) => repository.Create(Arg.Any<User>()))
-                .Do((call) => createdUser = call.Arg<User>());
+                .When(repository => repository.Create(Arg.Any<User>()))
+                .Do(call => createdUser = call.Arg<User>());
 
-            // Act:
+            // Act
             Result<CreateUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
 
-            // Assert:
+            // Assert
             result.IsSuccess.Should().BeTrue();
             result.ErrorMessage.Should().BeNullOrEmpty();
 
@@ -151,67 +154,15 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
 
             createdUser.Should().NotBeNull();
 
-            _userRepository.Received(1).Create(Arg.Any<User>());
-        }
-
-        [Fact]
-        public async Task Handle_ShouldReturnFailure_WhenEmailIsInvalid()
-        {
-            // Arrange:
-            CreateUserCommand command = CreateValidCommand() with
-            {
-                Email = "email-invalido"
-            };
-
             _userRepository
-                .GetUserByEmailAsync(command.Email, Arg.Any<CancellationToken>())
-                .Returns((User?)null);
-
-            _userRepository
-                .GetUserByPhoneAsync(command.Phone, Arg.Any<CancellationToken>())
-                .Returns((User?)null);
-
-            // Act:
-            Result<CreateUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
-
-            // Assert:
-            result.IsSuccess.Should().BeFalse();
-            result.ErrorMessage.Should().NotBeNullOrWhiteSpace();
-
-            _userRepository.DidNotReceive().Create(Arg.Any<User>());
-        }
-
-        [Fact]
-        public async Task Handle_ShouldReturnFailure_WhenPhoneIsInvalid()
-        {
-            // Arrange:
-            CreateUserCommand command = CreateValidCommand() with
-            {
-                Phone = "12345"
-            };
-
-            _userRepository
-                .GetUserByEmailAsync(command.Email, Arg.Any<CancellationToken>())
-                .Returns((User?)null);
-
-            _userRepository
-                .GetUserByPhoneAsync(command.Phone, Arg.Any<CancellationToken>())
-                .Returns((User?)null);
-
-            // Act:
-            Result<CreateUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
-
-            // Assert:
-            result.IsSuccess.Should().BeFalse();
-            result.ErrorMessage.Should().NotBeNullOrWhiteSpace();
-
-            _userRepository.DidNotReceive().Create(Arg.Any<User>());
+                .Received(1)
+                .Create(Arg.Any<User>());
         }
 
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenUserAgeIsInvalid()
         {
-            // Arrange:
+            // Arrange
             CreateUserCommand command = CreateValidCommand() with
             {
                 Birthdate = DateOnly.FromDateTime(DateTime.Today.AddYears(-10))
@@ -225,14 +176,74 @@ namespace Users.Application.Tests.Tests.Features.UserFeatures.Create
                 .GetUserByPhoneAsync(command.Phone, Arg.Any<CancellationToken>())
                 .Returns((User?)null);
 
-            // Act:
+            // Act
             Result<CreateUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
 
-            // Assert:
+            // Assert
             result.IsSuccess.Should().BeFalse();
             result.ErrorMessage.Should().NotBeNullOrWhiteSpace();
 
-            _userRepository.DidNotReceive().Create(Arg.Any<User>());
+            _userRepository
+                .DidNotReceive()
+                .Create(Arg.Any<User>());
+        }
+
+        [Fact]
+        public async Task Handle_ShouldReturnFailure_WhenEmailIsInvalid()
+        {
+            // Arrange
+            CreateUserCommand command = CreateValidCommand() with
+            {
+                Email = "email-invalido"
+            };
+
+            _userRepository
+                .GetUserByEmailAsync(command.Email, Arg.Any<CancellationToken>())
+                .Returns((User?)null);
+
+            _userRepository
+                .GetUserByPhoneAsync(command.Phone, Arg.Any<CancellationToken>())
+                .Returns((User?)null);
+
+            // Act
+            Result<CreateUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.ErrorMessage.Should().NotBeNullOrWhiteSpace();
+
+            _userRepository
+                .DidNotReceive()
+                .Create(Arg.Any<User>());
+        }
+
+        [Fact]
+        public async Task Handle_ShouldReturnFailure_WhenPhoneIsInvalid()
+        {
+            // Arrange
+            CreateUserCommand command = CreateValidCommand() with
+            {
+                Phone = "12345"
+            };
+
+            _userRepository
+                .GetUserByEmailAsync(command.Email, Arg.Any<CancellationToken>())
+                .Returns((User?)null);
+
+            _userRepository
+                .GetUserByPhoneAsync(command.Phone, Arg.Any<CancellationToken>())
+                .Returns((User?)null);
+
+            // Act
+            Result<CreateUserResponse> result = await _userHandler.Handle(command, CancellationToken.None);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.ErrorMessage.Should().NotBeNullOrWhiteSpace();
+
+            _userRepository
+                .DidNotReceive()
+                .Create(Arg.Any<User>());
         }
     }
 }
