@@ -10,7 +10,7 @@
 
 The service is built with **Clean Architecture** and **Vertical Slice Architecture**, applying **Coherence Modelling** to keep business capabilities isolated, cohesive, and easy to evolve over time.
 
-Designed with a **domain-first** approach, the project prioritizes maintainability, scalability, and testability while remaining independent of infrastructure and external frameworks.
+Designed with a **domain-first** approach, the project prioritizes maintainability, scalability and testability while remaining independent of infrastructure and external frameworks.
 
 ### 🎯 Goals
 
@@ -40,7 +40,7 @@ Designed with a **domain-first** approach, the project prioritizes maintainabili
 
 # 🧠 Coherence Modelling (Overview)
 
-**Coherence Modelling** is a software architecture and domain modelling approach created by **me**. It focuses on organizing systems around highly cohesive business capabilities, promoting clear boundaries, low coupling, scalability, and long-term maintainability.
+**Coherence Modelling** is a software architecture and domain modelling approach created by **me**. It focuses on organizing systems around highly cohesive business capabilities, promoting clear boundaries, low coupling, scalability and long-term maintainability.
 
 The approach is designed to work alongside architectures such as **Clean Architecture** and **Vertical Slice Architecture**, enabling modular systems that can evolve naturally into bounded contexts or independent microservices.
 
@@ -131,7 +131,7 @@ LedgerLiteUsersAPI/
 
 ```markdown
 ┌─────────────────────────────────────────────┐
-│                  WebApi                     │  ← Entry point, thin host
+│                  WebAPI                    │  ← Entry point, thin host
 │      (Program.cs, Exception Handler)        │
 ├─────────────────────────────────────────────┤
 │              Infrastructure                 │  ← EF Core, Repository, Interceptors
@@ -283,6 +283,18 @@ Feature/User/CreateUser/
 
 ---
 
+## Authetication, Authorization & Security Flow
+
+![Authetication, Authorization & Security Flow](./docs/diagrams/authentication-and-security-flow.jpg)
+
+---
+
+## Deployment Strategy
+
+![Deployment Strategy](./docs/diagrams/deployment-diagram.jpg)
+
+---
+
 ## 📘 API Documentation
 
 > [!WARNING]
@@ -306,12 +318,6 @@ Feature/User/CreateUser/
 ```shell
 dotnet test
 ```
-
----
-
-## Deployment Strategy
-
-![Deployment Strategy](./docs/diagrams/deployment-diagram.jpg)
 
 ---
 
