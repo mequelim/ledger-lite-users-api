@@ -1,6 +1,6 @@
 > [!WARNING]
 >
-> This project has been discontinued!
+> The `LedgerLite` project has been discontinued!
 
 # 👨‍🔧 LedgerLiteUsersAPI.UsersAPI
 
