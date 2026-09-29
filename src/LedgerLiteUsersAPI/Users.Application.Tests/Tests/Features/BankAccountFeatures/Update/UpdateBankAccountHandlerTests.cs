@@ -85,7 +85,9 @@ namespace Users.Application.Tests.Tests.Features.BankAccountFeatures.Update
 
             _bankAccountRepository
                 .GetBankAccountByIdAsync(command.Id, Arg.Any<CancellationToken>())
-                .Returns((BankAccount?)null);
+                .Returns(Task.FromException<BankAccount?>(
+                    new BankAccountNotFoundException(nameof(BankAccount.Id), command.Id)
+                ));
 
             // Act:
             Result<UpdateBankAccountResponse> result = await _bankAccountHandler.Handle(command, CancellationToken.None);

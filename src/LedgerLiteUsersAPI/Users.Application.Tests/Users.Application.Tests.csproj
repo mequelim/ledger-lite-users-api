@@ -32,8 +32,4 @@
       <ProjectReference Include="..\Users.Application\Users.Application.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Tests\Features\UserFeatures\" />
-    </ItemGroup>
-
 </Project>
