@@ -151,14 +151,6 @@ LedgerLiteUsersAPI/
 
 ---
 
-## 📂 Project Structure
-
-> [!WARNING]
->
-> Add the project structure.
-
----
-
 ## 🔧 Environment Setup
 
 + This project uses a single `.env` file at the repository root.
