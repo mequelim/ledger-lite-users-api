@@ -1,6 +1,6 @@
-using Users.Domain.Entities;
+using Users.Application.DTO;
 
 namespace Users.Application.Features.UserFeatures.Get.GetAllActiveUsers
 {
-    public sealed record GetAllActiveUsersResponse(IEnumerable<User> Users);
+    public sealed record GetAllActiveUsersResponse(IEnumerable<UserDto> Users);
 }

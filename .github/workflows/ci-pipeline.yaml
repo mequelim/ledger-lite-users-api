@@ -25,7 +25,11 @@ jobs:
       run: dotnet build src/LedgerLiteUsersAPI/LedgerLiteUsersAPI.slnx --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test src/LedgerLiteUsersAPI/LedgerLiteUsersAPI.slnx --no-build --configuration Release --verbosity normal
+      run: |
+        dotnet run --project src/LedgerLiteUsersAPI/Users.Application.Tests/Users.Application.Tests.csproj --no-build --configuration Release
+        dotnet run --project src/LedgerLiteUsersAPI/Users.Domain.Tests/Users.Domain.Tests.csproj --no-build --configuration Release
+        dotnet run --project src/LedgerLiteUsersAPI/Users.Persistence.Tests/Users.Persistence.Tests.csproj --no-build --configuration Release
+        dotnet run --project src/LedgerLiteUsersAPI/Users.WebAPI.Tests/Users.WebAPI.Tests.csproj --no-build --configuration Release
 
-    # - name: Build the Docker image
-      # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)#
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)

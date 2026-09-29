@@ -12,23 +12,32 @@ namespace Users.Application.Features.BankAccountFeatures.Update
         AppDbContext databaseContext
     ) : IRequestHandler<UpdateBankAccountCommand, Result<UpdateBankAccountResponse>>
     {
-        public async Task<Result<UpdateBankAccountResponse>> Handle(UpdateBankAccountCommand command, CancellationToken cancellationToken)
+        public async Task<Result<UpdateBankAccountResponse>> Handle(
+            UpdateBankAccountCommand command,
+            CancellationToken cancellationToken)
         {
-            BankAccount? bankAccount = await bankAccountRepository.GetBankAccountByIdAsync(command.Id, cancellationToken);
+            BankAccount? bankAccount;
 
-            if(bankAccount is null) return Result<UpdateBankAccountResponse>.Failure("Bank account not found!");
+            try
+            {
+                bankAccount = await bankAccountRepository.GetBankAccountByIdAsync(command.Id, cancellationToken);
+            }
+            catch(BankAccountNotFoundException)
+            {
+                return Result<UpdateBankAccountResponse>.Failure("Bank account not found!");
+            }
 
-            bankAccount.BankName = command.BankName;
-            bankAccount.Holder = command.Holder;
-            bankAccount.AccountNumber = command.AccountNumber;
-            bankAccount.Agency = command.Agency;
-            bankAccount.BankAccountType = command.BankAccountType;
+            bankAccount?.BankName = command.BankName;
+            bankAccount?.Holder = command.Holder;
+            bankAccount?.AccountNumber = command.AccountNumber;
+            bankAccount?.Agency = command.Agency;
+            bankAccount?.BankAccountType = command.BankAccountType;
 
-            bankAccountRepository.Update(bankAccount);
+            bankAccountRepository.Update(bankAccount!);
             await databaseContext.SaveChangesAsync(cancellationToken);
 
             UpdateBankAccountResponse response = new(
-                bankAccount.Id,
+                bankAccount!.Id,
                 bankAccount.UserId,
                 bankAccount.BankName,
                 bankAccount.Holder,

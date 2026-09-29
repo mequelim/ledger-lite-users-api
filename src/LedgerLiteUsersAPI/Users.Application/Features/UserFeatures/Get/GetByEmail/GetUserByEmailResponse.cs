@@ -1,6 +1,6 @@
-using Users.Domain.Entities;
+using Users.Application.DTO;
 
 namespace Users.Application.Features.UserFeatures.Get.GetByEmail
 {
-    public sealed record GetUserByEmailResponse(User User);
+    public sealed record GetUserByEmailResponse(UserDto User);
 }
