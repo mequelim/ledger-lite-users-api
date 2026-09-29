@@ -1,0 +1,27 @@
+info:
+  name: CreateUser
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: https://localhost:7018/api/Users/CreateUser
+  body:
+    type: json
+    data: |-
+      {
+        "name": "",
+        "surname": "",
+        "birthdate": 1,
+        "email": "",
+        "phone": "",
+        "isActive": true
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

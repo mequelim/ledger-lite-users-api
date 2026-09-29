@@ -1,16 +1,36 @@
 # -------------------------------------
-# Migrator (temporary, until there is a WebAPI)
+# Stage 01: Build
 # -------------------------------------
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS migrator
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
 WORKDIR /app
+
+# Copy the entire repository:
 COPY . .
 
+# Move to the solution directory:
 WORKDIR /app/src/LedgerLiteUsersAPI
 
+# Restore dependencies:
 RUN dotnet restore LedgerLiteUsersAPI.slnx
 
-RUN dotnet tool install --global dotnet-ef --version 10.0.12
-ENV PATH="$PATH:/root/.dotnet/tools"
+# -------------------------------------
+# Stage 02: Publish
+# -------------------------------------
+FROM build AS publish-api
 
-ENTRYPOINT [ "dotnet", "ef", "database", "update", "--project", "Users.Persistence" ]
+# Publishes the Persistence project containing the API:
+RUN dotnet publish Users.WebAPI/Users.WebAPI.csproj \
+    -c Release \
+    -o /app/publish/api \
+    --no-restore
+
+# -------------------------------------
+# Stage 03: Runtime
+# -------------------------------------
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS ledger-lite-users-api
+WORKDIR /app
+COPY --from=publish-api /app/publish/api .
+EXPOSE 8080
+
+ENTRYPOINT [ "dotnet", "Users.WebAPI.dll" ]

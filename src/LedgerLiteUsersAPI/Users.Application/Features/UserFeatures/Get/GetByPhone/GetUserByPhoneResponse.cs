@@ -1,6 +1,6 @@
-using Users.Domain.Entities;
+using Users.Application.DTO;
 
 namespace Users.Application.Features.UserFeatures.Get.GetByPhone
 {
-    public sealed record GetUserByPhoneResponse(User User);
+    public sealed record GetUserByPhoneResponse(UserDto User);
 }

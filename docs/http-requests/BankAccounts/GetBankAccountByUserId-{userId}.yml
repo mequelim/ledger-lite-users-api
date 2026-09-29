@@ -1,0 +1,16 @@
+info:
+  name: GetBankAccountByUserId/{userId}
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: https://localhost:7018/api/BankAccounts/GetBankAccountByUserId/{userId}
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

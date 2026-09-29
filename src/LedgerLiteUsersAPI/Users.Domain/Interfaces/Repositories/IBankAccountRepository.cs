@@ -10,7 +10,7 @@ namespace Users.Domain.Interfaces.Repositories
         Task<IEnumerable<BankAccount>> GetBankAccountByUserNameAsync(string userName, CancellationToken cancellationToken = default);
         Task<IEnumerable<BankAccount>> GetBankAccountByBankNameAsync(string bankName, CancellationToken cancellationToken = default);
         BankAccount Create(BankAccount bankAccount);
-        BankAccount Update(BankAccount bankAccount);
+        BankAccount Update(BankAccount? bankAccount);
         Task<BankAccount> DeleteAsync(Guid bankAccountId, CancellationToken cancellationToken = default);
     }
 }
