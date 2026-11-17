@@ -40,18 +40,18 @@ There are **three primary branches**:
 + Branches must follow:
 
   ```shell
-  <type>/SOAT-{task-number}-{task-description}: <short-description>
+  <type>/LL-{task-number}-{task-description}: <short-description>
   ```
 
 ### Allowed types
 
-+ `feature/SOAT-{task-number}-{task-name}`: new features;
-+ `fix/SOAT-{task-number}-{task-name}`: bug fixes;
-+ `hotfix/SOAT-{task-number}-{task-name}`: production fixes;
-+ `chore/SOAT-{task-number}-{task-name}`: tooling, configs, dependencies;
-+ `refactor/SOAT-{task-number}-{task-name}` — internal improvements;
-+ `test/SOAT-{task-number}-{task-name}` — test-related changes;
-+ `docs/SOAT-{task-number}-{task-name}` — documentation.
++ `feature/LL-{task-number}-{task-name}`: new features;
++ `fix/LL-{task-number}-{task-name}`: bug fixes;
++ `hotfix/LL-{task-number}-{task-name}`: production fixes;
++ `chore/LL-{task-number}-{task-name}`: tooling, configs, dependencies;
++ `refactor/LL-{task-number}-{task-name}` — internal improvements;
++ `test/LL-{task-number}-{task-name}` — test-related changes;
++ `docs/LL-{task-number}-{task-name}` — documentation.
 
 ### Examples:
 
